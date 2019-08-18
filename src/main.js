@@ -7,6 +7,7 @@ import axios from './plugins/axios'
 import './plugins/filter'
 import './plugins/veevalidate'
 import './plugins/fontAwesome'
+import './plugins/vueSocket'
 import App from './App.vue'
 import router from "./router/index";
 import store from './store'
@@ -14,6 +15,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import Cookies from 'js-cookie';
+
 
 import { setAxiosAuthorizationHeader } from "./store/modules/auth";
 import {getSESSION, SESSION} from "./utils";
@@ -75,6 +77,23 @@ Vue.prototype.$eventTypes = {
   isLoadingDialog: 'isLoadingDialog',
 
 };
+
+/*import VueSocketIO from 'vue-socket.io'
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: 'http://localhost:8081/',
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  },
+  options: { path: "/" } //Optional options
+}));*/
+import VueWebsocket from "vue-websocket";
+Vue.use(VueWebsocket, "https://www.google.com/", {
+  reconnection: false
+});
+
 
 new Vue({
   vuetify,
