@@ -19,9 +19,6 @@ export const getMainURL = () => {
 export const getSubdomainURL = subdomain => {
   return `${location.protocol}//${subdomain}.${location.host}`;
 };
-/*window.setSESSION = setSESSION;
-window.SESSION = SESSION;
-window.getSESSION = getSESSION;*/
 export const SESSION = {
   TOKEN: 'token',
   SUBDOMAINS: 'subdomains'

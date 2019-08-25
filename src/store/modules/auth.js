@@ -1,6 +1,6 @@
 import axios from "axios";
 import {getSESSION, removeSESSION, SESSION, setSESSION} from "../../utils";
-
+import api from '../../api/auth';
 // initial state
 const state = {
   status: "",
@@ -32,38 +32,15 @@ const actions = {
         });
     });
   },
-  login({ commit }, user) {
-    return new Promise((resolve, reject) => {
-      commit("authRequest");
-      axios
-        .post("/api/users/auth/get-code/", user)
-        .then(resp => {
-          if (resp.data["2fa"] === true) {
-            resolve(resp);
-          } else {
-            setToken(resp, commit, resolve);
-          }
-        })
-        .catch(err => {
-          commit("authError");
-          reject(err);
-        });
-    });
-  },
-  login2({ commit }, data) {
-    return new Promise((resolve, reject) => {
-      commit("authRequest");
-      axios
-        .post("/api/users/auth/login/", data)
-        .then(resp => {
-          setToken(resp, commit, resolve);
-        })
-        .catch(err => {
-          commit("authError");
-          removeSESSION(SESSION.TOKEN);
-          reject(err);
-        });
-    });
+  async login({ commit }, user) {
+    // console.log(await api.getList());
+    commit("authRequest");
+    try {
+      commit("authSuccess", await api.login(user));
+    }catch (e) {
+      console.log(e.message);
+      commit("authError", e.message);
+    }
   },
   logout({ commit }) {
     return new Promise(resolve => {
@@ -98,7 +75,7 @@ const mutations = {
   }
 };
 
-const setToken = (response, commit, resolve) => {
+const setToken = (response, commit, resolve) => { // eslint-disable-line
   const token = response.data.token;
   const user = response.data.user;
   setSESSION(SESSION.TOKEN, token);

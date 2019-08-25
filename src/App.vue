@@ -1,7 +1,5 @@
 <template>
   <div @click="appClick">
-    <v-btn @click="add">hd {{message}}</v-btn>
-    Message: {{socketMessage}}
     <component :is="layout">
       <transition name="fade"
                   mode="out-in">
