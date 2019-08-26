@@ -4,6 +4,7 @@ import camelCase from "lodash/camelCase";
 
 import './plugins/veevalidate'
 import './plugins/vueSocket'
+import './plugins/axios';
 import App from './App.vue'
 import router from "./router/index";
 import store from './store'
