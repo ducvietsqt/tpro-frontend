@@ -14,19 +14,14 @@
       MainLayout: MainLayout,
     },
     mounted() {
-      if (!this.isLoggedIn) {
-        this.$store.dispatch("auth/logout").then(() => {
-          this.$router.push({
-            path: "/signin",
-            query: {redirect: this.$route.fullPath}
-          });
-        });
+      if(this.$route.meta.layout !== "LoggedIn") {
+        this.redr();
       }
     },
     computed: {
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
       loggedIn() {
-        return this.isLoggedIn && this.$route.meta.layout !== "NotLoggedIn";
+        return this.isLoggedIn && this.$route.meta.layout === "LoggedIn";
       }
     },
     methods: {
@@ -36,7 +31,7 @@
     },
     watch: {
       '$route'(to) {
-        if (to.meta.layout === "NotLoggedIn") {
+        if (to.meta.layout !== "LoggedIn") {
           this.redr();
         }
       }

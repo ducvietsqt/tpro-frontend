@@ -17,26 +17,12 @@ const getters = {
 
 // actions
 const actions = {
-  getUser({ commit }) {
-    return new Promise((resolve, reject) => {
-      axios
-        .get("/api/users/me")
-        .then(resp => {
-          commit("updateUser", resp.data);
-          commit("user/getCurrentUserSuccess", resp.data, { root: true });
-          resolve(resp.data);
-        })
-        .catch(err => {
-          commit("authError");
-          reject(err);
-        });
-    });
-  },
-  async login({ commit }, user) {
-    // console.log(await api.getList());
+  async login({ commit }, user) { // eslint-disable-line
     commit("authRequest");
     try {
-      commit("authSuccess", await api.login(user));
+      commit("authSuccess", {token: 'MNV01'});
+      commit("authSuccess1", await api.login(user));
+
     }catch (e) {
       console.log(e.message);
       commit("authError", e.message);
@@ -54,16 +40,14 @@ const actions = {
 
 // mutations
 const mutations = {
-  updateUser(state, user) {
-    state.user = user;
-  },
   authRequest(state) {
     state.status = "loading";
   },
-  authSuccess(state, { token, user }) {
+  authSuccess(state, {token}) {
+    console.log(token)
     state.status = "success";
     state.token = token;
-    state.user = user;
+    // state.user = user;
     setSESSION(SESSION.TOKEN, token);
   },
   authError(state) {
@@ -73,31 +57,6 @@ const mutations = {
     state.status = "";
     state.token = "";
   }
-};
-
-const setToken = (response, commit, resolve) => { // eslint-disable-line
-  const token = response.data.token;
-  const user = response.data.user;
-  setSESSION(SESSION.TOKEN, token);
-  setAxiosAuthorizationHeader(token);
-  commit("authSuccess", { token, user });
-  resolve(response);
-};
-
-export const setAxiosAuthorizationHeader = token => {
-  axios.defaults.headers.common["Authorization"] = `JWT ${token}`;
-};
-
-export const setSubdomains = subdomain => {
-  let subdomains = getSESSION(SESSION.SUBDOMAINS) || [];
-  subdomains = subdomains.filter(item => item !== subdomain);
-  subdomains.push(subdomain);
-  setSESSION(SESSION.SUBDOMAINS, JSON.stringify(subdomains));
-};
-
-export const getRecentDomain = () => {
-  let subdomains = getSESSION(SESSION.SUBDOMAINS) || [];
-  return subdomains.pop();
 };
 
 export default {

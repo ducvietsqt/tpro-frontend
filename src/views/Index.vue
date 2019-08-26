@@ -1,20 +1,19 @@
 <template>
-  <!--<SignIn v-if="!$store.getters['auth/isLoggedIn']"/>-->
-  <div>
-    dashboard
-  </div>
+  <SignIn v-if="!isLoggedIn"/>
 </template>
 
 <script>
-  import {getSubdomain, isValidSubdomain} from "../utils/index";
+  import {mapGetters} from 'vuex';
 
   export default {
     name: "Index",
+    computed: {
+      ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
+    },
     created() {
-      let subdomain = getSubdomain(location.hostname);
-      if(isValidSubdomain(subdomain) && this.$store.getters["auth/isLoggedIn"]){
+      if (this.isLoggedIn) {
         this.$router.replace({name: "dashboard"});
-      }else {
+      } else {
         this.$router.replace({name: "signin"});
       }
     }

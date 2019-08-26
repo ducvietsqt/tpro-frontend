@@ -1,8 +1,3 @@
-export const USER_ROLE = {
-  ADMIN: 1,
+export const COUNT_DOWN_QUESTION = 10;
+export const SECONDS = 1000;
 
-}
-
-export const PROJECT_ROLE = {
-  ADMIN: 1
-}

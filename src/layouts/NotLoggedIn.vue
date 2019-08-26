@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-view></router-view>
+    <router-view v-if="isPassRoute"></router-view>
   </div>
 </template>
 
@@ -16,10 +16,15 @@
       }
     },
     created() {
-
+      if(this.$route.meta.layout !== 'NotLoggedIn') {
+        this.$router.push({name: 'signin'})
+      }
     },
     computed: {
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
+      isPassRoute() {
+        return this.$route.meta.layout === 'NotLoggedIn'
+      }
     }
   };
 </script>

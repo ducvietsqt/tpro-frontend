@@ -1,4 +1,5 @@
 import _ from 'lodash';
+
 export const getSubdomain = hostname => {
   // TODO: from htactive, hardcode for testing on preview deploy link
   // if (location.hostname.endsWith(".netlify.com")) return "sat-prj";
@@ -21,11 +22,12 @@ export const getSubdomainURL = subdomain => {
 };
 export const SESSION = {
   TOKEN: 'token',
-  SUBDOMAINS: 'subdomains'
+  SUBDOMAINS: 'subdomains',
+  QUESTIONS: 'QUESTIONS'
 }
 
 export let setSESSION = (session_name, data) => {
-  return localStorage.setItem(session_name, data);
+  return localStorage.setItem(session_name, JSON.stringify(data));
 };
 
 export let getSESSION = (session_name) => {

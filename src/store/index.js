@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import user from "./modules/user";
 import auth from "./modules/auth";
+import game from "./modules/game";
 import socket from "./modules/socket";
 import createLogger from "vuex/dist/logger";
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     user,
     auth,
     socket,
+    game
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

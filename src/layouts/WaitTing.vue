@@ -1,21 +1,7 @@
 <template>
-  <v-layout
-    align-content-center
-    justify-center
-    fill-height
-    wrap style="height: 100vh;">
-    <!--<p class="flex xs12 subheading text-xs-center">
-      Getting starter
-    </p>-->
-    <v-flex xs6>
-      <v-progress-linear
-        color="deep-purple accent-4"
-        indeterminate
-        rounded
-        height="6"
-      ></v-progress-linear>
-    </v-flex>
-  </v-layout>
+  <div>
+    <div class="loader"></div>
+  </div>
 </template>
 
 <script>
@@ -25,5 +11,17 @@
 </script>
 
 <style scoped>
+  .loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
 
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 </style>

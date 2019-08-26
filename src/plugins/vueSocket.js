@@ -49,7 +49,7 @@
     output += message;
     console.log(output)
   }
-
+  window.WebSocketTest = WebSocketTest
   // run
   init()
 })("wss://echo.websocket.org/", "d9338518-d105-4bf4-9956-d7a8193ab1f3", "session_id");

@@ -12,7 +12,7 @@ import NotFound from '../components/NotFound';
 
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
-  Project: "ProjectLoggedIn"
+  LoggedIn: "LoggedIn"
 };
 export default [
   {path: "*", component: NotFound},
@@ -34,7 +34,9 @@ export default [
     name: "dashboard",
     alias: '/me',
     component: DashBoard,
-    meta: {}
+    meta: {
+      layout: LAYOUT.LoggedIn
+    }
   },
 
 ];

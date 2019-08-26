@@ -36,6 +36,7 @@
     "vee-validate": "^2.2.14",
     "vue": "^2.6.10",
     "vue-2-breadcrumbs": "^0.5.1",
+    "vue-awesome-countdown": "^1.0.16",
     "vue-breadcrumbs": "^1.2.0",
     "vue-calendar-heatmap": "^0.8.4",
     "vue-color": "^2.7.0",
