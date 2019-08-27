@@ -6,6 +6,7 @@ const Index = () => import(/* webpackChunkName: "Index" */ '../views/Index');
 const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/SignIn');
 
 const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoard');
+const XX = () => import(/* webpackChunkName: "XX" */ '../views/XX');
 
 import NotFound from '../components/NotFound';
 
@@ -38,5 +39,15 @@ export default [
       layout: LAYOUT.LoggedIn
     }
   },
+  {
+    path: "/XX",
+    name: "XX",
+    alias: '/xx',
+    component: XX,
+    meta: {
+      layout: LAYOUT.LoggedIn
+    }
+  },
+
 
 ];

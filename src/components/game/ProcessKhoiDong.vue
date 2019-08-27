@@ -1,17 +1,21 @@
 <template>
-  <div>
-    <p>
-      <strong>
-        {{question}}
-      </strong>
-    </p>
-    <div>
-      <button v-for="(answer, i) in answers"
-              class="btn_answer"
-              :key="i"
-              @click="handleAnswer(i)">
-        {{answer.answer}}
-      </button>
+  <div class="process_box">
+    <BoxKetQua/>
+    <div v-show="!endProcess">
+      <p class="process_box--question">
+        <strong>
+          {{question}}
+        </strong>
+      </p>
+      <div class="process_box--answers">
+        <button v-for="(answer, i) in answers"
+                class="btn_answer"
+                v-show="answered === null || answered === i"
+                :key="i"
+                @click="handleAnswer(i)">
+          {{answer.answer}}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -19,15 +23,19 @@
 <script>
   import {mapGetters, mapActions} from 'vuex';
   import {sleep} from "../../api/base";
+  import BoxKetQua from "./BoxKetQua";
 
   export default {
     name: "ProcessKhoiDong",
+    components: {BoxKetQua},
     props: ["items"],
     data() {
-      return {}
+      return {
+        answered: null
+      }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted"]),
+      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess"]),
       question() {
         return this.items.questions[this.processQuestion].question
       },
@@ -42,9 +50,12 @@
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
       async handleAnswer(index) {
         let is_correct = this.answers[index]['is_correct'] === '1';
+        this.answered = index;
         await this.answerQuestion({index, is_correct});
-        await sleep(2000)
+        await sleep(2000);
         await console.log(is_correct ? 'dung' : 'sai');
+        //todo: nex question
+        this.answered = null;
         this.tickQuestion();
       }
     }

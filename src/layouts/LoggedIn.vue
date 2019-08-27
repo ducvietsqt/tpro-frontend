@@ -14,14 +14,12 @@
       MainLayout: MainLayout,
     },
     mounted() {
-      if(this.$route.meta.layout !== "LoggedIn") {
-        this.redr();
-      }
+
     },
     computed: {
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
       loggedIn() {
-        return this.isLoggedIn && this.$route.meta.layout === "LoggedIn";
+        return this.isLoggedIn && this.$route.meta.layout !== "NotLoggedIn";
       }
     },
     methods: {
@@ -30,7 +28,7 @@
       }
     },
     watch: {
-      '$route'(to) {
+      '$route'(to, p) { // eslint-disable-line
         if (to.meta.layout !== "LoggedIn") {
           this.redr();
         }

@@ -1,23 +1,25 @@
 import api from '../../api/question';
 import {getSESSION, SESSION, setSESSION} from "../../utils";
 import {COUNT_DOWN_QUESTION} from "../../utils/constant";
+import {sleep} from "../../api/base";
 // initial state
 const state = {
   questions: [],
 
   process: null,
   processQuestion: null, //0, 1, 2, 3...
+  endProcess: false,
 
   timer: COUNT_DOWN_QUESTION,
   processTimer: COUNT_DOWN_QUESTION,
   startTimer: false,
 
-  answered: null,
-
   isStarted: false, // start game
   isFinishedProcess: false, // finished process || 1, 2, 3...
   isFinished: false, // finished all process
 
+  resultsProcess: [],
+  totalTimeAnsweredProcess: 0
 
 
 };
@@ -28,6 +30,7 @@ const getters = {
 
   process: state => state.process,
   processQuestion: state => state.processQuestion,
+  endProcess: state => state.endProcess,
 
   timer: state => state.timer,
   processTimer: state => state.processTimer,
@@ -36,6 +39,12 @@ const getters = {
   isStarted: state => state.isStarted,
   isFinishedProcess: state => state.isFinishedProcess,
   isFinished: state => state.isFinished,
+
+
+  resultsProcess: state => state.resultsProcess,
+  totalTimeAnsweredProcess: state => state.totalTimeAnsweredProcess,
+
+
 
 };
 
@@ -46,7 +55,8 @@ const actions = {
     commit("SET_QUESTION", rs)
   },
   startGame({commit}) {
-    commit("START_GAME")
+    commit("START_GAME");
+
   },
   endGame({commit}) {
     commit("END_GAME")
@@ -63,21 +73,35 @@ const actions = {
   },
   tickQuestion({commit}) {
     commit("TICK_QUESTION");
+    commit("START_TIMER");
   },
   answerQuestion({commit}, {index, is_correct}) { // eslint-disable-line
-    // answered
+    // todo: answered
     commit("STOP_TIMER", {index, is_correct})
 
   },
-  startTimer({commit}) {  // eslint-disable-line
+
+  startProcessTimer({commit}) {  // eslint-disable-line
     commit("START_TIMER")
   },
-  stopTimer({commit}) {  // eslint-disable-line
-    commit("STOP_TIMER")
+  async stopTimer({commit, state}) {  // eslint-disable-line
+    await commit("STOP_TIMER");
+    if(!state.endProcess) {
+      // todo: no answered and no end process
+      await sleep(2000);
+      commit("TICK_QUESTION");
+      commit("START_TIMER");
+    }
+
   },
 
   tickTimer({commit, state}, processTimer) { // eslint-disable-line
     commit("TICK_TIMER", processTimer);
+  },
+
+  // result
+  getResultProcess({commit}) {
+    commit("RESULT_PROCESS");
   }
 
 };
@@ -96,7 +120,6 @@ const mutations = {
     } else if (state.process <= state.questions.length - 1) {
       state.process += 1;
     }
-
   },
   END_GAME(state) {
     state.isStarted = false;
@@ -116,8 +139,14 @@ const mutations = {
   TICK_QUESTION(state) {
     if (state.processQuestion === null) {
       state.processQuestion = 0;
-    } else if (state.processQuestion <= state.questions[state.process]['questions'].length - 1) {
+    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {
       state.processQuestion += 1;
+    } else if (state.processQuestion === state.questions[state.process]['questions'].length - 1) {
+
+      state.startTimer = false;
+      state.endProcess = true; // note *
+
+      alert('DONE QUESTION')
     }
   },
   START_TIMER(state) {
@@ -139,6 +168,15 @@ const mutations = {
     state.processTimer = processTimer;
   },
 
+  RESULT_PROCESS(state) { // eslint-disable-line
+    // console.log(state);
+    console.log(state.questions[state.process]['questions'])
+    state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
+
+    for(let i = 0; i < state.questions[state.process]['questions'].length; i++) {
+      state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
+    }
+  }
 };
 
 export default {

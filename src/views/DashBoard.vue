@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="led_box" v-if="isStarted">
+    <div class="led_box" v-show="isStarted && !endProcess">
       <CountDown/>
     </div>
     <p>
@@ -14,7 +14,7 @@
         &nbsp;&nbsp;- nếu không trả lời coi như sai
       </p>
       <p>
-        <button @click="startProcessGame">Bắt đầu vòng thi khởi động </button>
+        <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động </button>
       </p>
     </div>
 
@@ -67,7 +67,7 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "isStarted"]),
+      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess"]),
       layoutProcess() {
         try {
           return this.steps[this.process]['component'];
@@ -77,11 +77,10 @@
       }
     },
     methods: {
-      ...mapActions("game", ["startGame", "startTimer"]),
+      ...mapActions("game", ["startGame"]),
       startProcessGame() {
         // do something
         this.startGame();
-        this.startTimer();
       }
     }
   }
