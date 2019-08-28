@@ -5,6 +5,8 @@ const Index = () => import(/* webpackChunkName: "Index" */ '../views/Index');
 // import SignIn from "../donga/views/auth/SignIn";
 const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/SignIn');
 
+const LedShow = () => import(/* webpackChunkName: "LedShow" */ '../views/LedShow');
+
 const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoard');
 const XX = () => import(/* webpackChunkName: "XX" */ '../views/XX');
 
@@ -40,14 +42,10 @@ export default [
     }
   },
   {
-    path: "/XX",
-    name: "XX",
-    alias: '/xx',
-    component: XX,
-    meta: {
-      layout: LAYOUT.LoggedIn
-    }
-  },
-
+    path: "/ledShow",
+    name: "ledShow",
+    component: LedShow,
+    meta: {layout: LAYOUT.LoggedIn}
+  }
 
 ];

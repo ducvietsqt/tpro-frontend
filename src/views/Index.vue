@@ -11,11 +11,11 @@
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
     },
     created() {
-      if (this.isLoggedIn) {
-        this.$router.replace({name: "dashboard"});
-      } else {
-        this.$router.replace({name: "signin"});
-      }
+      // if (this.isLoggedIn) {
+      //   this.$router.replace({name: "ledShow"});
+      // } else {
+      //   this.$router.replace({name: "signin"});
+      // }
     }
   };
 </script>
