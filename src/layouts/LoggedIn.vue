@@ -26,7 +26,7 @@
     },
     methods: {
       redr() {
-        this.$router.replace({name: "dashboard"});
+        this.$router.replace({name: "ledShow"});
       }
     },
     watch: {
