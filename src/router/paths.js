@@ -8,7 +8,7 @@ const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/Sign
 const LedShow = () => import(/* webpackChunkName: "LedShow" */ '../views/LedShow');
 
 const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoard');
-const XX = () => import(/* webpackChunkName: "XX" */ '../views/XX');
+// const XX = () => import(/* webpackChunkName: "XX" */ '../views/XX');
 
 import NotFound from '../components/NotFound';
 
