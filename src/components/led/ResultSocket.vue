@@ -1,34 +1,10 @@
 <template>
-  <div>
-    <ul>
-      <li v-for="(message, i) in messages" :key="`mss-${i}-${message.message}`">
-        {{message.message}}
-      </li>
-    </ul>
-  </div>
-</template>
+  <div v-if="this.$store.getters.getItems && this.$store.getters.getItems.length > 0">
+      <div class="title">Today, you've go to do...</div>
 
-<script>
-  export default {
-    name: "ResultSocket",
-    data() {
-      return {
-        messages: []
-      }
-    },
-    sockets: {
-      messages: function (data) {
-        console.log('all message', data);
-        this.messages = data;
-      },
-      onmessage: function (data) {
-        console.log('chat message', data);
-        this.messages.unshift(data);
-      },
-    }
-  }
-</script>
-
-<style scoped>
-
-</style>
+     <div v-for="item in this.$store.getters.getItems" :key="item.id">
+       {{ item.title }}<br /><br /><small style="text-decoration:underline;" @click="deleteItem(item.id)">Delete</small>
+       <hr />
+     </div>
+   </div>
+ </template>

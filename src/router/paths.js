@@ -8,6 +8,7 @@ const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/Sign
 const LedShow = () => import(/* webpackChunkName: "LedShow" */ '../views/LedShow');
 
 const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoard');
+const DashBoardIpad = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoardIpad');
 const LedScreen = () => import(/* webpackChunkName: "LedScreen" */ '../views/LedScreen');
 const HandlerSocket = () => import(/* webpackChunkName: "HandlerSocket" */ '../components/led/HandlerSocket');
 
@@ -64,6 +65,13 @@ export default [
     path: "/ledShow",
     name: "ledShow",
     component: LedShow,
+    meta: {layout: LAYOUT.LoggedIn}
+  }
+  ,
+  {
+    path: "/dashboardIpad",
+    name: "dashboardIpad",
+    component: DashBoardIpad,
     meta: {layout: LAYOUT.LoggedIn}
   }
 

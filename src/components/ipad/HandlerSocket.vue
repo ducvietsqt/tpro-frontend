@@ -88,13 +88,11 @@
       },
       joined: function () {
         this.join = true;
-        console.log('joined', 'joined');
         // this.$set('join', true)
       },
       messages: function (data) {
         // this.$set('messages', data);
         this.messages = data;
-        console.log('messages', 'messages');
       },
       onmessage: function (data) {
         console.log('chat message', data);
