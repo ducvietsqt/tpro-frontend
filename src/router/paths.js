@@ -5,6 +5,8 @@ const Index = () => import(/* webpackChunkName: "Index" */ '../views/Index');
 // import SignIn from "../donga/views/auth/SignIn";
 const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/SignIn');
 
+const LedShow = () => import(/* webpackChunkName: "LedShow" */ '../views/LedShow');
+
 const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoard');
 const LedScreen = () => import(/* webpackChunkName: "LedScreen" */ '../views/LedScreen');
 const HandlerSocket = () => import(/* webpackChunkName: "HandlerSocket" */ '../components/led/HandlerSocket');
@@ -58,7 +60,12 @@ export default [
       layout: LAYOUT.LoggedIn
     }
   },
-
+  {
+    path: "/ledShow",
+    name: "ledShow",
+    component: LedShow,
+    meta: {layout: LAYOUT.LoggedIn}
+  }
 
 
 ];
