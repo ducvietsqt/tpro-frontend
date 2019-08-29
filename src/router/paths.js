@@ -6,7 +6,8 @@ const Index = () => import(/* webpackChunkName: "Index" */ '../views/Index');
 const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/SignIn');
 
 const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoard');
-const XX = () => import(/* webpackChunkName: "XX" */ '../views/XX');
+const LedScreen = () => import(/* webpackChunkName: "LedScreen" */ '../views/LedScreen');
+const HandlerSocket = () => import(/* webpackChunkName: "HandlerSocket" */ '../components/led/HandlerSocket');
 
 import NotFound from '../components/NotFound';
 
@@ -40,14 +41,24 @@ export default [
     }
   },
   {
-    path: "/XX",
-    name: "XX",
-    alias: '/xx',
-    component: XX,
+    path: "/led-result",
+    name: "socketTest",
+    alias: '/led',
+    component: LedScreen,
     meta: {
       layout: LAYOUT.LoggedIn
     }
   },
+  {
+    path: "/chat",
+    name: "ChatSocket",
+    alias: '/chat',
+    component: HandlerSocket,
+    meta: {
+      layout: LAYOUT.LoggedIn
+    }
+  },
+
 
 
 ];

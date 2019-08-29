@@ -1,5 +1,6 @@
 <template>
   <div @click="appClick">
+
     <component :is="layout">
       <transition name="fade" mode="out-in">
         <router-view/>

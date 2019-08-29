@@ -3,13 +3,21 @@ import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
 
 import './plugins/veevalidate'
-import './plugins/vueSocket'
+import ws from './plugins/vueSocket'
+import bus from './plugins/bus'
 import './plugins/axios';
 import './plugins/vueCountDown';
 import App from './App.vue'
 import router from "./router/index";
 import store from './store'
 
+import VueSocketIO from 'vue-socket.io'
+Vue.use(new VueSocketIO({connection: 'http://metinseylan.com:1992'}));
+
+// websocket
+const eventbus = new Vue();
+Vue.use(ws, {eventbus});
+Vue.use(bus, {eventbus});
 
 import {getSESSION, SESSION} from "./utils";
 
@@ -44,6 +52,7 @@ const token = getSESSION(SESSION.TOKEN);
 if (token) {
   // setAxiosAuthorizationHeader(token);
 }
+
 Vue.prototype.$eventHub = new Vue(); // Global event bus
 Vue.prototype.$eventTypes = {
   toggleDrawer: "toggleDrawer",
@@ -60,7 +69,6 @@ Vue.prototype.$eventTypes = {
   openDialogCreateChatGroup: 'openDialogCreateChatGroup',
   isShowCreateAnnouncement: 'isShowCreateAnnouncement',
   isLoadingDialog: 'isLoadingDialog',
-
 };
 
 new Vue({

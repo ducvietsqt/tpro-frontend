@@ -6,23 +6,24 @@
     <p>
       <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
     </p>
-    <div v-if="!isStarted" >
+    <div v-if="!isStarted">
       <p>
-        Các thí sinh sẽ bắt đầu chơi vòng thi khởi động:  <br/>
+        Các thí sinh sẽ bắt đầu chơi vòng thi khởi động: <br/>
         &nbsp;&nbsp;- mỗi câu sẽ có thơi gian trả lời là 10 giây, <br/>
         &nbsp;&nbsp;- trả lời đúng thì câu trả lời sẽ sáng lên <br/>
         &nbsp;&nbsp;- nếu không trả lời coi như sai
       </p>
       <p>
-        <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động </button>
+        <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
       </p>
     </div>
 
     <div class="process-step" v-show="isStarted">
       <div v-for="(item, index) in steps" :key="index">
         <button class="item_btn" :class="{active: index === process}">{{item.title}}</button>
+      </div>
     </div>
-    </div>
+
     <component :is="layoutProcess"
                :items="questions[process]"></component>
   </div>
@@ -36,10 +37,14 @@
   import ProcessVuotTroi from "../components/game/ProcessVuotTroi";
   import ProcessButPha from "../components/game/ProcessButPha";
   import ProcessCauHoiPhu from "../components/game/ProcessCauHoiPhu";
+  import TestSocket from "../components/led/HandlerSocket";
 
   export default {
     name: "DashBoard",
-    components: {ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown},
+    components: {
+      TestSocket,
+      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown
+    },
     data() {
       return {
         steps: [
@@ -63,7 +68,7 @@
             title: 'Cau hoi Phu',
             component: 'ProcessCauHoiPhu'
           },
-        ]
+        ],
       }
     },
     computed: {
@@ -71,18 +76,22 @@
       layoutProcess() {
         try {
           return this.steps[this.process]['component'];
-        }catch (e) {
+        } catch (e) {
           return false
         }
       }
+    },
+    created() {
+
     },
     methods: {
       ...mapActions("game", ["startGame"]),
       startProcessGame() {
         // do something
         this.startGame();
-      }
-    }
+      },
+    },
+
   }
 </script>
 
@@ -103,6 +112,7 @@
       }
     }
   }
+
   .led_box {
     border: solid 1px red;
     position: fixed;

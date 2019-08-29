@@ -88,7 +88,7 @@ const actions = {
     await commit("STOP_TIMER");
     if(!state.endProcess) {
       // todo: no answered and no end process
-      await sleep(2000);
+      await sleep(1000);
       commit("TICK_QUESTION");
       commit("START_TIMER");
     }
@@ -146,7 +146,7 @@ const mutations = {
       state.startTimer = false;
       state.endProcess = true; // note *
 
-      alert('DONE QUESTION')
+      // alert('DONE QUESTION')
     }
   },
   START_TIMER(state) {

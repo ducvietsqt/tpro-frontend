@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        vong kien dinh
     </div>
 </template>
 

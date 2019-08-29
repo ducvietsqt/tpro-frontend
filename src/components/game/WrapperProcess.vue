@@ -1,5 +1,5 @@
 <template>
-  <div class="process_box">
+  <div>
     <BoxKetQua/>
     <NextProcess/>
     <div v-show="!endProcess">
@@ -18,24 +18,20 @@
         </button>
       </div>
     </div>
+    <slot>
+      Hello question
+    </slot>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
-  import {sleep} from "../../api/base";
+  import {mapGetters} from 'vuex';
   import BoxKetQua from "./BoxKetQua";
   import NextProcess from "./NextProcess";
 
   export default {
-    name: "ProcessKhoiDong",
+    name: "WrapperProcess",
     components: {NextProcess, BoxKetQua},
-    props: ["items"],
-    data() {
-      return {
-        answered: null
-      }
-    },
     computed: {
       ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess"]),
       question() {
@@ -45,34 +41,9 @@
         return this.items.questions[this.processQuestion].answers
       }
     },
-    created() {
-      this.tickQuestion();
-    },
-    methods: {
-      ...mapActions("game", ["tickQuestion", "answerQuestion"]),
-      async handleAnswer(index) {
-        let is_correct = this.answers[index]['is_correct'] === '1';
-        this.answered = index;
-        await this.answerQuestion({index, is_correct});
-        await sleep(1000);
-        await console.log(is_correct ? 'dung' : 'sai');
-        //todo: nex question
-        this.answered = null;
-        this.tickQuestion();
-      }
-    }
   }
 </script>
 
-<style scoped lang="scss">
-  .btn_answer {
-    &.correct {
-      background: blue;
-      color: #ffffff;
-    }
-    &.in-correct {
-      background: red;
-      color: #ffffff;
-    }
-  }
+<style scoped>
+
 </style>
