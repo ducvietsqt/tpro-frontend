@@ -58,7 +58,7 @@
           },
           {
             title: 'Vuot troi',
-            component: 'ProcessVuotTroi'
+            component: 'ProcessKhoiDong'
           },
           {
             title: 'But Pha',
