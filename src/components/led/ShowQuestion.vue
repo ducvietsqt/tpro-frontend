@@ -1,9 +1,7 @@
 <template>
   <div>
-    <p>
       <strong>Cuộc thi T-Pro Confetti</strong>
       <p>Hướng dẫn đăng nhập</p>
-    </p>
 
     <div class="process-step" v-show="isStarted">
       <div v-for="(item, index) in steps" :key="index">

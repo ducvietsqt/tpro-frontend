@@ -5,7 +5,7 @@
       </p>
       <input type="text" name="search" placeholder="Tìm kiếm" />
       <button type="submit">Go</button> 
-      <div class="grade" v-for="grade in gradeList">
+      <div class="grade" v-for="(grade, index) in gradeList" :key="index">
           <div v-if="gradeList.length > 0">
                 <span>{{grade.id}}</span> 
                 <span>{{ grade.name}}</span>
@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { sleep } from "../../api/base";
 import api from '../../api/led';
 
 export default {

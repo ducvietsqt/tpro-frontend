@@ -4,7 +4,7 @@
         <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
       </p>
       <div v-if="gradeList.length > 0">
-          <div v-for="grade in gradeList" :class="['grade ', (choices.indexOf(grade.id) !== -1 ? 'active' : '')]">          
+          <div v-for="(grade, index) in gradeList" :key="index" :class="['grade ', (choices.indexOf(grade.id) !== -1 ? 'active' : '')]">          
               <span>{{grade.id}}</span> 
               <span>{{ grade.name}}</span>                    
           </div>  
@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { sleep } from "../../api/base";
 import api from '../../api/led';
 import { db } from "@/db";
 
