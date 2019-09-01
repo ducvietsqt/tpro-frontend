@@ -31,18 +31,16 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex';
-  import CountDown from "../components/game/CountDown";
-  import ProcessKhoiDong from "../components/game/ProcessKhoiDong";
-  import ProcessKienDinh from "../components/game/ProcessKienDinh";
-  import ProcessVuotTroi from "../components/game/ProcessVuotTroi";
-  import ProcessButPha from "../components/game/ProcessButPha";
-  import ProcessCauHoiPhu from "../components/game/ProcessCauHoiPhu";
-  import TestSocket from "../components/led/HandlerSocket";
+  import CountDown from "../../components/game/CountDown";
+  import ProcessKhoiDong from "../../components/game/ProcessKhoiDong";
+  import ProcessKienDinh from "../../components/game/ProcessKienDinh";
+  import ProcessVuotTroi from "../../components/game/ProcessVuotTroi";
+  import ProcessButPha from "../../components/game/ProcessButPha";
+  import ProcessCauHoiPhu from "../../components/game/ProcessCauHoiPhu";  
 
   export default {
     name: "DashBoard",
-    components: {
-      TestSocket,
+    components: {      
       ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown
     },
     data() {

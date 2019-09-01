@@ -1,5 +1,5 @@
 import axios from 'axios';
-import store from "../store";
+import store from "../store/index";
 async function get(url, options) {
   try {
     const response = await axios.get(url, options);

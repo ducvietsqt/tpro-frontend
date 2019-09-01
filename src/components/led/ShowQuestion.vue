@@ -1,20 +1,9 @@
 <template>
   <div>
     <p>
-      <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
+      <strong>Cuộc thi T-Pro Confetti</strong>
+      <p>Hướng dẫn đăng nhập</p>
     </p>
-
-    <div v-if="!isStarted">
-      <p>
-        Các thí sinh sẽ bắt đầu chơi vòng thi khởi động:
-        <br />&nbsp;&nbsp;- mỗi câu sẽ có thơi gian trả lời là 10 giây,
-        <br />&nbsp;&nbsp;- trả lời đúng thì câu trả lời sẽ sáng lên
-        <br />&nbsp;&nbsp;- nếu không trả lời coi như sai
-      </p>
-      <p>
-        <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
-      </p>
-    </div>
 
     <div class="process-step" v-show="isStarted">
       <div v-for="(item, index) in steps" :key="index">
@@ -24,21 +13,20 @@
 
     <component :is="layoutProcess" :items="questions[process]"></component>
 
-    <button @click="handleAnswertest()">next</button>
-    <button v-on:click="getWeatherData">Get Weather Data</button>
+    <button @click="handleAnswertest()">next</button>          
 
-    <div v-for="weatherData in weatherDataList" :key="weatherData.id" class="weather-data">
+    <div v-for="group in groupList" :key="group.id" class="weather-data">
       <div class="weather-stats">
         <div>
-          <span>{{weatherData.name}}</span>
+          <span>{{group.name}}</span>
         </div>
         <div>
-          <span class="location">{{weatherData.total_score}}</span>
+          <span class="location">{{group.total_score}}</span>
         </div>
       </div>
 
-      <div class="weather-temp">
-        <span>{{weatherData.total_login}}</span>
+      <div class="group-temp">
+        <span>{{group.total_login}}</span>
       </div>
     </div>
 
@@ -52,22 +40,21 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
-import ProcessKhoiDong from "../components/game/ProcessKhoiDong";
-// import ProcessKienDinh from "../components/game/ProcessKienDinh";
-// import ProcessVuotTroi from "../components/game/ProcessVuotTroi";
-// import ProcessButPha from "../components/game/ProcessButPha";
-// import ProcessCauHoiPhu from "../components/game/ProcessCauHoiPhu";
-// import CountDown from "../components/game/CountDown";
+import api from '../../api/led';
+import ProcessKhoiDong from "../../components/game/ProcessKhoiDong";
+import { db } from "@/db";
+
+let eventsRef = db.ref('events');
 export default {
-  name: "Weather",
+  name: "ShowQuestion",
   components: {
     ProcessKhoiDong
   },
   data() {
     return {
       totalLogin: 0,
-      weatherDataList: [],
+      groupList: [],
+      events :[],
       steps: [
         {
           title: "Khoi dong",
@@ -108,27 +95,37 @@ export default {
       }
     }
   },
-  created() {
-    this.tickQuestion();
+  mounted() {
+    this.getList();  
+    this.startProcessGame();  
+  },
+  firebase: {
+    events: eventsRef
   },
   methods: {
-    getWeatherData() {
-      axios
-        .get("http://sastudio.vn/t-pro/api/v1/led/group")
-        .then(response => (this.weatherDataList = response.data.data));
-    },
+    async getList(){// eslint-disable-line
+      let obj = await api.getListGroup();
+      this.groupList = obj.data;       
+    }, 
     totalItem() {
       let sum = 0;
-      for (let i = 0; i < this.weatherDataList.length; i++) {
-        sum += parseInt(this.weatherDataList[i].total_login);
+      for (let i = 0; i < this.groupList.length; i++) {
+        sum += parseInt(this.groupList[i].total_login);
       }
 
       return sum;
-    },
-    ...mapActions("game", ["startGame"]),
-    startProcessGame() {
-      // do something
-      this.startGame();
+    },  
+    ...mapActions("game", ["startGame"]),  
+    startProcessGame(){
+      var self = this;
+        eventsRef.on('value', function(snapshot) {       
+          snapshot.forEach(function(childSnapshot) {              
+                let childData = childSnapshot.val();
+                if(childData){                     
+                    self.startGame();                 
+                }              
+            });
+        });       
     },
     async handleAnswertest() {
       this.tickQuestion();
@@ -161,7 +158,7 @@ export default {
   top: 0px;
   padding: 20px;
 }
-.weather-data {
+.group-data {
   display: flex;
   align-items: center;
   margin-top: 20px;
@@ -169,18 +166,18 @@ export default {
   border-bottom: 2px solid #ccc;
   padding: 20px;
 }
-.weather-icon {
+.group-icon {
   flex-grow: 1;
 }
-.weather-stats {
+.group-stats {
   flex-grow: 8;
   text-align: left;
   padding-left: 20px;
 }
-.weather-stats .location {
+.group-stats .location {
   font-size: 30px;
 }
-.weather-temp {
+.group-temp {
   flex-grow: 1;
   font-size: 35px;
 }

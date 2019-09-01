@@ -5,12 +5,17 @@ const Index = () => import(/* webpackChunkName: "Index" */ '../views/Index');
 // import SignIn from "../donga/views/auth/SignIn";
 const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/SignIn');
 
-const LedShow = () => import(/* webpackChunkName: "LedShow" */ '../views/LedShow');
+const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/game/DashBoard');
 
-const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoard');
-const DashBoardIpad = () => import(/* webpackChunkName: "DashBoard" */ '../views/DashBoardIpad');
-const LedScreen = () => import(/* webpackChunkName: "LedScreen" */ '../views/LedScreen');
-const HandlerSocket = () => import(/* webpackChunkName: "HandlerSocket" */ '../components/led/HandlerSocket');
+//Ipad
+const DashBoardIpad = () => import(/* webpackChunkName: "DashBoardIpad" */ '../views/ipad/DashBoardIpad');
+const IpadShowEvent = () => import(/* webpackChunkName: "IpadShowEvent" */ '../views/ipad/IpadShowEvents');
+const IpadShowGrade = () => import(/* webpackChunkName: "IpadShowGrade" */ '../views/ipad/IpadShowGrade');
+
+//Led
+const LedScreen = () => import(/* webpackChunkName: "LedScreen" */ '../views/led/LedScreen');
+const LedShowQuestion = () => import(/* webpackChunkName: "LedShow" */ '../views/led/LedShowQuestion');
+const LedShowGrade = () => import(/* webpackChunkName: "LedShowGrade" */ '../views/led/LedShowGrade');
 
 import NotFound from '../components/NotFound';
 
@@ -28,6 +33,7 @@ export default [
     // meta: {layout: LAYOUT.NotLoggedIn}
   },
 
+//Game
   {
     path: "/signin",
     name: "signin",
@@ -43,8 +49,32 @@ export default [
       layout: LAYOUT.LoggedIn
     }
   },
+
+  //Ipad
+{
+    path: "/ipad/dashboard",
+    name: "dashboardIpad",
+    component: DashBoardIpad,
+    meta: {layout: LAYOUT.LoggedIn}
+  }
+  ,
   {
-    path: "/led-result",
+    path: "/ipad/show-event",
+    name: "ipadShowEvent",
+    component: IpadShowEvent,
+    meta: {layout: LAYOUT.LoggedIn}
+  }
+  ,
+  {
+    path: "/ipad/show-grade",
+    name: "ipadShowGrade",
+    component: IpadShowGrade,
+    meta: {layout: LAYOUT.LoggedIn}
+  },
+
+  //Led
+  {
+    path: "/led/result",
     name: "socketTest",
     alias: '/led',
     component: LedScreen,
@@ -53,27 +83,17 @@ export default [
     }
   },
   {
-    path: "/chat",
-    name: "ChatSocket",
-    alias: '/chat',
-    component: HandlerSocket,
-    meta: {
-      layout: LAYOUT.LoggedIn
-    }
+    path: "/led/show",
+    name: "ledShowQuestion",
+    component: LedShowQuestion,
+    meta: {layout: LAYOUT.LoggedIn}
   },
   {
-    path: "/ledShow",
-    name: "ledShow",
-    component: LedShow,
+    path: "/led/show-grade",
+    name: "ledShowGrade",
+    component: LedShowGrade,
     meta: {layout: LAYOUT.LoggedIn}
-  }
-  ,
-  {
-    path: "/dashboardIpad",
-    name: "dashboardIpad",
-    component: DashBoardIpad,
-    meta: {layout: LAYOUT.LoggedIn}
-  }
+  }  
 
 
 ];

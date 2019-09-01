@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import ResultSocket from "../components/led/ResultSocket";
+  import ResultSocket from "../../components/led/ResultSocket";
 
   export default {
     name: "LedScreen",

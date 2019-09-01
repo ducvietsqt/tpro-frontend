@@ -13,7 +13,7 @@
 <script>
 import { db } from "@/db";
 export default {
-  name: "Events",
+  name: "IpadShowEvent",
   data() {
     return {
       events: []

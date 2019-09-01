@@ -9,27 +9,10 @@ import './plugins/axios';
 import './plugins/vueCountDown';
 import App from './App.vue'
 import router from "./router/index";
-import store from './store';
-import firebase from 'firebase';
-
-import VueSocketIO from 'vue-socket.io'
-Vue.use(new VueSocketIO({connection: 'http://metinseylan.com:1992'}));
-
-//firebase
-Vue.config.productionTip = false;
-const config = {
-  apiKey: "AIzaSyCAZwpokqzTCr2qytGf2vTiENx2EAiYtSc",
-  authDomain: "t-pro-553e9.firebaseapp.com",
-  databaseURL: "https://t-pro-553e9.firebaseio.com",
-  projectId: "t-pro-553e9",
-  storageBucket: "t-pro-553e9.appspot.com",
-  messagingSenderId: "413559544832",
-  appId: "1:413559544832:web:fd2f040d670ab11d"
-};
-
-firebase.initializeApp(config);
-
-export const db = firebase.firestore();
+import store from './store/index';
+import { rtdbPlugin } from 'vuefire'
+Vue.config.productionTip = false
+Vue.use(rtdbPlugin)
 
 // websocket
 const eventbus = new Vue();
