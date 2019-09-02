@@ -13,7 +13,6 @@ const IpadShowEvent = () => import(/* webpackChunkName: "IpadShowEvent" */ '../v
 const IpadShowGrade = () => import(/* webpackChunkName: "IpadShowGrade" */ '../views/ipad/IpadShowGrade');
 
 //Led
-const LedScreen = () => import(/* webpackChunkName: "LedScreen" */ '../views/led/LedScreen');
 const LedShowQuestion = () => import(/* webpackChunkName: "LedShow" */ '../views/led/LedShowQuestion');
 const LedShowGrade = () => import(/* webpackChunkName: "LedShowGrade" */ '../views/led/LedShowGrade');
 
@@ -73,15 +72,6 @@ export default [
   },
 
   //Led
-  {
-    path: "/led/result",
-    name: "socketTest",
-    alias: '/led',
-    component: LedScreen,
-    meta: {
-      layout: LAYOUT.LoggedIn
-    }
-  },
   {
     path: "/led/show",
     name: "ledShowQuestion",

@@ -10,8 +10,7 @@
     </div>
 
     <component :is="layoutProcess" :items="questions[process]"></component>
-
-    <button @click="handleAnswertest()">next</button>          
+         
 
     <div v-for="group in groupList" :key="group.id" class="weather-data">
       <div class="weather-stats">
@@ -39,14 +38,22 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import api from '../../api/led';
-import ProcessKhoiDong from "../../components/game/ProcessKhoiDong";
+import ProcessKhoiDongLed from "../../components/led/ProcessKhoiDong";
+import ProcessKienDinhLed from "../../components/led/ProcessKienDinh";
+import ProcessVuotTroiLed from "../../components/led/ProcessVuotTroi";
+import ProcessButPhaLed from "../../components/led/ProcessButPha";
+import ProcessCauHoiPhuLed from "../../components/led/ProcessCauHoiPhu";
 import { db } from "@/db";
 
 let eventsRef = db.ref('events');
 export default {
   name: "ShowQuestion",
   components: {
-    ProcessKhoiDong
+    ProcessKhoiDongLed,
+    ProcessKienDinhLed,
+    ProcessVuotTroiLed,
+    ProcessButPhaLed,
+    ProcessCauHoiPhuLed
   },
   data() {
     return {
@@ -55,24 +62,24 @@ export default {
       events :[],
       steps: [
         {
-          title: "Khoi dong",
-          component: "ProcessKhoiDong"
+          title: "Vòng Khởi Động",
+          component: "ProcessKhoiDongLed"
         },
         {
-          title: "Kien Dinh",
-          component: "ProcessKienDinh"
+          title: "Vòng Kiên Định",
+          component: "ProcessKienDinhLed"
         },
         {
-          title: "Vuot troi",
-          component: "ProcessKhoiDong"
+          title: "Vòng Vượt Trội",
+          component: "ProcessVuotTroiLed"
         },
         {
-          title: "But Pha",
-          component: "ProcessButPha"
+          title: "Vòng Bứt Phá",
+          component: "ProcessButPhaLed"
         },
         {
-          title: "Cau hoi Phu",
-          component: "ProcessCauHoiPhu"
+          title: "Vòng Phụ",
+          component: "ProcessCauHoiPhuLed"
         }
       ]
     };
@@ -124,9 +131,6 @@ export default {
                 }              
             });
         });       
-    },
-    async handleAnswertest() {
-      this.tickQuestion();
     }
   }
 };
