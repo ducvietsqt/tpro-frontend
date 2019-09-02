@@ -19,7 +19,10 @@ const state = {
   isFinished: false, // finished all process
 
   resultsProcess: [],
-  totalTimeAnsweredProcess: 0
+  totalTimeAnsweredProcess: 0,
+  isShowQuestion : false,
+  isShowAnswer :false,
+  isShowCountDown : false
 
 
 };
@@ -43,6 +46,10 @@ const getters = {
 
   resultsProcess: state => state.resultsProcess,
   totalTimeAnsweredProcess: state => state.totalTimeAnsweredProcess,
+
+  isShowQuestion: state => state.isShowQuestion,
+  isShowAnswer: state => state.isShowAnswer,
+  isShowCountDown: state => state.isShowCountDown
 
 
 
@@ -115,6 +122,8 @@ const mutations = {
   },
   START_GAME(state) {
     state.isStarted = true;
+    state.endProcess = false;
+    state.processQuestion = null;
     if (state.process === null) {
       state.process = 0;
     } else if (state.process <= state.questions.length - 1) {
@@ -136,10 +145,10 @@ const mutations = {
     state.questions = getSESSION(SESSION.QUESTIONS);
   },
 
-  TICK_QUESTION(state) {
+  TICK_QUESTION(state) {    
     if (state.processQuestion === null) {
-      state.processQuestion = 0;
-    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {
+      state.processQuestion = 0;      
+    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {      
       state.processQuestion += 1;
     } else if (state.processQuestion === state.questions[state.process]['questions'].length - 1) {
 

@@ -19,7 +19,7 @@
     },
     methods: {
       ...mapActions("game", ["startGame"]),
-      startProcess() {
+      startProcess() {             
         this.startGame();
       }
     }
