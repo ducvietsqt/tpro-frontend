@@ -1,23 +1,27 @@
 <template>
   <div class="auth_screen">
-    <button class="link_signout">Đăng xuất</button>
-    <div>
+    <div class="logo_form">
       <img src="../../assets/logo.png" alt="">
     </div>
-    <form @submit.prevent="submit">
-      <label>Id</label> &nbsp;
+    <form @submit.prevent="submit" class="form_signin">
+      <label class="label_form">Nhập ID</label>
       <input v-validate="'required'"
-             name="myinput"
+             name="id"
              type="text"
+             class="input_form"
              v-model="code"
-             placeholder="User code"/>
-      &nbsp;
-      <button @click="submit">Submit</button>
-      <div>
-        <span style="font-size: 12px; color: #ff0000;">{{ errors.first('myinput') }}</span>
+             placeholder="ID"/>
+      <button class="link_submit" @click="submit">Gửi</button>
+      <div class="error-text">
+        <span style="font-size: 12px; color: #ff0000;">{{ errors.first('id') }}</span>
       </div>
     </form>
-
+    <div class="both_text">
+      Vuợt trội
+      <!--<i class="material-icons">keyboard_arrow_right</i>-->
+      <img src="../../assets/Asset6.png" alt="">
+      mỗi ngày
+    </div>
   </div>
 </template>
 
@@ -51,35 +55,14 @@
 
       }
     }
-
   }
 </script>
 
-<style>
+<style lang="scss">
   .flex_label {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  .flex_label ._title {
-    flex: 1;
-  }
-
-  .flex_label ._icon {
-
-  }
-
-  .title-small {
-  }
-
-  .v-text-field__suffix {
-    font-weight: bold !important;
-  }
-
-  .auth_screen {
-    border: solid 1px red;
-    max-width: 1024px;
-    margin: 0 auto;
-  }
 </style>

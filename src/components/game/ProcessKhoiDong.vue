@@ -2,20 +2,27 @@
   <div class="process_box">
     <BoxKetQua/>
     <NextProcess/>
-    <div v-if="!endProcess">
-      <p class="process_box--question">
-        <strong>
+    <div v-if="!endProcess" class="question-detail">
+      <div class="process_box--question">
+        <p class="text-center title-qs">
+          Câu hỏi: {{titleQuestion}}
+        </p>
+        <p class="drs-qs">
           {{question}}
-        </strong>
-      </p>
+        </p>
+      </div>
       <div class="process_box--answers">
-        <button v-for="(answer, i) in answers"
-                class="btn_answer"
-                :class="{correct: answered === i && answer['is_correct'] === '1', disable: answered !== null, 'in-correct': answered === i && answer['is_correct'] === '0'}"
-                :key="i"
-                @click.stop="handleAnswer(i)">
-          {{answer.answer}}
-        </button>
+        <ol class="list_questions">
+          <li v-for="(answer, i) in answers"
+                  class="item"
+                  :class="{active: answered === i, correct: answered === i && answer['is_correct'] === '1', disable: answered !== null, 'in-correct': answered === i && answer['is_correct'] === '0'}"
+                  :key="i"
+                  @click.stop="handleAnswer(i)">
+            <span class="dot_item"></span>
+            {{answer.answer}}
+          </li>
+        </ol>
+
       </div>
     </div>
   </div>
@@ -44,6 +51,9 @@
       answers() {
         return this.items.questions[this.processQuestion].answers
       },
+      titleQuestion() {
+        return this.items.questions[this.processQuestion].id
+      }
     },
     created() {
       this.tickQuestion();
@@ -51,6 +61,7 @@
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
       async handleAnswer(index) {
+        // return false
         let is_correct = this.answers[index]['is_correct'] === '1';
         this.answered = index;
         await this.answerQuestion({index, is_correct});
@@ -79,4 +90,5 @@
       opacity: 0.7;
     }
   }
+
 </style>

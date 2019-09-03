@@ -1,29 +1,22 @@
 <template>
   <div>
-    <div class="led_box" v-show="isStarted && !endProcess">
-      <CountDown/>
-    </div>
-    <p>
-      <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
-    </p>
-    <div v-if="!isStarted">
-      <p>
-        Các thí sinh sẽ bắt đầu chơi vòng thi khởi động: <br/>
-        &nbsp;&nbsp;- mỗi câu sẽ có thơi gian trả lời là 10 giây, <br/>
-        &nbsp;&nbsp;- trả lời đúng thì câu trả lời sẽ sáng lên <br/>
-        &nbsp;&nbsp;- nếu không trả lời coi như sai
-      </p>
-      <p>
-        <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
-      </p>
-    </div>
-
-    <div class="process-step" v-show="isStarted">
-      <div v-for="(item, index) in steps" :key="index">
-        <button class="item_btn" :class="{active: index === process}">{{item.title}}</button>
+    <div>
+      <div class="led_box" v-show="isStarted && !endProcess">
+        <CountDown/>
       </div>
-    </div>
+      <div>
+        <p class="text-highlight">
+          Chào mừng bạn <br/> đến với <br/>
+          <strong>T-Pro Confetti</strong>
+        </p>
+      </div>
+      <div v-if="!isStarted">
+        <p style="text-align: center">
+          <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
+        </p>
+      </div>
 
+    </div>
     <component :is="layoutProcess"
                :items="questions[process]"></component>
   </div>
@@ -38,6 +31,7 @@
   import ProcessButPha from "../components/game/ProcessButPha";
   import ProcessCauHoiPhu from "../components/game/ProcessCauHoiPhu";
   import TestSocket from "../components/led/HandlerSocket";
+  import {steps} from "../components/utils/steps";
 
   export default {
     name: "DashBoard",
@@ -47,28 +41,7 @@
     },
     data() {
       return {
-        steps: [
-          {
-            title: 'Khoi dong',
-            component: 'ProcessKhoiDong'
-          },
-          {
-            title: 'Kien Dinh',
-            component: 'ProcessKhoiDong'
-          },
-          {
-            title: 'Vuot troi',
-            component: 'ProcessKhoiDong'
-          },
-          {
-            title: 'But Pha',
-            component: 'ProcessKhoiDong'
-          },
-          {
-            title: 'Cau hoi Phu',
-            component: 'ProcessKhoiDong'
-          },
-        ],
+        steps: steps
       }
     },
     computed: {
@@ -114,10 +87,9 @@
   }
 
   .led_box {
-    border: solid 1px red;
+    /*border: solid 1px red;*/
     position: fixed;
-    right: 0px;
-    top: 0px;
-    padding: 20px;
+    right: 20px;
+    top: 20px;
   }
 </style>
