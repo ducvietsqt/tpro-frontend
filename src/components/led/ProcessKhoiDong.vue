@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="process_box">      
-      <NextProcess v-show="finishedCounDown"/>
-      <BoxKetQua v-show="finishedCounDown"/>
-      <div v-show="!endProcess">
+    <div class="process_box">           
+      <NextProcess v-show="isShowResult"/>
+      <BoxKetQua v-show="isShowResult"/>
+      <div v-show="!endProcess && !isShowResult">
         <p class="process_box--question">
           <transition name="bounce">
             <div v-if="show_question">
-                {{question}}
+                <p>Câu hỏi: {{question}}</p>
             </div>                 
           </transition> 
         </p>
@@ -32,10 +32,11 @@
 import { mapGetters, mapActions } from "vuex";
 import NextProcess from "../../components/led/NextProcess";
 import BoxKetQua from "../../components/led/BoxKetQua";
+import Round from "../../components/led/Round";
 
 export default {
   name: "ProcessKhoiDongLed",
-  components: { NextProcess, BoxKetQua},
+  components: { NextProcess, BoxKetQua,Round},
   props: ["items"],
   data() {
     return {
@@ -43,6 +44,8 @@ export default {
       answered: null,
       show_question: false,
       show_answer:false,
+      start_timer:false,
+      isShowResult: false
     };
   },
   computed: {
@@ -54,11 +57,11 @@ export default {
       "endProcess",
       "finishedCounDown"
     ]),
-    question() {          
-      return this.items.questions[this.processQuestion].question;
+    question() {   
+      return this.items.questions[this.processQuestion].question;      
     },
     answers() {
-      return this.items.questions[this.processQuestion].answers;
+      return this.items.questions[this.processQuestion].answers;      
     }
   },
   created() {   
@@ -76,24 +79,29 @@ export default {
           {         
             self.show_answer = !self.show_answer; 
           }   
-          else{
-              self.onFinishCounDown();
-          }                 
+          else if(!self.start_timer){
+              //self.show_question = false;
+              //self.show_answer = false;
+              //self.$eventHub.$emit("startCountdown");
+              self.start_timer = !self.start_timer; 
+              self.startTimerLed();              
+          }       
+          else{         
+          alert(1)  ;
+            self.isShowResult = true;
+            self.show_answer = true; 
+            self.start_timer = true; 
+            self.show_question = true; 
+          }          
         }
       }
     });
   },
   methods: {
-    ...mapActions("game", ["tickQuestion", "answerQuestion","updateStateCounDown"]),
+    ...mapActions("game", ["tickQuestion", "answerQuestion","startTimerLed"]),
     async showAnswerCorrect() {                              
       this.answered = null;      
     },
-    onFinishCounDown(){
-        this.updateStateCounDown(true);
-        alert(1);
-        this.show_question = false;
-        this.show_answer = false;
-    }
   }
 };
 </script>

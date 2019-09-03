@@ -1,14 +1,43 @@
 <template>
-  <div>    
-    <Round :steps="steps"/>    
+  <div>
+    <strong>Cuộc thi T-Pro Confetti</strong>
+    <div v-show="!isReady">
+      <p>Hướng dẫn đăng nhập</p>
+    </div>
     <div class="led_box" v-show="isStarted && !endProcess">
-      <CountDown ref="count_down"/>
+      <CountDown/>
+    </div>
+    <div v-show="isReady && !isStarted">
+        <h1>Các bạn hãy sẵn sàng</h1>
     </div>    
+    <div class="process-step" v-show="isStarted">
+      <div v-for="(item, index) in steps" :key="index">
+        <button class="item_btn" :class="{active: index === process}">{{item.title}}</button>
+      </div>
+    </div>
 
     <component :is="layoutProcess" :items="questions[process]"></component>
          
-    <Group/>
 
+    <div v-for="group in groupList" :key="group.id" class="weather-data">
+      <div class="weather-stats">
+        <div>
+          <span>{{group.name}}</span>
+        </div>
+        <div>
+          <span class="location">{{group.total_score}}</span>
+        </div>
+      </div>
+
+      <div class="group-temp">
+        <span>{{group.total_login}}</span>
+      </div>
+    </div>
+
+    <div>
+      <p>total login :</p>
+      {{totalItem()}}
+    </div>
   </div>
 </template>
 
@@ -22,8 +51,6 @@ import ProcessVuotTroiLed from "../../components/led/ProcessVuotTroi";
 import ProcessButPhaLed from "../../components/led/ProcessButPha";
 import ProcessCauHoiPhuLed from "../../components/led/ProcessCauHoiPhu";
 import CountDown from "../../components/led/CountDown";
-import Round from "../../components/led/Round";
-import Group from "../../components/led/Group";
 import { db } from "@/db";
 
 let eventsRef = db.ref('events');
@@ -35,12 +62,12 @@ export default {
     ProcessVuotTroiLed,
     ProcessButPhaLed,
     ProcessCauHoiPhuLed,
-    CountDown,
-    Round,
-    Group
+    CountDown
   },
   data() {
     return {
+      totalLogin: 0,
+      groupList: [],
       events :[],
       show_question :false, 
       isStop :false,     
@@ -86,6 +113,7 @@ export default {
     }
   },
   mounted() {
+    this.getList();  
     //this.startProcessGame();
     let self = this;    
     window.addEventListener('keyup', function(event) { 
@@ -105,8 +133,20 @@ export default {
   firebase: {
     events: eventsRef
   },
-  methods: { 
-    ...mapActions("game", ["startGame","stopTimerRound","setStateReady"]),  
+  methods: {
+    async getList(){// eslint-disable-line
+      let obj = await api.getListGroup();
+      this.groupList = obj.data;       
+    }, 
+    totalItem() {
+      let sum = 0;
+      for (let i = 0; i < this.groupList.length; i++) {
+        sum += parseInt(this.groupList[i].total_login);
+      }
+
+      return sum;
+    },  
+    ...mapActions("game", ["startGame","stopTimerRound","startTimerRound","setStateReady"]),  
     /*startProcessGame(){      
       let self = this;
       eventsRef.on('value', function(snapshot) {   

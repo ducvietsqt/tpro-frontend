@@ -4,21 +4,20 @@
         <p class="process_box--question">
           <transition>
             <div>
-                {{question}}
+                <p>Câu hỏi:</p>
             </div>                 
           </transition> 
         </p>
-        <transition>
-          <div class="process_box--answers">
-            <button
-              v-for="(answer, i) in answers"
+        <!--<transition>
+          <div class="box-answers">
+            <ul v-for="(answer, i) in answers"
               :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
               v-show="answered === null || answered === i"
               :key="i">
-                {{answer.answer}}
-            </button>
+              <li>{{answer.answer}}</li>
+            </ul>
           </div>
-        </transition> 
+        </transition>-->
 
       </div>
   </div>
@@ -36,18 +35,18 @@ import { mapGetters, mapActions } from "vuex";
       }
     },
     computed: {
-      ...mapGetters("game", [
-        "questions",
-        "processQuestion"
-      ]),
-      question() {   // eslint-disable-line       
-        return this.questions[this.processQuestion].question;
-        //return this.items.questions[this.processQuestion].question;
-      },
-      answers() {// eslint-disable-line
-        //return this.items.questions[this.processQuestion].answers;
-      }
+    ...mapGetters("game", [
+      "questions",
+      "processQuestion",
+      "finishedCounDown"
+    ]),
+    question() {   
+      return this.items.questions[this.processQuestion].question;      
     },
+    answers() {
+      return this.items.questions[this.processQuestion].answers;      
+    }
+  },
     created() {   
       this.tickQuestion();            
     },
@@ -58,5 +57,8 @@ import { mapGetters, mapActions } from "vuex";
 </script>
 
 <style scoped>
+  .active{
+    color:red;
+  }
 
 </style>

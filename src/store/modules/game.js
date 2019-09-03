@@ -13,6 +13,7 @@ const state = {
   timer: COUNT_DOWN_QUESTION,
   processTimer: COUNT_DOWN_QUESTION,
   startTimer: false,
+  startTimerLed: false,
 
   isStarted: false, // start game
   isFinishedProcess: false, // finished process || 1, 2, 3...
@@ -20,7 +21,7 @@ const state = {
 
   resultsProcess: [],
   totalTimeAnsweredProcess: 0,
-  finishedCounDown: false,
+  isReady: false,
 
 
 };
@@ -36,6 +37,7 @@ const getters = {
   timer: state => state.timer,
   processTimer: state => state.processTimer,
   startTimer: state => state.startTimer,
+  startTimerLed: state => state.startTimerLed,
 
   isStarted: state => state.isStarted,
   isFinishedProcess: state => state.isFinishedProcess,
@@ -45,7 +47,8 @@ const getters = {
   resultsProcess: state => state.resultsProcess,
   totalTimeAnsweredProcess: state => state.totalTimeAnsweredProcess,
 
-  finishedCounDown: state => state.finishedCounDown
+  finishedCounDown: state => state.finishedCounDown,
+  isReady: state => state.isReady
 
 
 
@@ -111,8 +114,14 @@ tickTimer({commit, state}, processTimer) { // eslint-disable-line
   },
 
 //Process Question Led
-updateStateCounDown({commit,state}, data){// eslint-disable-line
-      commit("UPDATE_STATE_COUNT_DOWN", data);
+setStateReady({commit,state},data){
+  commit("UPDATE_STATE_READY", data);
+},
+async startTimerLed({commit}){
+  commit("START_TIMER_LED"); 
+},
+updateStateCounDown({commit,state},data){
+  commit("UPDATE_COUNT_DOWN");
 },
 
   // result
@@ -133,6 +142,7 @@ const mutations = {
     state.isStarted = true;
     state.endProcess = false;
     state.processQuestion = null;
+    state.startTimer = true;
     if (state.process === null) {
       state.process = 0;
     } else if (state.process <= state.questions.length - 1) {
@@ -195,8 +205,14 @@ const mutations = {
       state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
     }
   },
-  UPDATE_STATE_COUNT_DOWN(state,data){
-      state.finishedCounDown = data;
+  UPDATE_STATE_READY(state,data){
+      state.isReady = data;
+  },
+  START_TIMER_LED(state)  {
+    state.startTimerLed = true;
+  },
+  UPDATE_COUNT_DOWN(state,data){
+    state.finishedCounDown =data;
   }
 };
 

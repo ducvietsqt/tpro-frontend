@@ -3,6 +3,9 @@
     <div class="led_box" v-show="isStarted && !endProcess">
       <CountDown/>
     </div>
+    <div>
+      <a href="javascript:void(0)" @click="logout">Đăng Xuất</a>
+    </div>
     <p>
       <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
     </p>
@@ -17,8 +20,6 @@
         <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
       </p>
     </div>
-    <h1 v-if="finishedCounDown">CountDowned </h1>
-    <h1 v-else>Not CountDown</h1>
 
     <div class="process-step" v-show="isStarted">
       <div v-for="(item, index) in steps" :key="index">
@@ -72,7 +73,7 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess","finishedCounDown"]),
+      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess"]),
       layoutProcess() {
         try {
           return this.steps[this.process]['component'];
@@ -86,32 +87,12 @@
     },
     methods: {
       ...mapActions("game", ["startGame"]),
+      ...mapActions("auth", ["logout"]),
       startProcessGame() {
         // do something
         this.startGame();
       },
-    },
-    /*watch: {
-      finishedCounDown(newValue, oldValue) { // eslint-disable-line
-        console.log(`Updating from ${oldValue} to ${newValue}`);
-      }
     }
-
-    /*mounted() {      
-    this.$store.watch(
-        (state, getters) => getters.finishedCounDown,
-        (newValue, oldValue) => {
-          console.log(`Updating from ${oldValue} to ${newValue}`);
-
-          // Do whatever makes sense now
-          if (newValue) {
-            this.complex = {
-              deep: 'some deep object',
-            };
-          }
-        },
-      );
-    },*/
   }
 </script>
 
