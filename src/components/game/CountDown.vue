@@ -11,11 +11,11 @@
          @finish="onFinnish"
          @process="onProcess"
          ref="vac">
-      <span slot="process"
+      <!--<span slot="process"
             slot-scope="{ timeObj }">
         {{ timeObj.ceil.s }}
-      </span>
-      <span slot="finish">Done!</span>
+      </span>-->
+      <!--<span slot="finish">Done!</span>-->
     </vac>
   </div>
 </template>
@@ -52,13 +52,14 @@
 
       },
       onStop(vm) { // eslint-disable-line
+
       },
       onFinnish(vm) { // eslint-disable-line
         this.stopTimer();
-
+        return this.handleStopTimer();
       },
       onProcess(vm) { // eslint-disable-linne
-        // if (!this.startTimer) return this.$refs.vac.stopCountdown();
+        if (!this.startTimer) return this.handleStopTimer();
         let processTimer = vm.$data.timeObj.ceil.s;
         this.tickTimer(processTimer);
       },
@@ -72,7 +73,7 @@
       },
       endProcess(next, prev) {
         console.log(next, prev);
-        if (next === true && next !== prev) {
+        if (next === true && prev === false) {
           this.handleStopTimer();
         }
       }

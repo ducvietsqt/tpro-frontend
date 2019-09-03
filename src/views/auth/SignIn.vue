@@ -1,7 +1,11 @@
 <template>
-  <div>
+  <div class="auth_screen">
+    <button class="link_signout">Đăng xuất</button>
+    <div>
+      <img src="../../assets/logo.png" alt="">
+    </div>
     <form @submit.prevent="submit">
-      <label for="">Id</label> &nbsp;
+      <label>Id</label> &nbsp;
       <input v-validate="'required'"
              name="myinput"
              type="text"
@@ -9,10 +13,11 @@
              placeholder="User code"/>
       &nbsp;
       <button @click="submit">Submit</button>
+      <div>
+        <span style="font-size: 12px; color: #ff0000;">{{ errors.first('myinput') }}</span>
+      </div>
     </form>
-    <div>
-      <span style="font-size: 12px; color: #ff0000;">{{ errors.first('myinput') }}</span>
-    </div>
+
   </div>
 </template>
 
@@ -70,5 +75,11 @@
 
   .v-text-field__suffix {
     font-weight: bold !important;
+  }
+
+  .auth_screen {
+    border: solid 1px red;
+    max-width: 1024px;
+    margin: 0 auto;
   }
 </style>

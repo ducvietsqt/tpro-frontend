@@ -15,7 +15,6 @@ const state = {
   startTimer: false,
 
   isStarted: false, // start game
-  isFinishedProcess: false, // finished process || 1, 2, 3...
   isFinished: false, // finished all process
 
   resultsProcess: [],
@@ -37,7 +36,6 @@ const getters = {
   startTimer: state => state.startTimer,
 
   isStarted: state => state.isStarted,
-  isFinishedProcess: state => state.isFinishedProcess,
   isFinished: state => state.isFinished,
 
 
@@ -96,9 +94,7 @@ const actions = {
       commit("TICK_QUESTION");
       commit("START_TIMER");
     }
-
   },
-
   tickTimer({commit, state}, processTimer) { // eslint-disable-line
     commit("TICK_TIMER", processTimer);
   },
@@ -118,12 +114,9 @@ const mutations = {
     setSESSION(SESSION.QUESTIONS, payload);
   },
   START_GAME(state) {
-
-    state.isStarted = true;
+    state.isStarted =  true;
     state.startTimer = true;
     state.endProcess = false;
-    state.timer = COUNT_DOWN_QUESTION;
-    state.processTimer = COUNT_DOWN_QUESTION;
     state.processQuestion = 0;
 
     if (state.process === null) {
@@ -132,17 +125,21 @@ const mutations = {
       state.process += 1;
     }
   },
+
   END_GAME(state) {
     state.isStarted = false;
-    state.isFinishedProcess = true;
-    state.isFinished = true;
+    state.startTimer = false;
+
+    state.endProcess = true;
+    state.timer = COUNT_DOWN_QUESTION;
+    state.processTimer = COUNT_DOWN_QUESTION;
+    state.processQuestion = null;
 
   },
   RESET_GAME(state) {
     state.process = null;
     state.processQuestion = null;
     state.isStarted = false;
-    state.isFinishedProcess = false;
     state.isFinished = false;
     state.questions = getSESSION(SESSION.QUESTIONS);
   },
@@ -156,8 +153,9 @@ const mutations = {
 
       state.startTimer = false;
       state.endProcess = true; // note *
+      state.processQuestion = null;
 
-      // alert('DONE QUESTION')
+      console.log('DONE QUESTION')
     }
   },
   START_TIMER(state) {
@@ -169,6 +167,7 @@ const mutations = {
     state.startTimer = false;
     let _state = {...state};
     let time_answered = data ? COUNT_DOWN_QUESTION - _state.processTimer : COUNT_DOWN_QUESTION;
+    console.log(state.questions[state.process]['questions'][state.processQuestion]['answered']);
     state.questions[state.process]['questions'][state.processQuestion]['answered'] = {
       is_correct: data ? data['is_correct'] : false,
       time: time_answered

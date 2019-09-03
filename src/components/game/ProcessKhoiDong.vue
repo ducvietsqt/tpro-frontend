@@ -2,7 +2,7 @@
   <div class="process_box">
     <BoxKetQua/>
     <NextProcess/>
-    <div v-show="!endProcess">
+    <div v-if="!endProcess">
       <p class="process_box--question">
         <strong>
           {{question}}
@@ -13,7 +13,7 @@
                 class="btn_answer"
                 :class="{correct: answered === i && answer['is_correct'] === '1', disable: answered !== null, 'in-correct': answered === i && answer['is_correct'] === '0'}"
                 :key="i"
-                @click="handleAnswer(i)">
+                @click.stop="handleAnswer(i)">
           {{answer.answer}}
         </button>
       </div>
@@ -44,10 +44,6 @@
       answers() {
         return this.items.questions[this.processQuestion].answers
       },
-      correctQuestion() {
-      // :class="{correct: answered === i && answer['is_correct'] === '1', disable: answered !== null, 'in-correct': answered !== null && answered !== i}"
-        return 1;
-      }
     },
     created() {
       this.tickQuestion();
