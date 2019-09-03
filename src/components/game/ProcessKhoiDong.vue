@@ -11,7 +11,7 @@
       <div class="process_box--answers">
         <button v-for="(answer, i) in answers"
                 class="btn_answer"
-                v-show="answered === null || answered === i"
+                :class="{correct: answered === i && answer['is_correct'] === '1', disable: answered !== null, 'in-correct': answered === i && answer['is_correct'] === '0'}"
                 :key="i"
                 @click="handleAnswer(i)">
           {{answer.answer}}
@@ -43,6 +43,10 @@
       },
       answers() {
         return this.items.questions[this.processQuestion].answers
+      },
+      correctQuestion() {
+      // :class="{correct: answered === i && answer['is_correct'] === '1', disable: answered !== null, 'in-correct': answered !== null && answered !== i}"
+        return 1;
       }
     },
     created() {
@@ -73,6 +77,10 @@
     &.in-correct {
       background: red;
       color: #ffffff;
+    }
+    &.disable {
+      pointer-events: none;
+      opacity: 0.7;
     }
   }
 </style>

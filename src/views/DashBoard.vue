@@ -43,7 +43,7 @@
     name: "DashBoard",
     components: {
       TestSocket,
-      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown
+      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown // eslint-disable-line
     },
     data() {
       return {
@@ -54,19 +54,19 @@
           },
           {
             title: 'Kien Dinh',
-            component: 'ProcessKienDinh'
+            component: 'ProcessKhoiDong'
           },
           {
             title: 'Vuot troi',
-            component: 'ProcessVuotTroi'
+            component: 'ProcessKhoiDong'
           },
           {
             title: 'But Pha',
-            component: 'ProcessButPha'
+            component: 'ProcessKhoiDong'
           },
           {
             title: 'Cau hoi Phu',
-            component: 'ProcessCauHoiPhu'
+            component: 'ProcessKhoiDong'
           },
         ],
       }

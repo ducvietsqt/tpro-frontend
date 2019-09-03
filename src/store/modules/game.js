@@ -51,8 +51,12 @@ const getters = {
 // actions
 const actions = {
   async fetchQuestion({commit}) {
-    let rs = await api.getQuestions();
-    commit("SET_QUESTION", rs)
+    try {
+      let rs = await api.getQuestions();
+      commit("SET_QUESTION", rs.data)
+    }catch (e) {
+      commit("SET_QUESTION", getSESSION(SESSION.QUESTIONS))
+    }
   },
   startGame({commit}) {
     commit("START_GAME");
@@ -109,12 +113,19 @@ const actions = {
 // mutations
 const mutations = {
   SET_QUESTION(state, payload) {
-    console.log('SET_QUESTION', payload.data);
-    state.questions = payload.data;
-    setSESSION(SESSION.QUESTIONS, payload.data);
+    console.log('SET_QUESTION', payload);
+    state.questions = payload;
+    setSESSION(SESSION.QUESTIONS, payload);
   },
   START_GAME(state) {
+
     state.isStarted = true;
+    state.startTimer = true;
+    state.endProcess = false;
+    state.timer = COUNT_DOWN_QUESTION;
+    state.processTimer = COUNT_DOWN_QUESTION;
+    state.processQuestion = 0;
+
     if (state.process === null) {
       state.process = 0;
     } else if (state.process <= state.questions.length - 1) {
@@ -157,12 +168,11 @@ const mutations = {
   STOP_TIMER(state, data) { // eslint-disable-line
     state.startTimer = false;
     let _state = {...state};
+    let time_answered = data ? COUNT_DOWN_QUESTION - _state.processTimer : COUNT_DOWN_QUESTION;
     state.questions[state.process]['questions'][state.processQuestion]['answered'] = {
       is_correct: data ? data['is_correct'] : false,
-      time: data ? _state.processTimer : COUNT_DOWN_QUESTION
+      time: time_answered
     };
-    // state.timer = COUNT_DOWN_QUESTION;
-    // state.processTimer = COUNT_DOWN_QUESTION;
   },
   TICK_TIMER(state, processTimer) {
     state.processTimer = processTimer;
