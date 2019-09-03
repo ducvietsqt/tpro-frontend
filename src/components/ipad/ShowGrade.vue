@@ -3,9 +3,9 @@
       <p>
         <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
       </p>
-      <input type="text" name="search" placeholder="Tìm kiếm" />
-      <button type="submit">Go</button> 
-      <div class="grade" v-for="(grade, index) in gradeList" :key="index">
+      <input type="text" v-model="search" placeholder="Tìm kiếm" />
+      <!-- <button type="submit">Go</button>  -->
+      <div class="grade" v-for="(grade, index) in filterGradeList" :key="index">
           <div v-if="gradeList.length > 0">
                 <span>{{grade.id}}</span> 
                 <span>{{ grade.name}}</span>
@@ -16,7 +16,10 @@
               <p>Hiện tại hệ thống đang xử lý kết quả. Vui lòng chờ trong giây lát!</p>
             </div>           
           </div>
-      </div>    
+      </div>  
+      <div>
+        {{usersRef}}
+      </div>  
     </div>
 </template>
 
@@ -30,13 +33,20 @@ export default {
   data() {
     return {
       gradeList : [],
-      choices :[]
+      choices :[],
+      search:''
     };
   },
   firebase: {
     events: usersRef
   },
-  computed: {},  
+  computed: {
+    filterGradeList:function(){
+      return this.gradeList.filter((grade) =>{
+          return grade.name.match(this.search);
+      });
+    }
+  },  
   mounted() {
     this.getList();
   },
