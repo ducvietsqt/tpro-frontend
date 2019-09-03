@@ -40,11 +40,11 @@ import { mapGetters, mapActions } from "vuex";
         "questions",
         "processQuestion"
       ]),
-      question() {          
+      question() {   // eslint-disable-line       
         return this.questions[this.processQuestion].question;
         //return this.items.questions[this.processQuestion].question;
       },
-      answers() {
+      answers() {// eslint-disable-line
         //return this.items.questions[this.processQuestion].answers;
       }
     },

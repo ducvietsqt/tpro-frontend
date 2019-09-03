@@ -111,7 +111,7 @@ tickTimer({commit, state}, processTimer) { // eslint-disable-line
   },
 
 //Process Question Led
-updateStateCounDown({commit,state}, data){
+updateStateCounDown({commit,state}, data){// eslint-disable-line
       commit("UPDATE_STATE_COUNT_DOWN", data);
 },
 
