@@ -20,9 +20,7 @@ const state = {
 
   resultsProcess: [],
   totalTimeAnsweredProcess: 0,
-  isShowQuestion : false,
-  isShowAnswer :false,
-  isShowCountDown : false
+  finishedCounDown: false,
 
 
 };
@@ -47,9 +45,7 @@ const getters = {
   resultsProcess: state => state.resultsProcess,
   totalTimeAnsweredProcess: state => state.totalTimeAnsweredProcess,
 
-  isShowQuestion: state => state.isShowQuestion,
-  isShowAnswer: state => state.isShowAnswer,
-  isShowCountDown: state => state.isShowCountDown
+  finishedCounDown: state => state.finishedCounDown
 
 
 
@@ -102,21 +98,34 @@ const actions = {
 
   },
 
-  tickTimer({commit, state}, processTimer) { // eslint-disable-line
+async stopTimerRound({commit}){ // eslint-disable-line
+  await sleep(1000);
+  await commit("STOP_TIMER");
+},
+async startTimerRound({commit}){
+  await sleep(1000);
+  await commit("START_TIMER");
+},
+tickTimer({commit, state}, processTimer) { // eslint-disable-line
     commit("TICK_TIMER", processTimer);
   },
 
+//Process Question Led
+updateStateCounDown({commit,state}, data){
+      commit("UPDATE_STATE_COUNT_DOWN", data);
+},
+
   // result
-  getResultProcess({commit}) {
+getResultProcess({commit}) {
     commit("RESULT_PROCESS");
-  }
+},
 
 };
 
 // mutations
 const mutations = {
   SET_QUESTION(state, payload) {
-    console.log('SET_QUESTION', payload.data);
+    //console.log('SET_QUESTION', payload.data);
     state.questions = payload.data;
     setSESSION(SESSION.QUESTIONS, payload.data);
   },
@@ -179,12 +188,15 @@ const mutations = {
 
   RESULT_PROCESS(state) { // eslint-disable-line
     // console.log(state);
-    console.log(state.questions[state.process]['questions'])
+    //console.log(state.questions[state.process]['questions'])
     state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
 
     for(let i = 0; i < state.questions[state.process]['questions'].length; i++) {
       state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
     }
+  },
+  UPDATE_STATE_COUNT_DOWN(state,data){
+      state.finishedCounDown = data;
   }
 };
 

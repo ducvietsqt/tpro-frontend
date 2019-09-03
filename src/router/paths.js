@@ -13,7 +13,7 @@ const IpadShowEvent = () => import(/* webpackChunkName: "IpadShowEvent" */ '../v
 const IpadShowGrade = () => import(/* webpackChunkName: "IpadShowGrade" */ '../views/ipad/IpadShowGrade');
 
 //Led
-const LedShowQuestion = () => import(/* webpackChunkName: "LedShow" */ '../views/led/LedShowQuestion');
+const LedShowQuestion = () => import(/* webpackChunkName: "LedShowQuestion" */ '../views/led/LedShowQuestion');
 const LedShowGrade = () => import(/* webpackChunkName: "LedShowGrade" */ '../views/led/LedShowGrade');
 
 import NotFound from '../components/NotFound';

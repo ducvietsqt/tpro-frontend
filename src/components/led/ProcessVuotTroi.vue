@@ -1,8 +1,5 @@
 <template>
   <div>
-      <div class="led_box" v-if="show_count_down">
-        <CountDown/>        
-      </div>
     <div class="process_box">      
       <NextProcess />    
       <div v-show="!endProcess">
@@ -33,13 +30,11 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import NextProcess from "../../components/led/NextProcess";
-import CountDown from "../../components/led/CountDown";
 
 export default {
   name: "ProcessVuotTroiLed",
-  components: { NextProcess,  CountDown },
+  components: { NextProcess },
   props: ["items"],
-  mixins: [CountDown],
   data() {
     return {
       postion: 0,
@@ -65,7 +60,7 @@ export default {
     }
   },
   created() {   
-    this.tickQuestion();            
+    //this.tickQuestion();            
   },
   mounted() {
     var self = this;    
@@ -106,7 +101,7 @@ export default {
       self.show_count_down = !self.show_count_down;  
       self.show_question = false; 
       self.show_answer = false;  
-      //this.tickQuestion();                      
+      //this.tickQuestion();                  
     }
   }
 };

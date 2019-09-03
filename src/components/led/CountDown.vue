@@ -36,7 +36,7 @@
 
     },
     methods: {
-      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer"]),
+      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer","updateStateCounDown"]),
       handleStartTimer() {
         this.$refs.vac.startCountdown(true);
       },
@@ -55,6 +55,7 @@
       },
       onFinnish(vm) { // eslint-disable-line
         //this.stopTimer();
+        this.updateStateCounDown(true);
 
       },
       onProcess(vm) { // eslint-disable-linne
@@ -68,7 +69,7 @@
       startTimer(next, prev) { // eslint-disable-line
         console.log(next, prev);
         if (next === true && next !== prev) {
-          //this.handleStartTimer();
+          this.handleStartTimer();
         }
       }
     }

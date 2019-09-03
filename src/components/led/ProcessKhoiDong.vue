@@ -1,10 +1,8 @@
 <template>
   <div>
-      <div class="led_box" v-if="show_count_down">
-        <CountDown/>        
-      </div>
     <div class="process_box">      
-      <NextProcess />    
+      <NextProcess v-show="finishedCounDown"/>
+      <BoxKetQua v-show="finishedCounDown"/>
       <div v-show="!endProcess">
         <p class="process_box--question">
           <transition name="bounce">
@@ -33,20 +31,18 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import NextProcess from "../../components/led/NextProcess";
-import CountDown from "../../components/led/CountDown";
+import BoxKetQua from "../../components/led/BoxKetQua";
 
 export default {
   name: "ProcessKhoiDongLed",
-  components: { NextProcess,  CountDown },
+  components: { NextProcess, BoxKetQua},
   props: ["items"],
-  mixins: [CountDown],
   data() {
     return {
       postion: 0,
       answered: null,
       show_question: false,
       show_answer:false,
-      show_count_down:false,
     };
   },
   computed: {
@@ -55,7 +51,8 @@ export default {
       "process",
       "processQuestion",
       "isStarted",
-      "endProcess"
+      "endProcess",
+      "finishedCounDown"
     ]),
     question() {          
       return this.items.questions[this.processQuestion].question;
@@ -68,45 +65,34 @@ export default {
     this.tickQuestion();            
   },
   mounted() {
-    var self = this;    
+    let self = this;    
     window.addEventListener('keyup', function(event) {      
-      if (event.keyCode === 13) {     
-        if(self.show_question == false){
-          self.showQuestion(); 
+      if (event.keyCode === 13) {    
+        if(!self.show_question){ 
           self.show_question = !self.show_question; 
         }   
         else{
           if(!self.show_answer)
-          {           
-            self.showAnswer();  
+          {         
             self.show_answer = !self.show_answer; 
-          }          
-          else{           
-              self.showCountDown();       
-              self.show_question = false; 
-              self.show_answer = false;        
-              self.show_count_down = !self.show_count_down;               
-          }
+          }   
+          else{
+              self.onFinishCounDown();
+          }                 
         }
       }
     });
   },
   methods: {
-    ...mapActions("game", ["tickQuestion", "answerQuestion"]),
+    ...mapActions("game", ["tickQuestion", "answerQuestion","updateStateCounDown"]),
     async showAnswerCorrect() {                              
       this.answered = null;      
     },
-    showQuestion(){
-      self.show_question = !self.show_question;
-    },
-    showAnswer(){
-      self.show_answer = !self.show_answer;
-    },
-    showCountDown(){
-      self.show_count_down = !self.show_count_down;  
-      self.show_question = false; 
-      self.show_answer = false;  
-      this.tickQuestion();                      
+    onFinishCounDown(){
+        this.updateStateCounDown(true);
+        alert(1);
+        this.show_question = false;
+        this.show_answer = false;
     }
   }
 };

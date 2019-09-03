@@ -4,7 +4,7 @@
     <NextProcess />
     <div v-show="!endProcess">
       <p class="process_box--question">
-        <strong>{{question}}</strong>
+        <strong>{{question.question}} - {{question.id}}</strong>
       </p>
       <div class="process_box--answers">
         <button
@@ -47,7 +47,7 @@ export default {
       "endProcess"
     ]),
     question() {
-      return this.items.questions[this.processQuestion].question;
+      return this.items.questions[this.processQuestion];
     },
     answers() {
       return this.items.questions[this.processQuestion].answers;

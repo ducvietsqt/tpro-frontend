@@ -2,7 +2,9 @@
   <div>
       <strong>Cuộc thi T-Pro Confetti</strong>
       <p>Hướng dẫn đăng nhập</p>
-
+    <div class="led_box" v-show="isStarted && !endProcess">
+      <CountDown/>
+    </div>
     <div class="process-step" v-show="isStarted">
       <div v-for="(item, index) in steps" :key="index">
         <button class="item_btn" :class="{active: index === process}">{{item.title}}</button>
@@ -43,6 +45,7 @@ import ProcessKienDinhLed from "../../components/led/ProcessKienDinh";
 import ProcessVuotTroiLed from "../../components/led/ProcessVuotTroi";
 import ProcessButPhaLed from "../../components/led/ProcessButPha";
 import ProcessCauHoiPhuLed from "../../components/led/ProcessCauHoiPhu";
+import CountDown from "../../components/led/CountDown";
 import { db } from "@/db";
 
 let eventsRef = db.ref('events');
@@ -53,7 +56,8 @@ export default {
     ProcessKienDinhLed,
     ProcessVuotTroiLed,
     ProcessButPhaLed,
-    ProcessCauHoiPhuLed
+    ProcessCauHoiPhuLed,
+    CountDown
   },
   data() {
     return {
@@ -120,14 +124,20 @@ export default {
 
       return sum;
     },  
-    ...mapActions("game", ["startGame"]),  
-    startProcessGame(){
-      var self = this;
-        eventsRef.on('value', function(snapshot) {       
+    ...mapActions("game", ["startGame","stopTimerRound","startTimerRound"]),  
+    startProcessGame(){      
+        let self = this;
+        eventsRef.on('value', function(snapshot) {   
           snapshot.forEach(function(childSnapshot) {              
                 let childData = childSnapshot.val();
-                if(childData){                     
-                    self.startGame();                 
+                if(childData){                                                             
+                    if(childData.key == "play_game"){
+                      //self.startTimerRound();
+                    }   
+                    else if(childData.key == "start_game"){
+                        self.startGame();   
+                        self.stopTimerRound();
+                    }           
                 }              
             });
         });       
