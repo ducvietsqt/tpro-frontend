@@ -1,6 +1,6 @@
 <template>
-  <MainLayout>
-    <router-view v-if="loggedIn"></router-view>
+  <MainLayout v-if="loggedIn">
+    <router-view></router-view>
   </MainLayout>
 </template>
 
@@ -18,9 +18,6 @@
         componentName: ''
       }
     },
-    mounted() {
-
-    },
     computed: {
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
       loggedIn() {
@@ -29,14 +26,24 @@
     },
     methods: {
       redr(cName) {
-        this.$router.replace({name: cName});
+        this.$router.push({name: cName});
+      }
+    },
+    created() {
+      if(!this.isLoggedIn) {
+
+        this.redr('signin');
       }
     },
     watch: {
-      '$route'(to, p) { // eslint-disable-line
+      '$route'(to) { // eslint-disable-line
         if (to.meta.layout !== "LoggedIn") {
-          this.componentName = to.name;
-          //this.redr(this.componentName);
+          this.redr('dashboard');
+        }
+      },
+      isLoggedIn(isLoggedIn) {
+        if(!isLoggedIn) {
+          this.redr('signin');
         }
       }
     }

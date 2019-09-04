@@ -1,21 +1,15 @@
 <template>
-  <SignIn v-if="!isLoggedIn"/>
+  <div>
+    Index
+  </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex';
-
   export default {
     name: "Index",
     computed: {
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
-    },
-    created() {
-      // if (this.isLoggedIn) {
-      //   this.$router.replace({name: "ledShow"});
-      // } else {
-      //   this.$router.replace({name: "signin"});
-      // }
     }
   };
 </script>

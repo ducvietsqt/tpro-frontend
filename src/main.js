@@ -15,7 +15,7 @@ import router from "./router/index";
 import store from './store/index';
 import { rtdbPlugin } from 'vuefire'
 Vue.config.productionTip = false
-Vue.use(rtdbPlugin)
+Vue.use(rtdbPlugin);
 
 // websocket
 const eventbus = new Vue();

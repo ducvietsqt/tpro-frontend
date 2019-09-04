@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <router-view v-if="isPassRoute"></router-view>
+  <div v-if="isPassRoute">
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,22 +9,38 @@
 
   export default {
     name: "NotLoggedIn",
-    data(){
+    data() {
       return {
         isDark: false,
         gradient: 'to top right, rgba(63,81,181, .7), rgba(25,32,72, .7)'
       }
     },
-    created() {
-      if(this.$route.meta.layout !== 'NotLoggedIn') {
-        this.$router.push({name: 'signin'})
+    methods: {
+      redr(cName) {
+        this.$router.push({name: cName});
       }
     },
     computed: {
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
       isPassRoute() {
-        return this.$route.meta.layout === 'NotLoggedIn'
+        return this.$route.meta.layout === 'NotLoggedIn' && !this.isLoggedIn;
       }
+    },
+    mounted() {
+      if(this.isLoggedIn) {
+        this.redr('dashboard');
+      }
+    },
+    watch: {
+      '$route'(n) { // eslint-disable-line
+        if (this.isLoggedIn) {
+          this.redr('dashboard');
+        } else if (n.meta.layout !== 'NotLoggedIn') {
+          this.redr('signin');
+        }
+
+      },
+
     }
   };
 </script>
@@ -65,15 +81,18 @@
     width: 27%;
     height: 115%;
   }
+
   .pos-r-t {
     position: absolute;
     top: 0px;
     right: 0px;
   }
+
   .link_bt {
     text-decoration: none;
     /*font-size: 1rem;*/
   }
+
   .form_auth {
     /*border: solid 1px red;*/
     max-width: 480px;

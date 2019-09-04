@@ -133,6 +133,19 @@
 }
 .list_questions {
   list-style-type:upper-alpha;
+  &.none-style {
+    list-style-type: none;
+    .item {
+      //border: solid 1px blue;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .dot_item {
+        left: -30px;
+        top: 3px;
+      }
+    }
+  }
   .item {
     /*border: solid 1px blue;*/
     margin-bottom: 10px;
@@ -200,4 +213,9 @@
     margin-right: 10px;
     color: red;
   }
+}
+.text-waiting {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 24px;
 }
