@@ -26,18 +26,19 @@ const actions = {
 
       }catch (e) {
 
-        /*commit("authError", e);
-        resolve(false);*/
+        commit("authError", e);
+        resolve(false);
 
-        commit("authSuccess", {token: user.code});
-        resolve(true);
+        /*commit("authSuccess", {token: user.code});
+        resolve(true);*/
       }
     })
 
   },
-  logout({ commit }) {
-    return new Promise(resolve => {
-      commit("logout");
+  async logout({ commit }, user) {
+    return new Promise(async resolve => {
+      commit("logout"); 
+      await api.logout(user);      
       removeSESSION(SESSION.TOKEN);
       delete axios.defaults.headers.common["Authorization"];
       resolve();

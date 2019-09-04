@@ -1,32 +1,34 @@
 <template>
-  <div class="process_box">
+  <div class="main_layout">
     <BoxKetQua/>
-    <NextProcess/>
-    <div v-if="!endProcess" class="question-detail">
-      <div class="process_box--question">
-        <p class="text-center title-qs">
-          Câu hỏi:
-          {{processQuestion}}
-          <!--{{titleQuestion}}-->
-        </p>
-        <p class="drs-qs">
-          {{question}}
-        </p>
-      </div>
-      <div class="process_box--answers">
-        <ol class="list_questions">
-          <li v-for="(answer, i) in answers"
-                  class="item"
-                  :class="{active: answered === i, correct: answered === i && answer['is_correct'] === '1', disable: answered !== null, 'in-correct': answered === i && answer['is_correct'] === '0'}"
-                  :key="i"
-                  @click.stop="handleAnswer(i)">
-            <span class="dot_item"></span>
-            {{answer.answer}}
-          </li>
-        </ol>
+    <!--<NextProcess/>-->
+    <div class="main_screen">
+        <div v-if="!endProcess" class="question-detail">
+          <div class="process_box--question">
+            <p class="text-center title-qs">
+              Câu hỏi:
+              {{processQuestion +1}}
+              <!--{{titleQuestion}}-->
+            </p>
+            <p class="drs-qs">
+              {{question}}
+            </p>
+          </div>
+          <div class="process_box--answers">
+            <ol class="list_questions">
+              <li v-for="(answer, i) in answers"
+                      class="item"
+                      :class="{active: answered === i, correct: answered === i && answer['is_correct'] === '1', disable: answered !== null, 'in-correct': answered === i && answer['is_correct'] === '0'}"
+                      :key="i"
+                      @click.stop="handleAnswer(i)">
+                <span class="dot_item"></span>
+                {{answer.answer}}
+              </li>
+            </ol>
 
-      </div>
-    </div>
+          </div>
+        </div>
+    </div>    
   </div>
 </template>
 
@@ -64,11 +66,10 @@
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
       async handleAnswer(index) {
         // return false
-        let is_correct = this.answers[index]['is_correct'] === '1';
+        let is_correct = (this.answers[index]['is_correct'] == 1);        
         this.answered = index;
         await this.answerQuestion({index, is_correct});
         await sleep(1000);
-        await console.log(is_correct ? 'dung' : 'sai');
         //todo: nex question
         this.answered = null;
         this.tickQuestion();

@@ -16,6 +16,7 @@ const state = {
   startTimerLed: false,
 
   isStarted: false, // start game
+  isFinishedProcess: false, // finished process || 1, 2, 3...
   isFinished: false, // finished all process
 
   resultsProcess: [],
@@ -39,6 +40,7 @@ const getters = {
   startTimerLed: state => state.startTimerLed,
 
   isStarted: state => state.isStarted,
+  isFinishedProcess: state => state.isFinishedProcess,
   isFinished: state => state.isFinished,
 
 
@@ -49,17 +51,14 @@ const getters = {
   isReady: state => state.isReady
 
 
+
 };
 
 // actions
 const actions = {
   async fetchQuestion({commit}) {
-    try {
-      let rs = await api.getQuestions();
-      commit("SET_QUESTION", rs.data)
-    }catch (e) {
-      commit("SET_QUESTION", getSESSION(SESSION.QUESTIONS))
-    }
+    let rs = await api.getQuestions();
+    commit("SET_QUESTION", rs)
   },
   startGame({commit}) {
     commit("START_GAME");
@@ -99,88 +98,83 @@ const actions = {
       commit("TICK_QUESTION");
       commit("START_TIMER");
     }
+
   },
 
-  async stopTimerRound({commit}) { // eslint-disable-line
-    await sleep(1000);
-    await commit("STOP_TIMER");
-  },
-  async startTimerRound({commit}) {
-    await sleep(1000);
-    await commit("START_TIMER");
-  },
-  tickTimer({commit, state}, processTimer) { // eslint-disable-line
+async stopTimerRound({commit}){ // eslint-disable-line
+  await sleep(1000);
+  await commit("STOP_TIMER");
+},
+async startTimerRound({commit}){
+  await sleep(1000);
+  await commit("START_TIMER");
+},
+tickTimer({commit, state}, processTimer) { // eslint-disable-line
     commit("TICK_TIMER", processTimer);
   },
 
 //Process Question Led
-  setStateReady({commit, state}, data) { // eslint-disable-line
-    commit("UPDATE_STATE_READY", data);
-  },
-  async startTimerLed({commit}) {
-    commit("START_TIMER_LED");
-  },
-  updateStateCounDown({commit, state}, data) { // eslint-disable-line
-    commit("UPDATE_COUNT_DOWN");
-  },
+setStateReady({commit}, data){
+  commit("UPDATE_STATE_READY", data);
+},
+async startTimerLed({commit}){
+  commit("START_TIMER_LED"); 
+},
+updateStateCounDown({commit},data){
+  commit("UPDATE_COUNT_DOWN",data);
+},
 
   // result
-  getResultProcess({commit}) {
+getResultProcess({commit}) {
     commit("RESULT_PROCESS");
-  }
+},
 
 };
 
 // mutations
 const mutations = {
   SET_QUESTION(state, payload) {
-    console.log('SET_QUESTION', payload);
-    state.questions = payload;
-    setSESSION(SESSION.QUESTIONS, payload);
+    //console.log('SET_QUESTION', payload.data);
+    state.questions = payload.data;
+    setSESSION(SESSION.QUESTIONS, payload.data);
   },
   START_GAME(state) {
-    state.isStarted =  true;
-    state.startTimer = true;
+    state.isStarted = true;
     state.endProcess = false;
-    state.processQuestion = 0;
-
+    state.processQuestion = null;
+    state.startTimer = true;
     if (state.process === null) {
       state.process = 0;
     } else if (state.process <= state.questions.length - 1) {
       state.process += 1;
     }
   },
-
   END_GAME(state) {
     state.isStarted = false;
-    state.startTimer = false;
-
-    state.endProcess = true;
-    state.timer = COUNT_DOWN_QUESTION;
-    state.processTimer = COUNT_DOWN_QUESTION;
-    state.processQuestion = null;
+    state.isFinishedProcess = true;
+    state.isFinished = true;
 
   },
   RESET_GAME(state) {
     state.process = null;
     state.processQuestion = null;
     state.isStarted = false;
+    state.isFinishedProcess = false;
     state.isFinished = false;
     state.questions = getSESSION(SESSION.QUESTIONS);
   },
 
-  TICK_QUESTION(state) {
+  TICK_QUESTION(state) {    
     if (state.processQuestion === null) {
-      state.processQuestion = 0;
-    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {
+      state.processQuestion = 0;      
+    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {      
       state.processQuestion += 1;
     } else if (state.processQuestion === state.questions[state.process]['questions'].length - 1) {
 
       state.startTimer = false;
       state.endProcess = true; // note *
-      state.processQuestion = null;
 
-      console.log('DONE QUESTION')
+      // alert('DONE QUESTION')
     }
   },
   START_TIMER(state) {
@@ -191,12 +185,12 @@ const mutations = {
   STOP_TIMER(state, data) { // eslint-disable-line
     state.startTimer = false;
     let _state = {...state};
-    let time_answered = data ? COUNT_DOWN_QUESTION - _state.processTimer : COUNT_DOWN_QUESTION;
-    console.log(state.questions[state.process]['questions'][state.processQuestion]['answered']);
     state.questions[state.process]['questions'][state.processQuestion]['answered'] = {
       is_correct: data ? data['is_correct'] : false,
-      time: time_answered
+      time: data ? _state.processTimer : COUNT_DOWN_QUESTION
     };
+    // state.timer = COUNT_DOWN_QUESTION;
+    // state.processTimer = COUNT_DOWN_QUESTION;
   },
   TICK_TIMER(state, processTimer) {
     state.processTimer = processTimer;
@@ -211,13 +205,13 @@ const mutations = {
       state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
     }
   },
-  UPDATE_STATE_READY(state, data) {
-    state.isReady = data;
+  UPDATE_STATE_READY(state,data){
+      state.isReady = data;
   },
-  START_TIMER_LED(state) {
+  START_TIMER_LED(state)  {
     state.startTimerLed = true;
   },
-  UPDATE_COUNT_DOWN(state, data) {
+  UPDATE_COUNT_DOWN(state,data){
     state.finishedCounDown = data;
   }
 };
