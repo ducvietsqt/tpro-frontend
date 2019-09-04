@@ -68,7 +68,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss" rel="stylesheet/scss">
   .process-step {
     display: flex;
     align-items: center;

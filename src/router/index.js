@@ -2,10 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import paths from './paths';
 import Meta from "vue-meta";
-import VueBreadcrumbs from 'vue-2-breadcrumbs';
 Vue.use(Router);
 Vue.use(Meta);
-Vue.use(VueBreadcrumbs);
 
 
 const router = new Router({

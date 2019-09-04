@@ -24,13 +24,5 @@
 </script>
 
 <style scoped>
-  .main_layout {
-    background: #E30613;
-    color: #ffffff;
-  }
-  .main_screen {
-    padding: 20px;
-    position: relative;
-    height: 100%;
-  }
+
 </style>
