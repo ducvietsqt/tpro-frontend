@@ -35,7 +35,7 @@
     },
     data() {
       return {
-        code: 'MNV01'
+        code: ''
       }
     },
     computed: {},
@@ -48,7 +48,7 @@
             // do stuff if not valid.
             await this.login({code: this.code});
             // redirect to question paage
-            this.$router.push({path: '/dashboard'})
+            //this.$router.push({path: '/dashboard'})
           }
         });
         return false;
