@@ -55,7 +55,7 @@
         let loggedIn = await this.login({code: this.code});
         // redirect to question paage
         if (loggedIn) {
-          this.$router.push({path: '/led/show'})
+          this.$router.push({path: '/dashboard'})
         }
         return false;
 

@@ -10,12 +10,13 @@
           <strong>T-Pro Confetti</strong>
         </p>
       </div>
-      <div v-if="!isStarted">
+      <div v-if="!isStarted" class="box_nex_process">
         <p style="text-align: center">
           <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
         </p>
       </div>
     </div>
+    <!--<input type="date"/>-->
     <component :is="layoutProcess"
                :items="questions[process]"></component>
   </div>
