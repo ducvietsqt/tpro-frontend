@@ -197,10 +197,7 @@ const mutations = {
   },
 
   RESULT_PROCESS(state) { // eslint-disable-line
-    // console.log(state);
-    //console.log(state.questions[state.process]['questions'])
     state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
-
     for(let i = 0; i < state.questions[state.process]['questions'].length; i++) {
       state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
     }

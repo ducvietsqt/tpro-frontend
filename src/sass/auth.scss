@@ -1,7 +1,6 @@
 .app_tp {
   height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 * {
   box-sizing: border-box;
@@ -103,7 +102,7 @@
   text-transform: uppercase;
   img {
     display: block;
-    width: 20px;
+    width: 200px;
     margin: 0px 10px;
   }
   //opacity: 0 !important;
@@ -197,13 +196,21 @@
 
 
 .main_layout {
-  background: #E30613;
+  background: #E30613 url("../assets/LED_Bg_pattern_red.png");
+  background-repeat: no-repeat;
+  background-size: 300px;
+  background-position: bottom left;
   color: #ffffff;
+  max-width: 1024px;
+  width: 100%;
+  margin: 0 auto;
 }
 .main_screen {
   padding: 20px;
   position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .err_text {
   font-size: 12px;
@@ -219,4 +226,25 @@
   text-align: center;
   margin-top: 40px;
   font-size: 24px;
+}
+
+.content_center {
+  //border: solid 1px blue;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  &.no_center {
+    display: block;
+  }
+}
+
+.led_box {
+  /*border: solid 1px red;*/
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  padding: 20px;
 }

@@ -21,7 +21,7 @@ const actions = {
     return new Promise(async resolve => {
       commit("authRequest");
       try {
-        commit("authSuccess", {payload: await api.login(user), token: user});
+        commit("authSuccess", {payload: await api.login(user), token: user.code});
         resolve(true);
 
       }catch (e) {

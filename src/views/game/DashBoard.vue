@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content_center" :class="{no_center: isStarted && !endProcess}">
     <div>
       <div class="led_box" v-show="isStarted && !endProcess">
         <CountDown/>
@@ -85,12 +85,5 @@
         color: #ffffff;
       }
     }
-  }
-
-  .led_box {    
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    padding: 20px;
   }
 </style>
