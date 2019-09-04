@@ -1,8 +1,9 @@
 <template>
-  <div v-show="endProcess">
+  <div class="box_nex_process" v-show="endProcess">
   <!--<div>-->
     <p>
-      vòng tiếp theo: <strong>{{questions[process + 1]['name']}}</strong> &nbsp;
+      Vòng tiếp theo: <strong>{{questions[process + 1]['name']}}</strong> &nbsp;
+      <br/>
       <button @click.stop="startProcess">Bắt đầu</button>
     </p>
   </div>

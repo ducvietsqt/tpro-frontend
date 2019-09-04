@@ -199,6 +199,9 @@
   background: #E30613 url("../assets/LED_Bg_pattern_red.png");
   background-repeat: no-repeat;
   background-size: 300px;
+  @media (max-width: 640px) {
+    background-size: 150px;
+  }
   background-position: bottom left;
   color: #ffffff;
   max-width: 1024px;
@@ -247,4 +250,26 @@
   right: 0px;
   top: 0px;
   padding: 20px;
+}
+
+
+.box_nex_process {
+  //border: solid 1px blue;
+  text-align: center;
+  button {
+    display: block;
+    margin: 10px auto;
+    background: #ffffff;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    padding: 0px 20px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+  }
+}
+.process_box {
+  max-width: 310px;
+  width: 100%;
 }

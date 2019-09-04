@@ -12,12 +12,13 @@
           </p>
         </div>
       </div>
-      <div v-if="!isStarted">
+      <div v-if="!isStarted" class="box_nex_process">
         <p style="text-align: center">
           <button class="start-game" @click.stop="startProcessGame">Bắt đầu</button>
         </p>
       </div>
     </div>
+    <!--<input type="date"/>-->
     <component :is="layoutProcess"
                :items="questions[process]"></component>
   </div>

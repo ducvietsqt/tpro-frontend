@@ -1,29 +1,25 @@
 <template>
-  <div class="main_layout">
-    <div class="main_screen" v-show="endProcess">
-      <p class="text-highlight">
-        <strong>
-          KẾT QUẢ <br/>
-          {{processTitle}}
-        </strong>
-      </p>
-      <div class="question-detail">
-        <div class="process_box--answers">
-          <ol class="list_questions none-style">
-            <li class="item active">
-              <span class="dot_item"></span>
-              <span>Trả lời đúng</span>
-              <span>{{resultCorrect}}</span>
-            </li>
-            <li class="item active">
-              <span class="dot_item"></span>
-              <span>Thời gian</span>
-              <span>{{totalTimeAnsweredProcess}}s</span>
-            </li>
-
-          </ol>
-
-        </div>
+  <div v-show="endProcess">
+    <p class="text-highlight">
+      <strong>
+        KẾT QUẢ <br/>
+        {{processTitle}}
+      </strong>
+    </p>
+    <div class="question-detail">
+      <div class="process_box--answers">
+        <ol class="list_questions none-style">
+          <li class="item active">
+            <span class="dot_item"></span>
+            <span>Trả lời đúng</span>
+            <span>{{resultCorrect}}</span>
+          </li>
+          <li class="item active">
+            <span class="dot_item"></span>
+            <span>Thời gian</span>
+            <span>{{totalTimeAnsweredProcess}}s</span>
+          </li>
+        </ol>
       </div>
     </div>
   </div>
