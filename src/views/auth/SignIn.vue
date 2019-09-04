@@ -1,12 +1,12 @@
 <template>
   <div>
     <form @submit.prevent="submit">
-      <label for="">Id</label> &nbsp;
+      <label for="">Mã Nhân Viên</label> &nbsp;
       <input v-validate="'required'"
              name="myinput"
              type="text"
              v-model="code"
-             placeholder="User code"/>
+             placeholder="Mã Nhân Viên"/>
       &nbsp;
       <button @click="submit">Submit</button>
     </form>
@@ -26,7 +26,7 @@
     },
     data() {
       return {
-        code: 'MNV01'
+        code: ''
       }
     },
     computed: {},
@@ -39,7 +39,7 @@
             // do stuff if not valid.
             await this.login({code: this.code});
             // redirect to question paage
-            this.$router.push({path: '/dashboard'})
+            this.$router.push({path: '/validate-dob'})
           }
         });
         return false;

@@ -1,17 +1,17 @@
 <template>
   <div>
     <form @submit.prevent="submit">
-      <label for="">Id</label> &nbsp;
+      <label for="">Ngày Sinh</label> &nbsp;
       <input v-validate="'required'"
-             name="myinput"
+             name="user_dob"
              type="text"
-             v-model="code"
+             v-model="dob"
              placeholder="User code"/>
       &nbsp;
       <button @click="submit">Submit</button>
     </form>
     <div>
-      <span style="font-size: 12px; color: #ff0000;">{{ errors.first('myinput') }}</span>
+      <span style="font-size: 12px; color: #ff0000;">{{ errors.first('user_dob') }}</span>
     </div>
   </div>
 </template>
@@ -20,13 +20,13 @@
   import {mapActions} from 'vuex';
 
   export default {
-    name: "SignIn",
+    name: "CheckDob",
     metaInfo: {
-      title: "Sign In"
+      title: "Đăng nhập"
     },
     data() {
       return {
-        code: 'MNV01'
+        dob: ''
       }
     },
     computed: {},

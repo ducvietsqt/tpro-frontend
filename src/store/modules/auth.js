@@ -20,8 +20,8 @@ const actions = {
   async login({ commit }, user) { // eslint-disable-line
     commit("authRequest");
     try {
-      commit("authSuccess", {token: 'MNV01'});
-      commit("authSuccess1", await api.login(user));
+      //commit("authSuccess", {token: 'MNV01'});   
+      commit("authSuccess", await api.login(user));
 
     }catch (e) {
       console.log(e.message);
