@@ -1,7 +1,7 @@
 <template>
   <div class="logo_form">
     <p style="margin: 0px; text-align: center">
-      {{NvId.code}}
+      {{NvId}}
     </p>
   </div>
 </template>

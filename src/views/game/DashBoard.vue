@@ -4,8 +4,8 @@
       <div class="led_box" v-show="isStarted && !endProcess">
         <CountDown/>
       </div>
-      <div class="main_layout" v-if="isShowWelcome">
-        <div class="main_screen">
+      <div v-if="isShowWelcome">
+        <div>
           <p class="text-highlight">
             Chào mừng bạn <br/> đến với <br/>
             <strong>T-Pro Confetti</strong>
