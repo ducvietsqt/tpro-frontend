@@ -53,7 +53,7 @@
         let loggedIn = await this.login({code: this.code});
         // redirect to question page
         if (loggedIn) {
-          this.$router.push({name: 'validateDob'})
+          this.$router.push({path: 'validateDob'});          
         }
         return false;
 

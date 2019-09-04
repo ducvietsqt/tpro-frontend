@@ -29,9 +29,9 @@
   import {mapActions} from 'vuex';
 
   export default {
-    name: "ValidateDob",
+    name: "CheckDob",
     metaInfo: {
-      title: "Sign In"
+      title: "T-Pro | Đăng nhập"
     },
     data() {
       return {

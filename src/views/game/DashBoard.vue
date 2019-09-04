@@ -14,7 +14,7 @@
       </div>
       <div v-if="!isStarted">
         <p style="text-align: center">
-          <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
+          <button class="start-game" @click.stop="startProcessGame">Bắt đầu</button>
         </p>
       </div>
     </div>
