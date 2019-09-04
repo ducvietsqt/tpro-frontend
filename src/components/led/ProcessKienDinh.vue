@@ -1,17 +1,17 @@
 <template>
   <div>
       <div class="led_box" v-if="show_count_down">
-        <CountDown/>        
+        <CountDown/>
       </div>
-    <div class="process_box">      
-      <NextProcess />    
+    <div class="process_box">
+      <NextProcess />
       <div v-show="!endProcess">
         <p class="process_box--question">
           <transition name="bounce">
             <div v-if="show_question">
                 {{question.question}} - {{question.id}}
-            </div>                 
-          </transition> 
+            </div>
+          </transition>
         </p>
         <transition name="bounce">
           <div class="process_box--answers" v-if="show_answer">
@@ -23,11 +23,11 @@
                 {{answer.answer}}
             </button>
           </div>
-        </transition> 
+        </transition>
 
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -57,35 +57,35 @@ export default {
       "isStarted",
       "endProcess"
     ]),
-    question() {        	
+    question() {
       return this.items.questions[this.processQuestion];
     },
     answers() {
       return this.items.questions[this.processQuestion].answers;
     }
   },
-  created() {  	
-    this.tickQuestion();            
+  created() {
+    this.tickQuestion();
   },
   mounted() {
-    var self = this;    
-    window.addEventListener('keyup', function(event) {      
-      if (event.keyCode === 13) {     
+    var self = this;
+    window.addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
         if(!self.show_question){
-          self.showQuestion(); 
-          self.show_question = !self.show_question; 
-        }   
+          self.showQuestion();
+          self.show_question = !self.show_question;
+        }
         else{
           if(!self.show_answer)
-          {          	
-            self.showAnswer();  
-            self.show_answer = !self.show_answer; 
-          }          
-          else{          	
-              self.showCountDown();       
-              self.show_question = false; 
-              self.show_answer = false;        
-              self.show_count_down = !self.show_count_down;               
+          {
+            self.showAnswer();
+            self.show_answer = !self.show_answer;
+          }
+          else{
+              self.showCountDown();
+              self.show_question = false;
+              self.show_answer = false;
+              self.show_count_down = !self.show_count_down;
           }
         }
       }
@@ -93,8 +93,8 @@ export default {
   },
   methods: {
     ...mapActions("game", ["tickQuestion", "answerQuestion"]),
-    async showAnswerCorrect() {                              
-      this.answered = null;      
+    async showAnswerCorrect() {
+      this.answered = null;
     },
     showQuestion(){
       self.show_question = !self.show_question;
@@ -103,10 +103,10 @@ export default {
       self.show_answer = !self.show_answer;
     },
     showCountDown(){
-      self.show_count_down = !self.show_count_down;  
-      self.show_question = false; 
-      self.show_answer = false;  
-      //this.tickQuestion();                      
+      self.show_count_down = !self.show_count_down;
+      self.show_question = false;
+      self.show_answer = false;
+      //this.tickQuestion();
     }
   }
 };
@@ -141,11 +141,5 @@ export default {
     transform: scale(1);
   }
 }
-.led_box {
-    border: solid 1px red;
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    padding: 20px;
-  }
+
 </style>

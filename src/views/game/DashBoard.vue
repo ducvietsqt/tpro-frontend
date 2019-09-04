@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="content_center" :class="{no_center: isStarted && !endProcess}">
     <div>
       <div class="led_box" v-show="isStarted && !endProcess">
         <CountDown/>
       </div>
-      <div>
+      <div v-if="!isStarted">
         <p class="text-highlight">
           Chào mừng bạn <br/> đến với <br/>
           <strong>T-Pro Confetti</strong>
@@ -83,11 +83,5 @@
     }
   }
 
-  .led_box {
-    border: solid 1px red;
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    padding: 20px;
-  }
+
 </style>

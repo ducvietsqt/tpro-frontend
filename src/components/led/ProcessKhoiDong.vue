@@ -136,11 +136,5 @@
     }
   }
 
-  .led_box {
-    border: solid 1px red;
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    padding: 20px;
-  }
+
 </style>

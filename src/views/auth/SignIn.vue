@@ -14,9 +14,10 @@
       </p>
     </form>
     <div class="both_text">
-      Vuợt trội
-      <img src="../../assets/Asset6.png" alt="">
-      mỗi ngày
+      <!--Vuợt trội-->
+      <!--<img src="../../assets/Asset6.png" alt="">-->
+      <!--mỗi ngày-->
+      <img src="../../assets/Vuot-Troi-Moi-Ngay_color.png" alt=""/>
     </div>
   </div>
 </template>
@@ -54,7 +55,7 @@
         let loggedIn = await this.login({code: this.code});
         // redirect to question paage
         if (loggedIn) {
-          this.$router.push({path: '/dashboard'})
+          this.$router.push({path: '/led/show'})
         }
         return false;
 
