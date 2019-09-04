@@ -1,5 +1,5 @@
 <template>
-  <div>  
+  <div>
     <div v-show="!isReady">
       <strong>Cuộc thi T-Pro Confetti</strong>
       <p>Hướng dẫn đăng nhập</p>
@@ -7,20 +7,19 @@
     <div v-show="isReady && !isStarted">
         <div class="process-step">
           <div v-for="(item, index) in steps" :key="index">
-            <h1 v-if="index == 0">{{item.title}}</h1>        
+            <h1 v-if="index == 0">{{item.title}}</h1>
           </div>
         </div>
         <div>
             <h1>Các bạn hãy sẵn sàng</h1>
-        </div>    
-    </div>    
+        </div>
+    </div>
   </div>
 </template>
 
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import api from '../../api/led';
+import { mapGetters } from "vuex";
 
 export default {
   name: "Round",

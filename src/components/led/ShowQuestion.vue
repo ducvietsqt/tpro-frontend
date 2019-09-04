@@ -1,12 +1,12 @@
 <template>
-  <div>    
-    <Round :steps="steps"/>    
+  <div>
+    <Round :steps="steps"/>
     <div class="led_box" v-show="isStarted && !endProcess">
       <CountDown ref="count_down"/>
-    </div>    
+    </div>
 
     <component :is="layoutProcess" :items="questions[process]"></component>
-         
+
     <Group/>
 
   </div>
@@ -15,7 +15,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import api from '../../api/led';
 import ProcessKhoiDongLed from "../../components/led/ProcessKhoiDong";
 import ProcessKienDinhLed from "../../components/led/ProcessKienDinh";
 import ProcessVuotTroiLed from "../../components/led/ProcessVuotTroi";
@@ -42,8 +41,8 @@ export default {
   data() {
     return {
       events :[],
-      show_question :false, 
-      isStop :false,     
+      show_question :false,
+      isStop :false,
       steps: [
         {
           title: "Vòng Khởi Động",
@@ -87,40 +86,40 @@ export default {
   },
   mounted() {
     //this.startProcessGame();
-    let self = this;    
-    window.addEventListener('keyup', function(event) { 
+    let self = this;
+    window.addEventListener('keyup', function(event) {
       if(!self.isStop){
-        if (event.keyCode === 13) {    
+        if (event.keyCode === 13) {
           self.setStateReady(true);
-          if(self.isReady && self.show_question){          
-            self.startGame(); 
-            self.stopTimerRound(); 
+          if(self.isReady && self.show_question){
+            self.startGame();
+            self.stopTimerRound();
             self.isStop = true;
-          }        
+          }
           self.show_question = true;
         }
-      }      
-    });  
+      }
+    });
   },
   firebase: {
     events: eventsRef
   },
-  methods: { 
-    ...mapActions("game", ["startGame","stopTimerRound","setStateReady"]),  
-    /*startProcessGame(){      
+  methods: {
+    ...mapActions("game", ["startGame","stopTimerRound","setStateReady"]),
+    /*startProcessGame(){
       let self = this;
-      eventsRef.on('value', function(snapshot) {   
-        snapshot.forEach(function(childSnapshot) {              
+      eventsRef.on('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
               let childData = childSnapshot.val();
-              if(childData){                                                             
+              if(childData){
                   if(childData.key == "play_game"){
                     //self.startTimerRound();
-                  }   
+                  }
                   else if(childData.key == "start_game"){
-                      self.startGame();   
+                      self.startGame();
                       self.stopTimerRound();
-                  }           
-              }              
+                  }
+              }
           });
       });
     }*/

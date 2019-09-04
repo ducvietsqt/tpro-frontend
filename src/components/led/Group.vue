@@ -19,30 +19,29 @@
     <p>total login :</p>
     {{totalItem()}}
   </div>
-  </div>   
+  </div>
 </template>
 
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import api from '../../api/led';
 
 export default {
   name: "Group",
   data() {
-    return {      
+    return {
       totalLogin: 0,
-      groupList: []      
+      groupList: []
     };
   },
   computed: {},
   mounted() {
-    this.getList();      
+    this.getList();
   },
   methods: {
     async getList(){// eslint-disable-line
       let obj = await api.getListGroup();
-      this.groupList = obj.data;       
+      this.groupList = obj.data;
     },
     totalItem() {
       let sum = 0;

@@ -51,7 +51,6 @@ const getters = {
   isReady: state => state.isReady
 
 
-
 };
 
 // actions
@@ -92,7 +91,7 @@ const actions = {
   },
   async stopTimer({commit, state}) {  // eslint-disable-line
     await commit("STOP_TIMER");
-    if(!state.endProcess) {
+    if (!state.endProcess) {
       // todo: no answered and no end process
       await sleep(1000);
       commit("TICK_QUESTION");
@@ -101,33 +100,33 @@ const actions = {
 
   },
 
-async stopTimerRound({commit}){ // eslint-disable-line
-  await sleep(1000);
-  await commit("STOP_TIMER");
-},
-async startTimerRound({commit}){
-  await sleep(1000);
-  await commit("START_TIMER");
-},
-tickTimer({commit, state}, processTimer) { // eslint-disable-line
+  async stopTimerRound({commit}) { // eslint-disable-line
+    await sleep(1000);
+    await commit("STOP_TIMER");
+  },
+  async startTimerRound({commit}) {
+    await sleep(1000);
+    await commit("START_TIMER");
+  },
+  tickTimer({commit, state}, processTimer) { // eslint-disable-line
     commit("TICK_TIMER", processTimer);
   },
 
 //Process Question Led
-setStateReady({commit,state},data){
-  commit("UPDATE_STATE_READY", data);
-},
-async startTimerLed({commit}){
-  commit("START_TIMER_LED"); 
-},
-updateStateCounDown({commit,state},data){
-  commit("UPDATE_COUNT_DOWN");
-},
+  setStateReady({commit, state}, data) { // eslint-disable-line
+    commit("UPDATE_STATE_READY", data);
+  },
+  async startTimerLed({commit}) {
+    commit("START_TIMER_LED");
+  },
+  updateStateCounDown({commit, state}, data) { // eslint-disable-line
+    commit("UPDATE_COUNT_DOWN");
+  },
 
   // result
-getResultProcess({commit}) {
+  getResultProcess({commit}) {
     commit("RESULT_PROCESS");
-},
+  },
 
 };
 
@@ -164,10 +163,10 @@ const mutations = {
     state.questions = getSESSION(SESSION.QUESTIONS);
   },
 
-  TICK_QUESTION(state) {    
+  TICK_QUESTION(state) {
     if (state.processQuestion === null) {
-      state.processQuestion = 0;      
-    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {      
+      state.processQuestion = 0;
+    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {
       state.processQuestion += 1;
     } else if (state.processQuestion === state.questions[state.process]['questions'].length - 1) {
 
@@ -201,18 +200,18 @@ const mutations = {
     //console.log(state.questions[state.process]['questions'])
     state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
 
-    for(let i = 0; i < state.questions[state.process]['questions'].length; i++) {
-      state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
+    for (let i = 0; i < state.questions[state.process]['questions'].length; i++) {
+      state.totalTimeAnsweredProcess += state.questions[state.process]['questions'][i]['answered']['time'];
     }
   },
-  UPDATE_STATE_READY(state,data){
-      state.isReady = data;
+  UPDATE_STATE_READY(state, data) {
+    state.isReady = data;
   },
-  START_TIMER_LED(state)  {
+  START_TIMER_LED(state) {
     state.startTimerLed = true;
   },
-  UPDATE_COUNT_DOWN(state,data){
-    state.finishedCounDown =data;
+  UPDATE_COUNT_DOWN(state, data) {
+    state.finishedCounDown = data;
   }
 };
 
