@@ -28,12 +28,11 @@
   export default {
     name: "SignIn",
     metaInfo: {
-      title: "Sign In"
+      title: "T-Pro | Đăng nhập"
     },
     data() {
       return {
         code: '',
-        code1: 'MNV01',
       }
     },
     computed: {
@@ -53,7 +52,7 @@
       async submit(e) {
         e.preventDefault();
         let loggedIn = await this.login({code: this.code});
-        // redirect to question paage
+        // redirect to question page
         if (loggedIn) {
           this.$router.push({path: '/dashboard'})
         }

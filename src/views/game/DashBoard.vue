@@ -4,15 +4,17 @@
       <div class="led_box" v-show="isStarted && !endProcess">
         <CountDown/>
       </div>
-      <div v-if="!isStarted">
-        <p class="text-highlight">
-          Chào mừng bạn <br/> đến với <br/>
-          <strong>T-Pro Confetti</strong>
-        </p>
+      <div class="main_layout" v-if="isShowWelcome">
+        <div class="main_screen">
+          <p class="text-highlight">
+            Chào mừng bạn <br/> đến với <br/>
+            <strong>T-Pro Confetti</strong>
+          </p>
+        </div>
       </div>
       <div v-if="!isStarted" class="box_nex_process">
         <p style="text-align: center">
-          <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
+          <button class="start-game" @click.stop="startProcessGame">Bắt đầu</button>
         </p>
       </div>
     </div>
@@ -39,7 +41,8 @@
     },
     data() {
       return {
-        steps: steps
+        steps: steps,
+        isShowWelcome:true
       }
     },
     computed: {
@@ -60,6 +63,7 @@
       startProcessGame() {
         // do something
         this.startGame();
+        this.isShowWelcome = false;
       },
     },
 
@@ -83,6 +87,4 @@
       }
     }
   }
-
-
 </style>

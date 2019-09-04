@@ -4,7 +4,7 @@ const Index = () => import(/* webpackChunkName: "Index" */ '../views/Index');
 
 // import SignIn from "../donga/views/auth/SignIn";
 const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/SignIn');
-const CheckDob = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/CheckDob');
+const CheckDob = () => import(/* webpackChunkName: "CheckDob" */ '../views/auth/CheckDob');
 
 const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/game/DashBoard');
 

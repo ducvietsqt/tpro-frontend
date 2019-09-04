@@ -5,8 +5,10 @@ async function login({code}) {
   form.append("code", code);
   return await post('/api/v1/user/login', form);
 }
-async function logout() {
-  return await post('/api/v1/user/logout');
+async function logout(code) {
+	let form = new FormData();
+  form.append("code", code);
+  return await post('/api/v1/user/logout',form);
 }
 
 async function getList() {
