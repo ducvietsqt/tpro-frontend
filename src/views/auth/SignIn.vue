@@ -14,9 +14,7 @@
       </p>
     </form>
     <div class="both_text">
-      Vuợt trội
-      <img src="../../assets/Asset6.png" alt="">
-      mỗi ngày
+      <img src="../../assets/Vuot-Troi-Moi-Ngay_color.png" alt="">
     </div>
   </div>
 </template>
