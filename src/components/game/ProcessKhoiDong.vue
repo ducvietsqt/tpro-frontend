@@ -5,7 +5,9 @@
     <div v-if="!endProcess" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
-          Câu hỏi: {{titleQuestion}}
+          Câu hỏi:
+          {{processQuestion}}
+          <!--{{titleQuestion}}-->
         </p>
         <p class="drs-qs">
           {{question}}
