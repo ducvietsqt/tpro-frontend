@@ -1,5 +1,5 @@
 <template>
-  <div class="auth_screen">
+  <div class="auth_screen" style="margin: 0">
     <div class="logo_form">
       <img src="../../assets/logo.png" alt="">
     </div>
@@ -14,10 +14,9 @@
       </p>
     </form>
     <div class="both_text">
-      <!--Vuợt trội-->
-      <!--<img src="../../assets/Asset6.png" alt="">-->
-      <!--mỗi ngày-->
-      <img src="../../assets/Vuot-Troi-Moi-Ngay_color.png" alt=""/>
+      Vuợt trội
+      <img src="../../assets/Asset6.png" alt="">
+      mỗi ngày
     </div>
   </div>
 </template>
