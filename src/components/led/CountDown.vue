@@ -39,11 +39,11 @@
       let self = this;
         this.$eventHub.$on("startCountdown", function() {
           self.handleStartTimer();
-        } );      
+        } );
     },*/
     methods: {
-      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer","updateStateCounDown"]),
-      handleStartTimer() {        
+      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer", "updateStateCounDown"]),
+      handleStartTimer() {
         this.$refs.vac.startCountdown(true);
       },
       handleStopTimer() {

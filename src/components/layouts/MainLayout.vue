@@ -20,6 +20,7 @@
   export default {
     name: "MainLayout",
     components: {TopBar, ButtonSignOut}
+
   }
 </script>
 

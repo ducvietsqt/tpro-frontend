@@ -15,7 +15,6 @@
           <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
         </p>
       </div>
-
     </div>
     <component :is="layoutProcess"
                :items="questions[process]"></component>
@@ -24,19 +23,17 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex';
-  import CountDown from "../components/game/CountDown";
-  import ProcessKhoiDong from "../components/game/ProcessKhoiDong";
-  import ProcessKienDinh from "../components/game/ProcessKienDinh";
-  import ProcessVuotTroi from "../components/game/ProcessVuotTroi";
-  import ProcessButPha from "../components/game/ProcessButPha";
-  import ProcessCauHoiPhu from "../components/game/ProcessCauHoiPhu";
-  import TestSocket from "../components/led/HandlerSocket";
-  import {steps} from "../components/utils/steps";
+  import CountDown from "../../components/game/CountDown";
+  import ProcessKhoiDong from "../../components/game/ProcessKhoiDong";
+  import ProcessKienDinh from "../../components/game/ProcessKienDinh";
+  import ProcessVuotTroi from "../../components/game/ProcessVuotTroi";
+  import ProcessButPha from "../../components/game/ProcessButPha";
+  import ProcessCauHoiPhu from "../../components/game/ProcessCauHoiPhu";
+  import {steps} from "../../components/utils/steps";
 
   export default {
     name: "DashBoard",
     components: {
-      TestSocket,
       ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown // eslint-disable-line
     },
     data() {

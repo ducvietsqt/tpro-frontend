@@ -1,5 +1,3 @@
-// const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
-
 module.exports = {
   css: {
     sourceMap: process.env.NODE_ENV !== "production",
@@ -14,6 +12,5 @@ module.exports = {
     devServer: {
       disableHostCheck: true
     },
-    // plugins: [new VuetifyLoaderPlugin()]
   }
 };

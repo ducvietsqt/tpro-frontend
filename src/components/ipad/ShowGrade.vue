@@ -7,29 +7,29 @@
       <!-- <button type="submit">Go</button>  -->
       <div class="grade" v-for="(grade, index) in filterGradeList" :key="index">
           <div v-if="gradeList.length > 0">
-                <span>{{grade.id}}</span> 
+                <span>{{grade.id}}</span>
                 <span>{{ grade.name}}</span>
                 <button :disabled="choices.indexOf(grade.id) !== -1" @click.stop="activeUser(grade.id, grade.name)" type="button">Active</button>
           </div>
-          <div v-else> 
+          <div v-else>
             <div>
               <p>Hiện tại hệ thống đang xử lý kết quả. Vui lòng chờ trong giây lát!</p>
-            </div>           
+            </div>
           </div>
-      </div>  
+      </div>
       <div>
         {{usersRef}}
-      </div>  
+      </div>
     </div>
 </template>
 
 <script>
 import api from '../../api/led';
-import { db } from "@/db";
+import { db } from "../../db";
 let usersRef = db.ref('users');
 
-export default {  
-  name: "showGrade",  
+export default {
+  name: "showGrade",
   data() {
     return {
       gradeList : [],
@@ -46,20 +46,20 @@ export default {
           return grade.name.match(this.search);
       });
     }
-  },  
+  },
   mounted() {
     this.getList();
   },
-  methods: {     
+  methods: {
     async getList(){// eslint-disable-line
-      let obj = await api.getListGroup();     
-      this.gradeList = obj.data;       
-    },  
+      let obj = await api.getListGroup();
+      this.gradeList = obj.data;
+    },
     activeUser(id, name) {// eslint-disable-line
       // do something
       this.$firebaseRefs.events.push({
         name: name,
-        id: id        
+        id: id
       });
       this.choices.push(id);
     }
