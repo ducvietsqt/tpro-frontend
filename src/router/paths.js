@@ -30,7 +30,7 @@ export default [
     path: "/",
     name: "index",
     component: Index,
-    // meta: {layout: LAYOUT.NotLoggedIn}
+    meta: {layout: LAYOUT.NotLoggedIn}
   },
 
 //Game
@@ -90,7 +90,7 @@ export default [
     name: "ledShowGrade",
     component: LedShowGrade,
     meta: {layout: LAYOUT.LoggedIn}
-  }  
+  }
 
 
 ];

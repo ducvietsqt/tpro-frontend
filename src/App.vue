@@ -15,11 +15,10 @@
     data() {
       return {
         socketMessage: '',
-        isConnected: false
+        isConnected: false,
+        layoutName: false
       }
     },
-
-
     created() {
       // todo fetch question
       this.fetchQuestion();
@@ -57,13 +56,9 @@
         // if (this.authStatus === 'loading') return 'WaitTing';
         // if (this.authStatus === 'loading') return false;
         // if (this.isLoggedIn) return 'LoggedIn';
-        return this.$route.meta.layout || 'NotLoggedIn';
+        // return this.$route.meta.layout || 'NotLoggedIn';
+        return this.layoutName
       },
-    },
-    watch: {
-      '$router'(n, p) {
-        console.log({n, p}) // eslint-disable-line
-      }
     },
     methods: {
       ...mapMutations("user", ["setCurrentUser"]),
@@ -71,7 +66,11 @@
       appClick(e) {
         this.$eventHub.$emit(this.$eventTypes.appClick, e);
       },
-
+    },
+    watch: {
+      '$route'(to) {
+        this.layoutName = to.meta.layout
+      }
     }
   };
 </script>
