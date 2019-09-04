@@ -4,6 +4,7 @@ const Index = () => import(/* webpackChunkName: "Index" */ '../views/Index');
 
 // import SignIn from "../donga/views/auth/SignIn";
 const SignIn = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/SignIn');
+const CheckDob = () => import(/* webpackChunkName: "SignIn" */ '../views/auth/CheckDob');
 
 const DashBoard = () => import(/* webpackChunkName: "DashBoard" */ '../views/game/DashBoard');
 
@@ -37,6 +38,12 @@ export default [
     path: "/signin",
     name: "signin",
     component: SignIn,
+    meta: {layout: LAYOUT.NotLoggedIn}
+  },
+  {
+    path: "/validate-dob",
+    name: "validateDob",
+    component: CheckDob,
     meta: {layout: LAYOUT.NotLoggedIn}
   },
   {

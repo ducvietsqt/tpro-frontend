@@ -8,6 +8,7 @@ const state = {
 // getters
 const getters = {
   currentUser: state => state.currentUser,
+  getDob : state => state.currentUser.dob,
   getUser: state => state.getUser,
   getName: state => {
     try {

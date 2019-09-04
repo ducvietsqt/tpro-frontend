@@ -13,6 +13,11 @@
     components: {
       MainLayout: MainLayout,
     },
+    data() {
+      return {
+        componentName: ''
+      }
+    },
     mounted() {
 
     },
@@ -23,14 +28,15 @@
       }
     },
     methods: {
-      redr() {
-        this.$router.replace({name: "dashboard"});
+      redr(cName) {
+        this.$router.replace({name: cName});
       }
     },
     watch: {
       '$route'(to, p) { // eslint-disable-line
         if (to.meta.layout !== "LoggedIn") {
-          this.redr();
+          this.componentName = to.name;
+          //this.redr(this.componentName);
         }
       }
     }

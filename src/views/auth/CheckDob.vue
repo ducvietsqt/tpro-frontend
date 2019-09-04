@@ -1,17 +1,26 @@
 <template>
-  <div>
-    <form @submit.prevent="submit">
-      <label for="">Id</label> &nbsp;
+  <div class="auth_screen">
+    <div class="logo_form">
+      <img src="../../assets/logo.png" alt="">
+    </div>
+    <form @submit.prevent="submit" class="form_signin">
+      <label class="label_form">Nhập Ngày Sinh</label>
       <input v-validate="'required'"
-             name="myinput"
+             name="id"
              type="text"
-             v-model="code"
-             placeholder="User code"/>
-      &nbsp;
-      <button @click="submit">Submit</button>
+             class="input_form"
+             v-model="dob"
+             placeholder="ID"/>
+      <button class="link_submit" @click="submit">Gửi</button>
+      <div class="error-text">
+        <span style="font-size: 12px; color: #ff0000;">{{ errors.first('id') }}</span>
+      </div>
     </form>
-    <div>
-      <span style="font-size: 12px; color: #ff0000;">{{ errors.first('myinput') }}</span>
+    <div class="both_text">
+      Vuợt trội
+      <!--<i class="material-icons">keyboard_arrow_right</i>-->
+      <img src="../../assets/Asset6.png" alt="">
+      mỗi ngày
     </div>
   </div>
 </template>
@@ -20,13 +29,13 @@
   import {mapActions} from 'vuex';
 
   export default {
-    name: "SignIn",
+    name: "ValidateDob",
     metaInfo: {
       title: "Sign In"
     },
     data() {
       return {
-        code: 'MNV01'
+        dob: ''
       }
     },
     computed: {},
@@ -36,39 +45,20 @@
         e.preventDefault();
         this.$validator.validate().then(async valid => {
           if (valid) {
-            // do stuff if not valid.
-            await this.login({code: this.code});
-            // redirect to question paage
-            this.$router.push({path: '/dashboard'})
+            //this.$router.push({path: '/dashboard'})
           }
         });
         return false;
 
       }
     }
-
   }
 </script>
 
-<style>
+<style lang="scss">
   .flex_label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .flex_label ._title {
-    flex: 1;
-  }
-
-  .flex_label ._icon {
-
-  }
-
-  .title-small {
-  }
-
-  .v-text-field__suffix {
-    font-weight: bold !important;
   }
 </style>
