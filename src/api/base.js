@@ -26,6 +26,7 @@ async function post(url, data) {
     return response.data;
   }
   catch (e) {
+    console.log('XXX',e);
     showMessage(e);
 
     throw e;
