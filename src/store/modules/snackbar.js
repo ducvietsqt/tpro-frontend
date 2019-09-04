@@ -6,7 +6,7 @@ const state = {
 
 // getters
 const getters = {
-
+  messages: state => state.messages
 };
 
 // actions

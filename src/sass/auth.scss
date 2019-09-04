@@ -68,6 +68,7 @@
       text-align: center;
       font-weight: bold;
       font-size: 20px;
+      margin: 0 auto 10px auto;
     }
     .link_submit {
       display: block;
@@ -79,6 +80,9 @@
       font-size: 16px;
       border-radius: 15px;
       width: 100px;
+      &[disabled] {
+        opacity: 0.2;
+      }
 
     }
   }
@@ -186,4 +190,14 @@
   padding: 20px;
   position: relative;
   height: 100%;
+}
+.err_text {
+  font-size: 12px;
+  padding: 10px;
+  height: 24px;
+  line-height: 24px;
+  sup, .sup {
+    margin-right: 10px;
+    color: red;
+  }
 }

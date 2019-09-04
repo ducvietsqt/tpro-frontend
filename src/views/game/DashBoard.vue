@@ -1,32 +1,21 @@
 <template>
   <div>
-    <div class="led_box" v-show="isStarted && !endProcess">
-      <CountDown/>
-    </div>
     <div>
-      <a href="javascript:void(0)" @click="logout">Đăng Xuất</a>
-    </div>
-    <p>
-      <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
-    </p>
-    <div v-if="!isStarted">
-      <p>
-        Các thí sinh sẽ bắt đầu chơi vòng thi khởi động: <br/>
-        &nbsp;&nbsp;- mỗi câu sẽ có thơi gian trả lời là 10 giây, <br/>
-        &nbsp;&nbsp;- trả lời đúng thì câu trả lời sẽ sáng lên <br/>
-        &nbsp;&nbsp;- nếu không trả lời coi như sai
-      </p>
-      <p>
-        <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
-      </p>
-    </div>
-
-    <div class="process-step" v-show="isStarted">
-      <div v-for="(item, index) in steps" :key="index">
-        <button class="item_btn" :class="{active: index === process}">{{item.title}}</button>
+      <div class="led_box" v-show="isStarted && !endProcess">
+        <CountDown/>
+      </div>
+      <div>
+        <p class="text-highlight">
+          Chào mừng bạn <br/> đến với <br/>
+          <strong>T-Pro Confetti</strong>
+        </p>
+      </div>
+      <div v-if="!isStarted">
+        <p style="text-align: center">
+          <button @click.stop="startProcessGame">Bắt đầu vòng thi khởi động</button>
+        </p>
       </div>
     </div>
-
     <component :is="layoutProcess"
                :items="questions[process]"></component>
   </div>
@@ -39,37 +28,17 @@
   import ProcessKienDinh from "../../components/game/ProcessKienDinh";
   import ProcessVuotTroi from "../../components/game/ProcessVuotTroi";
   import ProcessButPha from "../../components/game/ProcessButPha";
-  import ProcessCauHoiPhu from "../../components/game/ProcessCauHoiPhu";  
+  import ProcessCauHoiPhu from "../../components/game/ProcessCauHoiPhu";
+  import {steps} from "../../components/utils/steps";
 
   export default {
     name: "DashBoard",
-    components: {      
-      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown
+    components: {
+      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown // eslint-disable-line
     },
     data() {
       return {
-        steps: [
-          {
-            title: 'Khoi dong',
-            component: 'ProcessKhoiDong'
-          },
-          {
-            title: 'Kien Dinh',
-            component: 'ProcessKienDinh'
-          },
-          {
-            title: 'Vuot troi',
-            component: 'ProcessKhoiDong'
-          },
-          {
-            title: 'But Pha',
-            component: 'ProcessButPha'
-          },
-          {
-            title: 'Cau hoi Phu',
-            component: 'ProcessCauHoiPhu'
-          },
-        ],
+        steps: steps
       }
     },
     computed: {
@@ -87,12 +56,12 @@
     },
     methods: {
       ...mapActions("game", ["startGame"]),
-      ...mapActions("auth", ["logout"]),
       startProcessGame() {
         // do something
         this.startGame();
       },
-    }
+    },
+
   }
 </script>
 

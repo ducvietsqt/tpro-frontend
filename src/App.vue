@@ -54,9 +54,10 @@
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
       ...mapGetters("socket", ["message"]),
       layout() {
-        if (this.authStatus === 'loading') return 'WaitTing';
-        if (this.isLoggedIn) return 'LoggedIn';
-        return 'NotLoggedIn';
+        // if (this.authStatus === 'loading') return 'WaitTing';
+        // if (this.authStatus === 'loading') return false;
+        // if (this.isLoggedIn) return 'LoggedIn';
+        return this.$route.meta.layout || 'NotLoggedIn';
       },
     },
     watch: {

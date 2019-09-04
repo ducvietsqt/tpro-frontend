@@ -26,7 +26,9 @@ async function post(url, data) {
     return response.data;
   }
   catch (e) {
+    console.log('XXX',e);
     showMessage(e);
+
     throw e;
   }
 }
@@ -59,13 +61,11 @@ async function sleep(time = 500) {
 }
 
 function showMessage(e) {
-  let keys = Object.keys(e.response.data);
-  let messages = [];
-  for (let index = 0; index < keys.length; index++) {
-    const element = keys[index];
-    messages = [...messages, ...e.response.data[element]];
+  try {
+    store.commit("snackbar/setMessages", e.response.data);
+  }catch (e) {
+    store.commit("snackbar/setMessages", e);
   }
-  store.commit("snackbar/setMessages", messages);
 }
 
 export { get, patch, post, put, remove, sleep };

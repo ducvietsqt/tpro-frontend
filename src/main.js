@@ -2,7 +2,10 @@ import Vue from 'vue'
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
 import './sass/main.scss'
+
 import './plugins/veevalidate'
+
+
 import ws from './plugins/vueSocket'
 import bus from './plugins/bus'
 import './plugins/axios';

@@ -3,32 +3,32 @@
       <p>
         <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
       </p>
-      <div v-if="gradeList.length > 0">
-          <div v-for="(grade, index) in gradeList" :key="index" :class="['grade ', (choices.indexOf(grade.id) !== -1 ? 'active' : '')]">          
-              <span>{{grade.id}}</span> 
-              <span>{{ grade.name}}</span>                    
-          </div>  
-      </div>    
-      <div v-else> 
+      <div v-if="gradeList.length> 0">
+          <div v-for="(grade, index) in gradeList" :key="index" :class="['grade ', (choices.indexOf(grade.id) !== -1 ? 'active' : '')]">
+              <span>{{grade.id}}</span>
+              <span>{{ grade.name}}</span>
+          </div>
+      </div>
+      <div v-else>
           <p>Hiện tại hệ thống đang xử lý kết quả. Vui lòng chờ trong giây lát!</p>
-      </div>           
-    </div>   
+      </div>
+    </div>
 </template>
 
 <script>
 import api from '../../api/led';
-import { db } from "@/db";
+import { db } from "../../db";
 
 let userChoices = db.ref("users");
 let choicesRef = [];
 
 export default {
-  name: "ledShowGrade",  
+  name: "ledShowGrade",
   props: ["items"],
   data() {
     return {
       events: [],
-      gradeList : [], 
+      gradeList : [],
       choices: [] ,
       userChoiced: '',
       is_status:null
@@ -43,21 +43,21 @@ export default {
   firebase: {
     events: userChoices
   },
-  methods: { 
+  methods: {
     async getList(){// eslint-disable-line
       let obj = await api.getListGroup();
-      this.gradeList = obj.data;       
-    },   
-    getUserChoices(){// eslint-disable-line      
-      userChoices.on('value', function(snapshot) {       
-        snapshot.forEach(function(childSnapshot) {              
+      this.gradeList = obj.data;
+    },
+    getUserChoices(){// eslint-disable-line
+      userChoices.on('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
               let childData = childSnapshot.val();
               if(childData){
                   choicesRef.push(childData.id);
-              }              
+              }
           });
-      });    
-      this.choices = choicesRef;  
+      });
+      this.choices = choicesRef;
     }
   }
 };

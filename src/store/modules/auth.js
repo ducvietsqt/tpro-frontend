@@ -18,15 +18,20 @@ const getters = {
 // actions
 const actions = {
   async login({ commit }, user) { // eslint-disable-line
-    commit("authRequest");
-    try {
-      //commit("authSuccess", {token: 'MNV01'});         
-      commit("authSuccess", await api.login(user));
+    return new Promise(async resolve => {
+      commit("authRequest");
+      try {
+        // commit("authSuccess", {token: 'MNV01'});
+        commit("authSuccess", await api.login(user));
+        resolve(true);
 
-    }catch (e) {
-      console.log(e.message);
-      commit("authError", e.message);
-    }
+      }catch (e) {
+        // console.log(e.message);
+        commit("authError", e);
+        resolve(false);
+      }
+    })
+
   },
   logout({ commit }) {
     return new Promise(resolve => {

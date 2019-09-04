@@ -9,7 +9,7 @@
     </div>
     <div v-show="isReady && !isStarted">
         <h1>Các bạn hãy sẵn sàng</h1>
-    </div>    
+    </div>
     <div class="process-step" v-show="isStarted">
       <div v-for="(item, index) in steps" :key="index">
         <button class="item_btn" :class="{active: index === process}">{{item.title}}</button>
@@ -17,7 +17,7 @@
     </div>
 
     <component :is="layoutProcess" :items="questions[process]"></component>
-         
+
 
     <div v-for="group in groupList" :key="group.id" class="weather-data">
       <div class="weather-stats">
@@ -51,7 +51,7 @@ import ProcessVuotTroiLed from "../../components/led/ProcessVuotTroi";
 import ProcessButPhaLed from "../../components/led/ProcessButPha";
 import ProcessCauHoiPhuLed from "../../components/led/ProcessCauHoiPhu";
 import CountDown from "../../components/led/CountDown";
-import { db } from "@/db";
+import { db } from "../../db";
 
 let eventsRef = db.ref('events');
 export default {
@@ -69,8 +69,8 @@ export default {
       totalLogin: 0,
       groupList: [],
       events :[],
-      show_question :false, 
-      isStop :false,     
+      show_question :false,
+      isStop :false,
       steps: [
         {
           title: "Vòng Khởi Động",
@@ -113,22 +113,22 @@ export default {
     }
   },
   mounted() {
-    this.getList();  
+    this.getList();
     //this.startProcessGame();
-    let self = this;    
-    window.addEventListener('keyup', function(event) { 
+    let self = this;
+    window.addEventListener('keyup', function(event) {
       if(!self.isStop){
-        if (event.keyCode === 13) {    
+        if (event.keyCode === 13) {
           self.setStateReady(true);
-          if(self.isReady && self.show_question){          
-            self.startGame(); 
-            self.stopTimerRound(); 
+          if(self.isReady && self.show_question){
+            self.startGame();
+            self.stopTimerRound();
             self.isStop = true;
-          }        
+          }
           self.show_question = true;
         }
-      }      
-    });  
+      }
+    });
   },
   firebase: {
     events: eventsRef
@@ -136,8 +136,8 @@ export default {
   methods: {
     async getList(){// eslint-disable-line
       let obj = await api.getListGroup();
-      this.groupList = obj.data;       
-    }, 
+      this.groupList = obj.data;
+    },
     totalItem() {
       let sum = 0;
       for (let i = 0; i < this.groupList.length; i++) {
@@ -145,22 +145,22 @@ export default {
       }
 
       return sum;
-    },  
-    ...mapActions("game", ["startGame","stopTimerRound","startTimerRound","setStateReady"]),  
-    /*startProcessGame(){      
+    },
+    ...mapActions("game", ["startGame","stopTimerRound","startTimerRound","setStateReady"]),
+    /*startProcessGame(){
       let self = this;
-      eventsRef.on('value', function(snapshot) {   
-        snapshot.forEach(function(childSnapshot) {              
+      eventsRef.on('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
               let childData = childSnapshot.val();
-              if(childData){                                                             
+              if(childData){
                   if(childData.key == "play_game"){
                     //self.startTimerRound();
-                  }   
+                  }
                   else if(childData.key == "start_game"){
-                      self.startGame();   
+                      self.startGame();
                       self.stopTimerRound();
-                  }           
-              }              
+                  }
+              }
           });
       });
     }*/

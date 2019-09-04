@@ -4,6 +4,7 @@ import user from "./modules/user";
 import auth from "./modules/auth";
 import game from "./modules/game";
 import socket from "./modules/socket";
+import snackbar from "./modules/snackbar";
 import createLogger from "vuex/dist/logger";
 
 Vue.use(Vuex);
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     user,
     auth,
     socket,
-    game
+    game,
+    snackbar
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []
