@@ -20,6 +20,9 @@
         this.$router.push({name: cName});
       }
     },
+    created() {
+
+    },
     computed: {
       ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
       isPassRoute() {
