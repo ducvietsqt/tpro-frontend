@@ -38,6 +38,9 @@ export let getSESSION = (session_name) => {
     return value;
   }
 };
+window.getSESSION = getSESSION;
+window.setSESSION = setSESSION;
+window.SESSION = SESSION;
 
 export let removeSESSION = (session_name, remove_all = false) => {
   let removeAll = () => {

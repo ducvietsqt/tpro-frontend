@@ -1,17 +1,26 @@
 <template>
-  <div>
-    <form @submit.prevent="submit">
-      <label for="">Mã Nhân Viên</label> &nbsp;
+  <div class="auth_screen">
+    <div class="logo_form">
+      <img src="../../assets/logo.png" alt="">
+    </div>
+    <form @submit.prevent="submit" class="form_signin">
+      <label class="label_form">Nhập ID</label>
       <input v-validate="'required'"
-             name="myinput"
+             name="id"
              type="text"
+             class="input_form"
              v-model="code"
-             placeholder="Mã Nhân Viên"/>
-      &nbsp;
-      <button @click="submit">Submit</button>
+             placeholder="ID"/>
+      <button class="link_submit" @click="submit">Gửi</button>
+      <div class="error-text">
+        <span style="font-size: 12px; color: #ff0000;">{{ errors.first('id') }}</span>
+      </div>
     </form>
-    <div>
-      <span style="font-size: 12px; color: #ff0000;">{{ errors.first('myinput') }}</span>
+    <div class="both_text">
+      Vuợt trội
+      <!--<i class="material-icons">keyboard_arrow_right</i>-->
+      <img src="../../assets/Asset6.png" alt="">
+      mỗi ngày
     </div>
   </div>
 </template>
@@ -26,7 +35,7 @@
     },
     data() {
       return {
-        code: ''
+        code: 'MNV01'
       }
     },
     computed: {},
@@ -39,36 +48,20 @@
             // do stuff if not valid.
             await this.login({code: this.code});
             // redirect to question paage
-            this.$router.push({path: '/validate-dob'})
+            this.$router.push({path: '/dashboard'})
           }
         });
         return false;
 
       }
     }
-
   }
 </script>
 
-<style>
+<style lang="scss">
   .flex_label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .flex_label ._title {
-    flex: 1;
-  }
-
-  .flex_label ._icon {
-
-  }
-
-  .title-small {
-  }
-
-  .v-text-field__suffix {
-    font-weight: bold !important;
   }
 </style>

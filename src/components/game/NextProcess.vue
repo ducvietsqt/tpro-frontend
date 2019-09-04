@@ -1,11 +1,10 @@
 <template>
-  <!--<div v-show="endProcess">-->
-  <div>
+  <div v-show="endProcess">
+  <!--<div>-->
     <p>
       vòng tiếp theo: <strong>{{questions[process + 1]['name']}}</strong> &nbsp;
       <button @click.stop="startProcess">Bắt đầu</button>
     </p>
-
   </div>
 </template>
 <script>
@@ -17,10 +16,12 @@
       ...mapGetters("game", ["endProcess",  "questions", "process"]),
 
     },
+    created() {
+    },
     methods: {
       ...mapActions("game", ["startGame"]),
-      startProcess() {
-        this.startGame();
+      async startProcess() {
+        await this.startGame();
       }
     }
   }

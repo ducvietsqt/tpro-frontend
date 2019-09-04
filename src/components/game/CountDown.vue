@@ -1,9 +1,8 @@
 <template>
   <div>
-    <p>Count Down: <strong> {{processTimer}}</strong></p>
-    <!--<button type="button" @click="handleStartTimer">Start</button>-->
-    <!--<button type="button" @click="handleStopTimer">Stop</button>-->
-    <!--<button type="button" @click="handleFinishTimer">Finish</button>-->
+    <p class="title_timer">
+      <strong> {{processTimer}}</strong>S
+    </p>
     <vac :left-time="timer * SECONDS"
          :auto-start="false"
          @start="onStart"
@@ -15,7 +14,7 @@
             slot-scope="{ timeObj }">
         {{ timeObj.ceil.s }}
       </span>-->
-      <span slot="finish">Done!</span>
+      <!--<span slot="finish">Done!</span>-->
     </vac>
   </div>
 </template>
@@ -52,13 +51,14 @@
 
       },
       onStop(vm) { // eslint-disable-line
+
       },
       onFinnish(vm) { // eslint-disable-line
         this.stopTimer();
-
+        return this.handleStopTimer();
       },
       onProcess(vm) { // eslint-disable-linne
-        if (!this.startTimer) return this.$refs.vac.stopCountdown();
+        if (!this.startTimer) return this.handleStopTimer();
         let processTimer = vm.$data.timeObj.ceil.s;
         this.tickTimer(processTimer);
       },
@@ -66,15 +66,27 @@
     // watch
     watch: {
       startTimer(next, prev) { // eslint-disable-line
-        console.log(next, prev);
         if (next === true && next !== prev) {
           this.handleStartTimer();
+        }
+      },
+      endProcess(next, prev) {
+        console.log(next, prev);
+        if (next === true && prev === false) {
+          this.handleStopTimer();
         }
       }
     }
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .title_timer {
+    color: #000;
+    font-size: 18px;
+    text-transform: uppercase;
+    strong {
+      font-size: 25px;
+    }
+  }
 </style>

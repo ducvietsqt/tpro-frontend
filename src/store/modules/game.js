@@ -16,7 +16,6 @@ const state = {
   startTimerLed: false,
 
   isStarted: false, // start game
-  isFinishedProcess: false, // finished process || 1, 2, 3...
   isFinished: false, // finished all process
 
   resultsProcess: [],
@@ -40,7 +39,6 @@ const getters = {
   startTimerLed: state => state.startTimerLed,
 
   isStarted: state => state.isStarted,
-  isFinishedProcess: state => state.isFinishedProcess,
   isFinished: state => state.isFinished,
 
 
@@ -56,8 +54,12 @@ const getters = {
 // actions
 const actions = {
   async fetchQuestion({commit}) {
-    let rs = await api.getQuestions();
-    commit("SET_QUESTION", rs)
+    try {
+      let rs = await api.getQuestions();
+      commit("SET_QUESTION", rs.data)
+    }catch (e) {
+      commit("SET_QUESTION", getSESSION(SESSION.QUESTIONS))
+    }
   },
   startGame({commit}) {
     commit("START_GAME");
@@ -91,13 +93,12 @@ const actions = {
   },
   async stopTimer({commit, state}) {  // eslint-disable-line
     await commit("STOP_TIMER");
-    if (!state.endProcess) {
+    if(!state.endProcess) {
       // todo: no answered and no end process
       await sleep(1000);
       commit("TICK_QUESTION");
       commit("START_TIMER");
     }
-
   },
 
   async stopTimerRound({commit}) { // eslint-disable-line
@@ -126,39 +127,44 @@ const actions = {
   // result
   getResultProcess({commit}) {
     commit("RESULT_PROCESS");
-  },
+  }
 
 };
 
 // mutations
 const mutations = {
   SET_QUESTION(state, payload) {
-    //console.log('SET_QUESTION', payload.data);
-    state.questions = payload.data;
-    setSESSION(SESSION.QUESTIONS, payload.data);
+    console.log('SET_QUESTION', payload);
+    state.questions = payload;
+    setSESSION(SESSION.QUESTIONS, payload);
   },
   START_GAME(state) {
-    state.isStarted = true;
-    state.endProcess = false;
-    state.processQuestion = null;
+    state.isStarted =  true;
     state.startTimer = true;
+    state.endProcess = false;
+    state.processQuestion = 0;
+
     if (state.process === null) {
       state.process = 0;
     } else if (state.process <= state.questions.length - 1) {
       state.process += 1;
     }
   },
+
   END_GAME(state) {
     state.isStarted = false;
-    state.isFinishedProcess = true;
-    state.isFinished = true;
+    state.startTimer = false;
+
+    state.endProcess = true;
+    state.timer = COUNT_DOWN_QUESTION;
+    state.processTimer = COUNT_DOWN_QUESTION;
+    state.processQuestion = null;
 
   },
   RESET_GAME(state) {
     state.process = null;
     state.processQuestion = null;
     state.isStarted = false;
-    state.isFinishedProcess = false;
     state.isFinished = false;
     state.questions = getSESSION(SESSION.QUESTIONS);
   },
@@ -172,8 +178,9 @@ const mutations = {
 
       state.startTimer = false;
       state.endProcess = true; // note *
+      state.processQuestion = null;
 
-      // alert('DONE QUESTION')
+      console.log('DONE QUESTION')
     }
   },
   START_TIMER(state) {
@@ -184,12 +191,12 @@ const mutations = {
   STOP_TIMER(state, data) { // eslint-disable-line
     state.startTimer = false;
     let _state = {...state};
+    let time_answered = data ? COUNT_DOWN_QUESTION - _state.processTimer : COUNT_DOWN_QUESTION;
+    console.log(state.questions[state.process]['questions'][state.processQuestion]['answered']);
     state.questions[state.process]['questions'][state.processQuestion]['answered'] = {
       is_correct: data ? data['is_correct'] : false,
-      time: data ? _state.processTimer : COUNT_DOWN_QUESTION
+      time: time_answered
     };
-    // state.timer = COUNT_DOWN_QUESTION;
-    // state.processTimer = COUNT_DOWN_QUESTION;
   },
   TICK_TIMER(state, processTimer) {
     state.processTimer = processTimer;
@@ -200,8 +207,8 @@ const mutations = {
     //console.log(state.questions[state.process]['questions'])
     state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
 
-    for (let i = 0; i < state.questions[state.process]['questions'].length; i++) {
-      state.totalTimeAnsweredProcess += state.questions[state.process]['questions'][i]['answered']['time'];
+    for(let i = 0; i < state.questions[state.process]['questions'].length; i++) {
+      state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
     }
   },
   UPDATE_STATE_READY(state, data) {

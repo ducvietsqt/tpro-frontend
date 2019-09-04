@@ -1,16 +1,15 @@
 <template>
-  <div @click="appClick">
-
-    <component :is="layout">
+  <div @click="appClick" class="app_tp">
+    <component :is="layout" style="height: 100%;">
       <transition name="fade" mode="out-in">
         <router-view/>
       </transition>
     </component>
   </div>
 </template>
-
 <script>
   import {mapMutations, mapGetters, mapActions} from "vuex";
+
   export default {
     name: "App",
     data() {
@@ -75,3 +74,6 @@
     }
   };
 </script>
+<style lang="scss">
+
+</style>
