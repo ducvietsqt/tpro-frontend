@@ -35,7 +35,6 @@
     computed: {
       ...mapGetters("snackbar", ["messages"]),
       ...mapGetters("auth", ["authStatus"]),
-      // state.status = "loading";
       errorLogin() {
         try {
           return this.messages.message
@@ -50,12 +49,13 @@
         e.preventDefault();
         let loggedIn = await this.login({code: this.code});
         // redirect to question page
-        if (loggedIn) {
-          this.$router.push({path: '/dashboard'})
-        }
+        this.$router.push({path: '/validate-dob'})
         return false;
 
       }
+    },
+    watch: {
+
     }
   }
 </script>

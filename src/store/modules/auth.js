@@ -5,14 +5,19 @@ import api from '../../api/auth';
 const state = {
   status: "",
   token: getSESSION(SESSION.TOKEN) || "",
-  user: {}
+  user: {},
+  dataAuth: {},
+  isAuthCode: false
+
 };
 
 // getters
 const getters = {
   isLoggedIn: state => !!state.token,
   authStatus: state => state.status,
-  user: state => state.user
+  user: state => state.user,
+  dataAuth: state => state.dataAuth,
+  isAuthCode: state => state.isAuthCode
 };
 
 // actions
@@ -21,24 +26,21 @@ const actions = {
     return new Promise(async resolve => {
       commit("authRequest");
       try {
-        commit("authSuccess", {payload: await api.login(user), token: user.code});
+        commit("authCode", await api.login(user));
+        // commit("authSuccess", {payload: await api.login(user), token: user.code});
         resolve(true);
-
       }catch (e) {
-
         commit("authError", e);
         resolve(false);
 
-        /*commit("authSuccess", {token: user.code});
-        resolve(true);*/
       }
     })
 
   },
   async logout({ commit }, user) {
     return new Promise(async resolve => {
-      commit("logout"); 
-      await api.logout(user);      
+      commit("logout");
+      await api.logout(user);
       removeSESSION(SESSION.TOKEN);
       delete axios.defaults.headers.common["Authorization"];
       resolve();
@@ -51,12 +53,15 @@ const mutations = {
   authRequest(state) {
     state.status = "loading";
   },
-  authSuccess(state, {token}) {
-    console.log(token)
+  authCode(state, payload) {
+    state.dataAuth = payload.data;
+    state.isAuthCode = true;
+  },
+  authSuccess(state, data) {
     state.status = "success";
-    state.token = token;
-    // state.user = user;
-    setSESSION(SESSION.TOKEN, token);
+    state.token = state.dataAuth.code || data.code;
+    state.user = state.dataAuth || data;
+    setSESSION(SESSION.TOKEN, state.dataAuth.code);
   },
   authError(state) {
     state.status = "error";
@@ -64,6 +69,7 @@ const mutations = {
   logout(state) {
     state.status = "";
     state.token = "";
+    state.isAuthCode = false;
   }
 };
 

@@ -18,7 +18,7 @@
         </p>
       </div>
     </div>
-    <!--<input type="date"/>-->
+
     <component :is="layoutProcess"
                :items="questions[process]"></component>
   </div>
@@ -42,7 +42,7 @@
     data() {
       return {
         steps: steps,
-        isShowWelcome:true
+        isShowWelcome: true
       }
     },
     computed: {

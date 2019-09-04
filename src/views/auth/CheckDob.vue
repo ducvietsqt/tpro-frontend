@@ -1,33 +1,34 @@
 <template>
-  <div class="auth_screen">
+  <div class="auth_screen" v-if="isAuthCode">
     <div class="logo_form">
       <img src="../../assets/logo.png" alt="">
     </div>
-    <form @submit.prevent="submit" class="form_signin">
+    <form @submit.prevent="submit" class="form_signin" v-if="matchedDob === 0">
       <label class="label_form">Nhập Ngày Sinh</label>
-      <input v-validate="'required'"
-             name="id"
+      <input name="dob_code"
              type="text"
              class="input_form"
              v-model="dob"
-             placeholder="ID"/>
-      <button class="link_submit" @click="submit">Gửi</button>
-      <div class="error-text">
-        <span style="font-size: 12px; color: #ff0000;">{{ errors.first('id') }}</span>
-      </div>
+             placeholder=""/>
+      <p class="hint_text">
+          VD: 01011990
+      </p>
+      <button :disabled="!dob.trim()" class="link_submit" @click="submit">Gửi</button>
     </form>
+    <div class="form_signin" v-if="matchedDob === 1">
+      <img class="icon_error" src="../../assets/icon_emotion.png" alt=""/>
+      <label class="label_form">Vui lòng đăng nhập lại</label>
+      <button class="link_submit" @click="rdrSignIn">Thử lại</button>
+    </div>
     <div class="both_text">
-      Vuợt trội
-      <!--<i class="material-icons">keyboard_arrow_right</i>-->
-      <img src="../../assets/Asset6.png" alt="">
-      mỗi ngày
+      <img src="../../assets/Vuot-Troi-Moi-Ngay_color.png" alt="">
     </div>
   </div>
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
-
+  import {mapGetters, mapMutations} from 'vuex';
+  import {sleep} from "../../api/base";
   export default {
     name: "CheckDob",
     metaInfo: {
@@ -35,19 +36,34 @@
     },
     data() {
       return {
-        dob: ''
+        dob: '',
+        matchedDob: 0
       }
     },
-    computed: {},
+    created() {
+      if(!this.isAuthCode) {
+        this.rdrSignIn();
+      }
+    },
+    computed: {
+      ...mapGetters("auth", ["dataAuth", "isAuthCode"])
+    },
     methods: {
-      ...mapActions("auth", ["login"]),
-      submit(e) {
+      ...mapMutations("auth", ["authSuccess", "logout"]),
+      rdrSignIn() {
+        this.$router.push({name: 'signin'})
+      },
+      async submit(e) {
         e.preventDefault();
-        this.$validator.validate().then(async valid => {
-          if (valid) {
-            //this.$router.push({path: '/dashboard'})
-          }
-        });
+        if(this.dataAuth.dob === this.dob.trim()) {
+          await this.authSuccess();
+          this.$router.push({path: '/dashboard'})
+        }else {
+          this.matchedDob = 1;
+          await sleep(2000);
+          await this.logout();
+          this.rdrSignIn();
+        }
         return false;
 
       }

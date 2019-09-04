@@ -1,5 +1,7 @@
+@import "reset";
 @import "fonts";
 @import "auth";
 body {
+  overflow: hidden;
   font-family: 'HelveticaNeue';
 }

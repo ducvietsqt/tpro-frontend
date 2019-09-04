@@ -41,53 +41,50 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
 
-
-  .form_signin {
-    text-align: center;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 300px;
-    width: 100%;
-    .label_form {
-      display: inline-block;
-      margin-bottom: 10px;
-    }
-    .input_form {
-      display: block;
-
-      border: none;
-      outline: none;
-      margin-bottom: 10px;
-      background: #AAA9AD;
-      padding: 0px 10px;
-      height: 34px;
-      border-radius: 17px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 20px;
-      margin: 0 auto 10px auto;
-    }
-    .link_submit {
-      display: block;
-      margin: 0 auto;
-      border: none;
-      background: #E30613;
-      color: #ffffff;
-      padding: 5px 10px;
-      font-size: 16px;
-      border-radius: 15px;
-      width: 100px;
-      &[disabled] {
-        opacity: 0.2;
-      }
-
-    }
+.form_signin {
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 300px;
+  width: 100%;
+  .label_form {
+    display: inline-block;
+    margin-bottom: 10px;
   }
+  .input_form {
+    display: block;
 
+    border: none;
+    outline: none;
+    margin-bottom: 10px;
+    background: #AAA9AD;
+    padding: 0px 10px;
+    height: 34px;
+    border-radius: 17px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0 auto 10px auto;
+  }
+  .link_submit {
+    display: block;
+    margin: 0 auto;
+    border: none;
+    background: #E30613;
+    color: #ffffff;
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 15px;
+    width: 100px;
+    &[disabled] {
+      opacity: 0.2;
+    }
 
+  }
 }
 
 .both_text {
@@ -260,6 +257,7 @@
     display: block;
     margin: 10px auto;
     background: #ffffff;
+    color: #000;
     border: none;
     outline: none;
     font-size: 18px;
@@ -275,4 +273,18 @@
 }
 .process_box--answers {
   padding-left: 10px;
+}
+
+.text_dob {
+
+}
+.hint_text {
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+.icon_error {
+  display: block;
+  max-width: 15vw;
+  //width: 100%;
+  margin: 0 auto 10px auto;
 }
