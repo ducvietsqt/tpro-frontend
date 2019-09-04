@@ -9,10 +9,10 @@ import './plugins/axios';
 import './plugins/vueCountDown';
 import App from './App.vue'
 import router from "./router/index";
-import store from './store'
-
-import VueSocketIO from 'vue-socket.io'
-Vue.use(new VueSocketIO({connection: 'http://metinseylan.com:1992'}));
+import store from './store/index';
+import { rtdbPlugin } from 'vuefire'
+Vue.config.productionTip = false
+Vue.use(rtdbPlugin)
 
 // websocket
 const eventbus = new Vue();

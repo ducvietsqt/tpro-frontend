@@ -13,12 +13,14 @@ const state = {
   timer: COUNT_DOWN_QUESTION,
   processTimer: COUNT_DOWN_QUESTION,
   startTimer: false,
+  startTimerLed: false,
 
   isStarted: false, // start game
   isFinished: false, // finished all process
 
   resultsProcess: [],
-  totalTimeAnsweredProcess: 0
+  totalTimeAnsweredProcess: 0,
+  isReady: false,
 
 
 };
@@ -34,6 +36,7 @@ const getters = {
   timer: state => state.timer,
   processTimer: state => state.processTimer,
   startTimer: state => state.startTimer,
+  startTimerLed: state => state.startTimerLed,
 
   isStarted: state => state.isStarted,
   isFinished: state => state.isFinished,
@@ -42,6 +45,8 @@ const getters = {
   resultsProcess: state => state.resultsProcess,
   totalTimeAnsweredProcess: state => state.totalTimeAnsweredProcess,
 
+  finishedCounDown: state => state.finishedCounDown,
+  isReady: state => state.isReady
 
 
 };
@@ -95,8 +100,28 @@ const actions = {
       commit("START_TIMER");
     }
   },
+
+  async stopTimerRound({commit}) { // eslint-disable-line
+    await sleep(1000);
+    await commit("STOP_TIMER");
+  },
+  async startTimerRound({commit}) {
+    await sleep(1000);
+    await commit("START_TIMER");
+  },
   tickTimer({commit, state}, processTimer) { // eslint-disable-line
     commit("TICK_TIMER", processTimer);
+  },
+
+//Process Question Led
+  setStateReady({commit, state}, data) { // eslint-disable-line
+    commit("UPDATE_STATE_READY", data);
+  },
+  async startTimerLed({commit}) {
+    commit("START_TIMER_LED");
+  },
+  updateStateCounDown({commit, state}, data) { // eslint-disable-line
+    commit("UPDATE_COUNT_DOWN");
   },
 
   // result
@@ -179,12 +204,21 @@ const mutations = {
 
   RESULT_PROCESS(state) { // eslint-disable-line
     // console.log(state);
-    console.log(state.questions[state.process]['questions'])
+    //console.log(state.questions[state.process]['questions'])
     state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
 
     for(let i = 0; i < state.questions[state.process]['questions'].length; i++) {
       state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
     }
+  },
+  UPDATE_STATE_READY(state, data) {
+    state.isReady = data;
+  },
+  START_TIMER_LED(state) {
+    state.startTimerLed = true;
+  },
+  UPDATE_COUNT_DOWN(state, data) {
+    state.finishedCounDown = data;
   }
 };
 

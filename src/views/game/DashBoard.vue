@@ -68,7 +68,7 @@
   }
 </script>
 
-<style scoped lang="scss" rel="stylesheet/scss">
+<style scoped lang="scss">
   .process-step {
     display: flex;
     align-items: center;
@@ -87,9 +87,10 @@
   }
 
   .led_box {
-    /*border: solid 1px red;*/
+    border: solid 1px red;
     position: fixed;
-    right: 20px;
-    top: 20px;
+    right: 0px;
+    top: 0px;
+    padding: 20px;
   }
 </style>
