@@ -18,11 +18,12 @@ const LedShowQuestion = () => import(/* webpackChunkName: "LedShowQuestion" */ '
 const LedShowGrade = () => import(/* webpackChunkName: "LedShowGrade" */ '../views/led/LedShowGrade');
 
 import NotFound from '../components/NotFound';
-
+const Static = () => import(/* webpackChunkName: "Static" */ '../components/static/Index');
 
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
-  LoggedIn: "LoggedIn"
+  LoggedIn: "LoggedIn",
+  StaticPage: 'StaticPage'
 };
 export default [
   {path: "*", component: NotFound},
@@ -90,7 +91,13 @@ export default [
     name: "ledShowGrade",
     component: LedShowGrade,
     meta: {layout: LAYOUT.LoggedIn}
-  }
+  },
 
+  {
+    path: '/static',
+    name: 'static',
+    meta: {layout: LAYOUT.StaticPage},
+    component: Static,
+  }
 
 ];
