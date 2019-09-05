@@ -1,6 +1,6 @@
 .app_tp {
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  //overflow: hidden;
 }
 * {
   box-sizing: border-box;
@@ -190,6 +190,7 @@
     }
   }
 }
+
 
 
 .main_layout {

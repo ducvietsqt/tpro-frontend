@@ -19,6 +19,11 @@ const LedShowGrade = () => import(/* webpackChunkName: "LedShowGrade" */ '../vie
 
 import NotFound from '../components/NotFound';
 const Static = () => import(/* webpackChunkName: "Static" */ '../components/static/Index');
+const StaticLed = () => import(/* webpackChunkName: "StaticLed" */ '../components/static/StaticLed');
+const StaticLedKhoiDong = () => import(/* webpackChunkName: "StaticLedKhoiDong" */ '../components/static/StaticLedKhoiDong');
+const StaticLedCauHoi = () => import(/* webpackChunkName: "StaticLedCauHoi" */ '../components/static/StaticLedCauHoi');
+const StaticLedAnimate = () => import(/* webpackChunkName: "StaticLedAnimate" */ '../components/static/StaticLedAnimate');
+const StaticLedKetQua = () => import(/* webpackChunkName: "StaticLedKetQua" */ '../components/static/StaticLedKetQua');
 
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
@@ -98,6 +103,41 @@ export default [
     name: 'static',
     meta: {layout: LAYOUT.StaticPage},
     component: Static,
-  }
+  },
+  {
+    path: '/static-led',
+    name: 'static-led',
+    meta: {layout: LAYOUT.StaticPage},
+    component: StaticLed,
+  },
+  {
+    path: '/static-led-khoidong',
+    name: 'static-led-khoidong',
+    meta: {layout: LAYOUT.StaticPage},
+    component: StaticLedKhoiDong,
+  },
+  {
+    path: '/static-led-cauhoi',
+    name: 'static-led-cauhoi',
+    meta: {layout: LAYOUT.StaticPage},
+    component: StaticLedCauHoi,
+  },
+  {
+    path: '/static-led-animate',
+    name: 'static-led-animate',
+    meta: {layout: LAYOUT.StaticPage},
+    component: StaticLedAnimate,
+  },
+  {
+    path: '/static-led-ketqua',
+    name: 'static-led-ketqua',
+    meta: {layout: LAYOUT.StaticPage},
+    component: StaticLedKetQua,
+  },
+
+
+
+
+
 
 ];

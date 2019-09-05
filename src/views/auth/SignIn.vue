@@ -1,5 +1,5 @@
 <template>
-  <div class="auth_screen" style="margin: 0">
+  <div class="auth_screen">
     <div class="logo_form">
       <img src="../../assets/logo.png" alt="">
     </div>

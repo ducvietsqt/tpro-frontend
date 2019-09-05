@@ -1,0 +1,184 @@
+.main_layout_led {
+  background: #E30613 url("../assets/LED_Bg_pattern_red.png");
+  background-position: bottom left;
+  background-repeat: no-repeat;
+  background-size: 300px;
+  min-height: 100vh;
+  padding: 40px;
+  color: #ffffff;
+
+  @media (max-width: 640px) {
+    background-size: 150px;
+  }
+}
+
+.container_led {
+  max-width: 1366px;
+  margin: 0 auto;
+}
+
+.topbar-led {
+  //border: solid 1px blue;
+  display: flex;
+  justify-content: space-between;
+  .led_left {
+    width: 15vw;
+    display: block;
+  }
+  .led_right {
+    width: 15vw;
+    display: block;
+  }
+}
+
+.title_led {
+  font-size: 40px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 100;
+  margin-top: 15px;
+  position: relative;
+  strong {
+    font-weight: 700;
+    font-size: 50px;
+  }
+  .timer_title {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    color: #000;
+    font-weight: 700;
+    font-size: 30px;
+    padding-right: 20px;
+    span {
+      font-size: 45px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.contain_led_show {
+  display: flex;
+  padding: 20px 0px;
+  .left_contain, .right_contain {
+    width: 50%;
+    //border: solid 1px blue;
+  }
+  .left_contain {
+
+  }
+  .right_contain {
+
+  }
+  .line_contain {
+    width: 100px;
+    background: url("../assets/line_gr.png") no-repeat;
+    background-size: contain;
+    background-position: center;
+    img {
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.title-userguide {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.drs {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.3em;
+}
+
+.table_view {
+  width: 100%;
+  tr {
+    th {
+      color: #000;
+      //border: solid 1px blue;
+      font-size: 20px;
+      font-weight: 100;
+      padding: 10px;
+    }
+    td {
+      //border: solid 1px blue;
+      text-align: center;
+      font-weight: 700;
+      padding: 10px;
+      font-size: 20px;
+
+      &:nth-child(1) {
+        text-align: left;
+        font-weight: 100;
+
+      }
+    }
+  }
+  .sum_title {
+    text-align: center;
+    color: #ffffff;
+    strong {
+      font-weight: bold;
+      font-size: 24px;
+    }
+  }
+  .box_point {
+    background: #ffffff;
+    font-weight: bold;
+    color: #000;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+}
+
+.title-center-box {
+  font-size: 60px;
+  text-align: center;
+  margin-top: 100px;
+  font-weight: 700;
+}
+
+.list_upper_question {
+  list-style-type: upper-alpha;
+  padding: 0px 0px 0px 20px;
+  li {
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-left: 10px;
+    &.answred {
+      opacity: 1;
+    }
+    &.answred ~ li {
+      opacity: 0.6;
+    }
+
+  }
+}
+
+.title-s20 {
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.drs-s20 {
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.drs-kq {
+  font-size: 40px;
+  transform: translateY(140px);
+  strong {
+    font-size: 60px;
+  }
+}

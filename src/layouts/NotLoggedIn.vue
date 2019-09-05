@@ -24,7 +24,7 @@
 
     },
     computed: {
-      ...mapGetters("auth", ["isLoggedIn", "authStatus"]),
+      ...mapGetters("auth", ["isLoggedIn"]),
       isPassRoute() {
         return this.$route.meta.layout === 'NotLoggedIn' && !this.isLoggedIn;
       }
