@@ -61,7 +61,7 @@ export default {
       return this.items.questions[this.processQuestion];
     },
     answers() {
-      return this.items.questions[this.processQuestion].answers;
+      return this.items.questions[this.processQuestion].answerInfos;
     }
   },
   created() {
