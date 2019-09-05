@@ -51,7 +51,7 @@
         return this.items.questions[this.processQuestion].question
       },
       answers() {
-        return this.items.questions[this.processQuestion].answers
+        return this.items.questions[this.processQuestion].answerInfos
       },
       titleQuestion() {
         return this.items.questions[this.processQuestion].id

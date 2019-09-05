@@ -8,7 +8,7 @@ Vue.use(Meta);
 
 const router = new Router({
   base: '/',
-  mode: 'hash',
+  mode: 'history',
   linkActiveClass: 'active',
   routes: paths,
   // scrollBehavior: function(to, from, savedPosition) {

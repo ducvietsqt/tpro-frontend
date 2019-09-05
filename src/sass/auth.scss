@@ -123,10 +123,12 @@
 }
 .title-qs {
   margin-bottom: 10px;
-  font-size: 20px;
+  font-size: 25px;
 }
 .drs-qs {
   margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
 }
 .list_questions {
   list-style-type:upper-alpha;
@@ -147,6 +149,7 @@
     /*border: solid 1px blue;*/
     margin-bottom: 10px;
     position: relative;
+    font-size: 20px;
     &.active {
       opacity: 1 !important;
       .dot_item {
@@ -212,9 +215,10 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow:auto;
 }
 .err_text {
-  font-size: 12px;
+  font-size: 15px;
   padding: 10px;
   height: 24px;
   line-height: 24px;
@@ -269,7 +273,7 @@
   }
 }
 .process_box {
-  max-width: 310px;
+  max-width: 400px;
   width: 100%;
 }
 .process_box--answers {
@@ -288,4 +292,52 @@
   max-width: 15vw;
   //width: 100%;
   margin: 0 auto 10px auto;
+}
+
+/*Ipad Show Grade*/
+.grade-item{
+  display: flex;  
+  text-align: left;
+  font-size: 22px;
+  .grade-code{
+    width: 20%;
+  }
+  .grade-name{
+    width: 60%;
+  }
+  .grade-button{
+    width: 20%;    
+    button{
+      display: block;
+      margin: 0 15px;
+      background: #ffffff;
+      color: #000;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      padding: 0px 20px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    .hidden{
+      opacity: 0.5
+    }
+  }
+}
+.input-search-user{
+  width: 100%;
+  height: 40px;
+  margin: 10px auto;
+  background: #ffffff;
+  color: #000;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding: 0px 20px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
 }
