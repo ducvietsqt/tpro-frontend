@@ -23,7 +23,8 @@ const Static = () => import(/* webpackChunkName: "Static" */ '../components/stat
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
   LoggedIn: "LoggedIn",
-  StaticPage: 'StaticPage'
+  StaticPage: 'StaticPage',
+  General :"General"
 };
 export default [
   {path: "*", component: NotFound},
@@ -62,7 +63,7 @@ export default [
     path: "/ipad/dashboard",
     name: "dashboardIpad",
     component: DashBoardIpad,
-    meta: {layout: LAYOUT.LoggedIn}
+    meta: {layout: LAYOUT.NotLoggedIn}
   }
   ,
   {
@@ -76,7 +77,7 @@ export default [
     path: "/ipad/show-grade",
     name: "ipadShowGrade",
     component: IpadShowGrade,
-    meta: {layout: LAYOUT.LoggedIn}
+    meta: {layout: LAYOUT.General}
   },
 
   //Led

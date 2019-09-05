@@ -1,5 +1,5 @@
 <template>
-  <button @click.stop="logout(NvId.code)" class="link_signout s25">Đăng xuất</button>
+  <button @click.stop="logout(NvId)" class="link_signout s25">Đăng xuất</button>
 </template>
 
 <script>

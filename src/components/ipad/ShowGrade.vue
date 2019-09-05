@@ -1,15 +1,18 @@
 <template>
-    <div>
-      <p>
-        <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
-      </p>
-      <input type="text" v-model="search" placeholder="Tìm kiếm" />
+  <div>
+      <div>
+        <p class="text-highlight">
+          Chào mừng bạn <br/> đến với <br/>
+          <strong>T-Pro Confetti</strong>
+        </p>
+      </div>
+      <input type="text" class="input-search-user" v-model="search" placeholder="Tìm kiếm" />
       <!-- <button type="submit">Go</button>  -->
       <div class="grade" v-for="(grade, index) in filterGradeList" :key="index">
-          <div v-if="gradeList.length > 0">
-                <span>{{grade.id}}</span>
-                <span>{{ grade.name}}</span>
-                <button :disabled="choices.indexOf(grade.id) !== -1" @click.stop="activeUser(grade.id, grade.name)" type="button">Active</button>
+          <div class="grade-item" v-if="gradeList.length > 0">
+                <div class="grade-code"><p>{{grade.code}}</p></div>
+                <div class="grade-name">{{ grade.name}} - {{grade.group[0].name}}</div>
+                <div class="grade-button"><button :class="(choices.indexOf(grade.code) !== -1)?'hidden':''" :disabled="choices.indexOf(grade.code) !== -1" @click.stop="activeUser(grade.code, grade.name)" type="button">Xác nhận</button></div>                
           </div>
           <div v-else>
             <div>
@@ -17,14 +20,11 @@
             </div>
           </div>
       </div>
-      <div>
-        {{usersRef}}
-      </div>
-    </div>
+  </div>    
 </template>
 
 <script>
-import api from '../../api/led';
+import api from '../../api/user';
 import { db } from "../../db";
 let usersRef = db.ref('users');
 
@@ -42,9 +42,17 @@ export default {
   },
   computed: {
     filterGradeList:function(){
-      return this.gradeList.filter((grade) =>{
-          return grade.name.match(this.search);
-      });
+      /*return this.gradeList.filter((grade) =>{
+          return grade.code.match(this.search);
+      });*/
+      let result = this.gradeList
+      if (this.search){
+        result = result.filter(event =>
+          event.name.toLowerCase().includes(this.search.toLowerCase()) ||
+          event.code.toLowerCase().includes(this.search.toLowerCase())
+        )
+      }
+      return result;
     }
   },
   mounted() {
@@ -52,7 +60,7 @@ export default {
   },
   methods: {
     async getList(){// eslint-disable-line
-      let obj = await api.getListGroup();
+      let obj = await api.getListUser();
       this.gradeList = obj.data;
     },
     activeUser(id, name) {// eslint-disable-line
