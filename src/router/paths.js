@@ -24,6 +24,8 @@ const StaticLedKhoiDong = () => import(/* webpackChunkName: "StaticLedKhoiDong" 
 const StaticLedCauHoi = () => import(/* webpackChunkName: "StaticLedCauHoi" */ '../components/static/StaticLedCauHoi');
 const StaticLedAnimate = () => import(/* webpackChunkName: "StaticLedAnimate" */ '../components/static/StaticLedAnimate');
 const StaticLedKetQua = () => import(/* webpackChunkName: "StaticLedKetQua" */ '../components/static/StaticLedKetQua');
+const StaticLedButPha = () => import(/* webpackChunkName: "StaticLedButPha" */ '../components/static/StaticLedButPha');
+const StaticLedButPha1 = () => import(/* webpackChunkName: "StaticLedButPha1" */ '../components/static/StaticLedButPha1');
 
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
@@ -136,6 +138,20 @@ export default [
     meta: {layout: LAYOUT.StaticPage},
     component: StaticLedKetQua,
   },
+  {
+    path: '/static-led-butpha',
+    name: 'static-led-butpha',
+    meta: {layout: LAYOUT.StaticPage},
+    component: StaticLedButPha,
+  },
+  {
+    path: '/static-led-butpha1',
+    name: 'static-led-butpha1',
+    meta: {layout: LAYOUT.StaticPage},
+    component: StaticLedButPha1,
+  },
+
+
 
 
 

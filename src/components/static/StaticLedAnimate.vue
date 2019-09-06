@@ -17,38 +17,48 @@
             <div class="progress-bar-container">
               <div class="item">
                 <div class="progress-bar stripes">
-                  <span class="progress-bar-inner" style="animation-delay: 1.5s;">
-                    <strong>25%</strong>
+                  <span :class="{pause: pause, animate: !pause}"
+                        :style="{height: pause ? '20%' : ''}"
+                        class="progress-bar-inner" style="animation-delay: 1.5s;">
+                    <strong v-if="pause">20%</strong>
                   </span>
                 </div>
                 <p class="index_qs">A</p>
               </div>
               <div class="item">
                 <div class="progress-bar stripes animated reverse slower">
-                  <span class="progress-bar-inner"  style="animation-delay: 1s;">
-                    <strong>25%</strong>
+                  <span :class="{pause: pause, animate: !pause}"
+                        :style="{height: pause ? '80%' : ''}"
+                        class="progress-bar-inner" style="animation-delay: 1s;">
+                    <strong v-if="pause">80%</strong>
                   </span>
                 </div>
                 <p class="index_qs">B</p>
               </div>
               <div class="item">
                 <div class="progress-bar stripes">
-                  <span class="progress-bar-inner" style="animation-delay: 2s;">
-                    <strong>25%</strong>
+                  <span :class="{pause: pause, animate: !pause}"
+                        :style="{height: pause ? '15%' : ''}"
+                        class="progress-bar-inner" style="animation-delay: 2s;">
+                    <strong v-if="pause">15%</strong>
                   </span>
                 </div>
                 <p class="index_qs">C</p>
               </div>
               <div class="item">
                 <div class="progress-bar stripes animated reverse slower">
-                  <span class="progress-bar-inner"  style="animation-delay: 3s;">
-                    <strong>25%</strong>
+                  <span :class="{pause: pause, animate: !pause}"
+                        :style="{height: pause ? '35%' : ''}"
+                        class="progress-bar-inner" style="animation-delay: 3s;">
+                    <strong v-if="pause">35%</strong>
                   </span>
                 </div>
                 <p class="index_qs">D</p>
               </div>
 
             </div>
+            <button style="margin-bottom: 20px; border: none; background: #fff; color: #000; padding: 10px;"
+                    @click.stop="pause = true">Stop</button>
           </div>
           <p class="title-s20">
             CÂU HỎI:
@@ -189,7 +199,12 @@
 
 <script>
   export default {
-    name: "StaticLedAnimate"
+    name: "StaticLedAnimate",
+    data() {
+      return {
+        pause: false
+      }
+    }
   }
 </script>
 
