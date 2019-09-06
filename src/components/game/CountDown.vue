@@ -31,7 +31,7 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["processTimer", "timer", "startTimer"]),
+      ...mapGetters("game", ["processTimer", "timer", "startTimer","process"]),
 
     },
     methods: {
@@ -54,7 +54,9 @@
 
       },
       onFinnish(vm) { // eslint-disable-line
-        this.stopTimer();
+        if(this.process > 0 && this.process < 3){
+          this.stopTimer();
+        }        
         return this.handleStopTimer();
       },
       onProcess(vm) { // eslint-disable-linne
