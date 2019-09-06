@@ -1,24 +1,29 @@
 <template>
-  <div>
-    <div v-for="group in groupList" :key="group.id" class="weather-data">
-      <div class="weather-stats">
-        <div>
-          <span>{{group.name}}</span>
-        </div>
-        <div>
-          <span class="location">{{group.total_score}}</span>
-        </div>
-      </div>
+  <div class="right_contain">
+    <table class="table_view">
+      <tr>
+        <th>Đội</th>
+        <th>Số lượng</th>
+        <th>Điểm</th>
+      </tr>
+      <tr v-for="group in groupList" :key="group.id">
+        <td>{{group.name}}</td>
+        <td>{{group.total_login}}</td>
+        <td>
+          <div class="box_point">
+            {{group.total_score}}
+          </div>
+        </td>
+      </tr>      
 
-      <div class="group-temp">
-        <span>{{group.total_login}}</span>
-      </div>
-    </div>
-
-    <div>
-      <p>total login :</p>
-      {{totalItem()}}
-    </div>
+      <tr>
+        <td colspan="3">
+          <div class="sum_title">
+            Số người đã đăng nhập: <strong>{{totalItem()}}</strong>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 

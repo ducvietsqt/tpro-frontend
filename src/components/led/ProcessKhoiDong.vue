@@ -3,27 +3,29 @@
     <div class="process_box">
       <NextProcess v-show="isShowResult"/>
       <BoxKetQua v-show="isShowResult"/>
-      <div v-show="!endProcess && !isShowResult">
-        <div class="process_box--question">
-          <transition name="bounce">
-            <div v-if="show_question">
-              <p>Câu hỏi: {{question}}</p>
-            </div>
-          </transition>
-        </div>
-      </div>
+    </div>
+    <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
-        <div class="process_box--answers" v-if="show_answer">
-          <button
-            v-for="(answer, i) in answers"
-            :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
-            v-show="answered === null || answered === i"
-            :key="i">
-            {{answer.answer}}
-          </button>
+        <div v-if="show_question">
+          <p class="title-s20">
+            CÂU HỎI:
+          </p>
+          <p class="drs-s20">
+            {{question}}
+          </p>
         </div>
       </transition>
-    </div>
+    </div>    
+    <transition name="bounce">
+      <ol class="list_upper_question" v-if="show_answer">
+        <li v-for="(answer, i) in answers"
+          :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
+          v-show="answered === null || answered === i"
+          :key="i">
+          {{answer.answer}}
+        </li>
+      </ol>
+    </transition>
   </div>
 </template>
 
@@ -84,11 +86,13 @@
               self.start_timer = !self.start_timer;
               self.startTimerLed();
             }
-            else {
-              self.isShowResult = true;
-              self.show_answer = true;
-              self.start_timer = true;
-              self.show_question = true;
+            else if (!self.isShowResult){
+              if(self.finishedCounDown){
+                self.isShowResult = true;
+                self.show_answer = true;
+                self.start_timer = true;
+                self.show_question = true;
+              }              
             }
           }
         }
@@ -104,18 +108,7 @@
 </script>
 
 
-<style scoped lang="scss">
-  .btn_answer {
-    &.correct {
-      background: blue;
-      color: #ffffff;
-    }
-    &.in-correct {
-      background: red;
-      color: #ffffff;
-    }
-  }
-
+<style scoped lang="scss">  
   .bounce-enter-active {
     animation: bounce-in .8s;
   }
@@ -135,6 +128,5 @@
       transform: scale(1);
     }
   }
-
 
 </style>

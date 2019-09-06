@@ -1,15 +1,16 @@
-<template>
+<template>  
   <div>
-    <Round :steps="steps"/>
-    <div class="led_box" v-show="isStarted && !endProcess">
-      <CountDown ref="count_down"/>
+    <Welcome/>      
+    <div class="contain_led_show">   
+      <div class="left_contain">
+          <Round :steps="steps"/>
+          <component :is="layoutProcess" :items="questions[process]"></component>
+      </div>    
+      <div class="line_contain">
+      </div>
+      <Group/>
     </div>
-
-    <component :is="layoutProcess" :items="questions[process]"></component>
-
-    <Group/>
-
-  </div>
+  </div>  
 </template>
 
 
@@ -23,6 +24,7 @@
   import CountDown from "../../components/led/CountDown";
   import Round from "../../components/led/Round";
   import Group from "../../components/led/Group";
+  import Welcome from "../../components/led/Welcome";
   import {db} from "../../db";
 
   let eventsRef = db.ref('events');
@@ -36,7 +38,8 @@
       ProcessCauHoiPhuLed,
       CountDown,
       Round,
-      Group
+      Group,
+      Welcome
     },
 
     data() {

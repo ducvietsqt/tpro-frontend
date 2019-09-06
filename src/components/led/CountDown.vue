@@ -1,6 +1,8 @@
 <template>
   <div>
-    <p>Count Down: <strong> {{processTimer}}</strong></p>
+    <div v-show="!isFinish">
+      <span>{{processTimer}}</span>S    
+    </div>    
     <!--<button type="button" @click="handleStartTimer">Start</button>-->
     <!--<button type="button" @click="handleStopTimer">Stop</button>-->
     <!--<button type="button" @click="handleFinishTimer">Finish</button>-->
@@ -15,7 +17,7 @@
             slot-scope="{ timeObj }">
         {{ timeObj.ceil.s }}
       </span>-->
-      <span slot="finish">Done!</span>
+      <span slot="finish" v-show="isFinish">Hết giờ!</span>
     </vac>
   </div>
 </template>
@@ -28,7 +30,8 @@
     name: "CountDown",
     data() {
       return {
-        SECONDS
+        SECONDS,
+        isFinish:false
       }
     },
     computed: {
@@ -61,6 +64,7 @@
       },
       onFinnish(vm) { // eslint-disable-line
         //this.stopTimer();
+        this.isFinish = true;
         this.updateStateCounDown(true);
 
       },

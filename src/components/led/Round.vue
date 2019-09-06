@@ -1,18 +1,25 @@
 <template>
   <div>
     <div v-show="!isReady">
-      <strong>Cuộc thi T-Pro Confetti</strong>
-      <p>Hướng dẫn đăng nhập</p>
+      <p class="title-userguide">
+        HƯỚNG DẪN ĐĂNG NHẬP
+      </p>
+      <p class="drs">
+        Lorem ipsumam nonummy nibh euismod tincidunt ut laoreet tminim veniam, quis nostrud
+        exerci
+        tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequa
+      </p>
     </div>
     <div v-show="isReady && !isStarted">
-        <div class="process-step">
+        <!--<div class="process-step">
           <div v-for="(item, index) in steps" :key="index">
             <h1 v-if="index == 0">{{item.title}}</h1>
           </div>
-        </div>
-        <div>
-            <h1>Các bạn hãy sẵn sàng</h1>
-        </div>
+        </div>-->
+         <p class="title-center-box">
+            Các bạn <br/>
+            hãy sẵn sàng!
+          </p>
     </div>
   </div>
 </template>
@@ -39,5 +46,6 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+
 </style>
