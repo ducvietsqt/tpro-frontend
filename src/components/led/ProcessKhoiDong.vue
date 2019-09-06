@@ -1,9 +1,7 @@
 <template>
   <div>
-    <div class="process_box">
-      <NextProcess v-show="isShowResult"/>
-      <BoxKetQua v-show="isShowResult"/>
-    </div>
+      <!--<NextProcess v-show="isShowResult"/>-->
+    <BoxKetQua v-show="isShowResult"/>
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
         <div v-if="show_question">
@@ -16,8 +14,8 @@
         </div>
       </transition>
     </div>    
-    <transition name="bounce">
-      <ol class="list_upper_question" v-if="show_answer">
+    <transition name="fade" v-if="show_answer">
+      <ol class="list_upper_question" :class="(show_correct) ? 'show_correct' : ''"> 
         <li v-for="(answer, i) in answers"
           :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
           v-show="answered === null || answered === i"
@@ -46,7 +44,8 @@
         show_question: false,
         show_answer: false,
         start_timer: false,
-        isShowResult: false
+        isShowResult: false,
+        show_correct:false
       };
     },
     computed: {
@@ -71,30 +70,43 @@
     mounted() {
       let self = this;
       window.addEventListener('keyup', function (event) {
-        if (event.keyCode === 13) {
+        if (event.keyCode === 39) {
           if (!self.show_question) {
             self.show_question = !self.show_question;
           }
-          else {
-            if (!self.show_answer) {
+          else if (!self.show_answer) {
               self.show_answer = !self.show_answer;
-            }
-            else if (!self.start_timer) {
-              //self.show_question = false;
-              //self.show_answer = false;
-              //self.$eventHub.$emit("startCountdown");
-              self.start_timer = !self.start_timer;
-              self.startTimerLed();
-            }
-            else if (!self.isShowResult){
-              if(self.finishedCounDown){
-                self.isShowResult = true;
-                self.show_answer = true;
-                self.start_timer = true;
-                self.show_question = true;
-              }              
-            }
+            }          
+        }
+        else if(event.keyCode === 13){ 
+          if (!self.start_timer) {
+            //self.$eventHub.$emit("startCountdown");
+            self.start_timer = !self.start_timer;
+            self.startTimerLed();
           }
+          else if (!self.isShowResult){
+            if(self.finishedCounDown){  
+              self.show_question = false;
+              self.show_answer = false;
+              setTimeout(function(){
+                  self.isShowResult = true;  
+              }, 1000); 
+            }              
+          }         
+          else if (!self.show_correct){
+            self.show_answer = true;
+            self.show_correct = true;            
+          }
+        }
+        else if(event.keyCode === 78){ 
+          self.show_question = false;
+          self.show_answer = false;
+          self.show_correct = false;  
+          self.isShowResult = false;  
+          self.start_timer = false;             
+          setTimeout(function(){
+            self.tickQuestion();
+          }, 1000); 
         }
       });
     },
@@ -102,7 +114,7 @@
       ...mapActions("game", ["tickQuestion", "answerQuestion", "startTimerLed"]),
       async showAnswerCorrect() {
         this.answered = null;
-      },
+      }
     }
   };
 </script>
@@ -128,5 +140,11 @@
       transform: scale(1);
     }
   }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
 </style>

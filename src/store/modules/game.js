@@ -14,6 +14,7 @@ const state = {
   processTimer: COUNT_DOWN_QUESTION,
   startTimer: false,
   startTimerLed: false,
+  isStopTimerLed: false,
 
   isStarted: false, // start game
   isFinishedProcess: false, // finished process || 1, 2, 3...
@@ -38,6 +39,7 @@ const getters = {
   processTimer: state => state.processTimer,
   startTimer: state => state.startTimer,
   startTimerLed: state => state.startTimerLed,
+  isStopTimerLed: state => state.isStopTimerLed,
 
   isStarted: state => state.isStarted,
   isFinishedProcess: state => state.isFinishedProcess,
@@ -117,8 +119,11 @@ tickTimer({commit, state}, processTimer) { // eslint-disable-line
 setStateReady({commit}, data){
   commit("UPDATE_STATE_READY", data);
 },
-async startTimerLed({commit}){
+startTimerLed({commit}){
   commit("START_TIMER_LED"); 
+},
+stopTimerLed({commit}){
+  commit("STOP_TIMER_LED"); 
 },
 updateStateCounDown({commit},data){
   commit("UPDATE_COUNT_DOWN",data);
@@ -143,11 +148,12 @@ const mutations = {
     state.endProcess = false;
     state.processQuestion = null;
     state.startTimer = true;
+    state.isStopTimerLed = false;
     if (state.process === null) {
       state.process = 0;
     } else if (state.process <= state.questions.length - 1) {
       state.process += 1;
-    }
+    }    
   },
   END_GAME(state) {
     state.isStarted = false;
@@ -172,8 +178,7 @@ const mutations = {
     } else if (state.processQuestion === state.questions[state.process]['questions'].length - 1) {
 
       state.startTimer = false;
-      state.endProcess = true; // note *
-
+      state.endProcess = true; // note *          
       // alert('DONE QUESTION')
     }
   },
@@ -181,6 +186,7 @@ const mutations = {
     state.startTimer = true;
     state.timer = COUNT_DOWN_QUESTION;
     state.processTimer = COUNT_DOWN_QUESTION;
+    state.isStopTimerLed = false;
   },
   STOP_TIMER(state, data) { // eslint-disable-line
     state.startTimer = false;
@@ -188,7 +194,7 @@ const mutations = {
     state.questions[state.process]['questions'][state.processQuestion]['answered'] = {
       is_correct: data ? data['is_correct'] : false,
       time: data ? _state.processTimer : COUNT_DOWN_QUESTION
-    };
+    };        
     // state.timer = COUNT_DOWN_QUESTION;
     // state.processTimer = COUNT_DOWN_QUESTION;
   },
@@ -206,7 +212,11 @@ const mutations = {
       state.isReady = data;
   },
   START_TIMER_LED(state)  {
-    state.startTimerLed = true;
+    state.startTimerLed = true;    
+  },
+  STOP_TIMER_LED(state){
+    state.isStopTimerLed = true;
+    state.startTimerLed = false;
   },
   UPDATE_COUNT_DOWN(state,data){
     state.finishedCounDown = data;

@@ -161,6 +161,15 @@
 
   }
 }
+.show_correct{
+  li{
+    opacity: 0.8;
+  }
+  .active{
+    opacity: 1;
+    font-weight: bold;
+  }
+}
 
 .title-s20 {
   font-size: 20px;

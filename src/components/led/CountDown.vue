@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="!isFinish">
+    <div v-show="!isStopTimerLed">
       <span>{{processTimer}}</span>S    
     </div>    
     <!--<button type="button" @click="handleStartTimer">Start</button>-->
@@ -17,7 +17,7 @@
             slot-scope="{ timeObj }">
         {{ timeObj.ceil.s }}
       </span>-->
-      <span slot="finish" v-show="isFinish">Hết giờ!</span>
+      <span slot="finish" v-show="isStopTimerLed">Hết giờ!</span>
     </vac>
   </div>
 </template>
@@ -30,13 +30,11 @@
     name: "CountDown",
     data() {
       return {
-        SECONDS,
-        isFinish:false
+        SECONDS
       }
-    },
-    computed: {
-      ...mapGetters("game", ["processTimer", "timer", "startTimerLed"]),
-
+    },    
+    computed: {      
+      ...mapGetters("game", ["processTimer", "timer", "startTimerLed","isStopTimerLed"]),      
     },
     /*mounted(){
       let self = this;
@@ -45,11 +43,11 @@
         } );
     },*/
     methods: {
-      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer", "updateStateCounDown"]),
+      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer", "updateStateCounDown","stopTimerLed"]),
       handleStartTimer() {
         this.$refs.vac.startCountdown(true);
       },
-      handleStopTimer() {
+      handleStopTimer() {        
         this.$refs.vac.stopCountdown();
       },
       handleFinishTimer() {
@@ -64,7 +62,7 @@
       },
       onFinnish(vm) { // eslint-disable-line
         //this.stopTimer();
-        this.isFinish = true;
+        this.stopTimerLed();
         this.updateStateCounDown(true);
 
       },
@@ -76,8 +74,7 @@
     },
     // watch
     watch: {
-      startTimerLed(next, prev) { // eslint-disable-line
-        console.log(next, prev);
+      startTimerLed: function (next, prev) { // eslint-disable-line         
         if (next === true && next !== prev) {
           this.handleStartTimer();
         }

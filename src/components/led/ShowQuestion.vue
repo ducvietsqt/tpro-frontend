@@ -93,7 +93,7 @@
       let self = this;
       window.addEventListener('keyup', function (event) {
         if (!self.isStop) {
-          if (event.keyCode === 13) {
+          if (event.keyCode === 39) {
             self.setStateReady(true);
             if (self.isReady && self.show_question) {
               self.startGame();
