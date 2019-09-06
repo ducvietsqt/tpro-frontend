@@ -33,6 +33,9 @@
   import ProcessButPha from "../../components/game/ProcessButPha";
   import ProcessCauHoiPhu from "../../components/game/ProcessCauHoiPhu";
   import {steps} from "../../components/utils/steps";
+  import {db} from "../../db";
+
+  let eventsRef = db.ref('events');
 
   export default {
     name: "DashBoard",
@@ -41,6 +44,7 @@
     },
     data() {
       return {
+        events: [],
         steps: steps,
         isShowWelcome: true
       }
@@ -55,15 +59,32 @@
         }
       }
     },
-    created() {
-
+    firebase: {
+      events: eventsRef
+    },
+    mounted(){
+      this.startProcessGame();
     },
     methods: {
-      ...mapActions("game", ["startGame"]),
+      ...mapActions("game", ["startGame","tickQuestion"]),
       startProcessGame() {
         // do something
-        this.startGame();
-        this.isShowWelcome = false;
+        let self = this;
+        eventsRef.on('value', function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+                let childData = childSnapshot.val();
+                if(childData){
+                    if(childData.key == "start_game"){
+                      self.startGame();
+                      self.isShowWelcome = false;
+                    }
+                    else if(childData.key == "next_question")
+                    {
+                      self.tickQuestion();
+                    }
+                }
+            });
+        });       
       },
     },
 

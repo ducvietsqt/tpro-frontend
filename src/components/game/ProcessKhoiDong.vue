@@ -47,7 +47,7 @@
     },
     computed: {
       ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess"]),
-      question() {
+      question() {        
         return this.items.questions[this.processQuestion].question
       },
       answers() {
