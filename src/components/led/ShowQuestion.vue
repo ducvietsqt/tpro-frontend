@@ -1,10 +1,10 @@
 <template>  
   <div>
-    <Welcome/>      
+    <Round/>    
     <div class="contain_led_show">   
-      <div class="left_contain">
-          <Round :steps="steps"/>
-          <component :is="layoutProcess" :items="questions[process]"></component>
+      <div class="left_contain">        
+        <Welcome/>      
+        <component :is="layoutProcess" :items="questions[process]"></component>
       </div>    
       <div class="line_contain">
       </div>
@@ -93,11 +93,13 @@
       let self = this;
       window.addEventListener('keyup', function (event) {
         if (!self.isStop) {
-          if (event.keyCode === 39) {
+          if (event.keyCode === 39) {            
             self.setStateReady(true);
+            self.updateStatusWelcome(true);
             if (self.isReady && self.show_question) {
               self.startGame();
-              self.stopTimerRound();
+              self.stopTimerRound();              
+              self.updateStatusWelcome(false);
               self.isStop = true;
             }
             self.show_question = true;
@@ -109,7 +111,7 @@
       events: eventsRef
     },
     methods: {
-      ...mapActions("game", ["startGame", "stopTimerRound", "setStateReady"]),
+      ...mapActions("game", ["startGame", "stopTimerRound", "setStateReady","updateStatusWelcome"]),
       /*startProcessGame(){
         let self = this;
         eventsRef.on('value', function(snapshot) {

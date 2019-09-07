@@ -1,45 +1,39 @@
 <template>
-  <div>
-    <div v-show="!isReady">
-      <p class="title-userguide">
-        HƯỚNG DẪN ĐĂNG NHẬP
-      </p>
-      <p class="drs">
-        Lorem ipsumam nonummy nibh euismod tincidunt ut laoreet tminim veniam, quis nostrud
-        exerci
-        tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequa
-      </p>
-    </div>
-    <div v-show="isReady && !isStarted">
-        <!--<div class="process-step">
-          <div v-for="(item, index) in steps" :key="index">
-            <h1 v-if="index == 0">{{item.title}}</h1>
-          </div>
-        </div>-->
-         <p class="title-center-box">
-            Các bạn <br/>
-            hãy sẵn sàng!
-          </p>
-    </div>
-  </div>
+  <div class="title_led">
+    <!--Cuộc thi <strong>T-Pro Confetti</strong>-->
+    <strong>{{processTitle}}</strong>
+    <p class="timer_title" v-show="isStarted && !endProcess">
+      <CountDown ref="count_down"/>      
+    </p>
+  </div>  
 </template>
 
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+import CountDown from "../../components/led/CountDown";
 
 export default {
-  name: "Round",
-  props: ["steps"],
+  name: "Welcome",
+  components: {
+    CountDown
+  },
   data() {
     return {};
   },
   computed: {
     ...mapGetters("game", [
-      "isReady",
-      "process",
-      "isStarted"
-    ])
+        "isStarted",
+        "questions",
+        "process",
+        "endProcess"
+      ]),
+    processTitle(){ 
+      if(this.process == null)
+        return "Khởi Động";
+      else
+        return this.questions[this.process]['name'];
+    }
   },
   mounted() {},
   methods: {}
@@ -47,5 +41,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

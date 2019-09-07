@@ -1,140 +1,138 @@
 <template>
-  <div>
-    <div class="process_box">
-      <NextProcess />
-      <div v-show="!endProcess">
-        <p class="process_box--question">
-          <transition name="bounce">
-            <div v-if="show_question">
-                {{question.question}} - {{question.id}}
-            </div>
-          </transition>
-        </p>
-        <transition name="bounce">
-          <div class="process_box--answers" v-if="show_answer">
-            <button
-              v-for="(answer, i) in answers"
-              :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
-              v-show="answered === null || answered === i"
-              :key="i">
-                {{answer.answer}}
-            </button>
-          </div>
-        </transition>
-
+  <div>    
+    <div class="text-waiting" v-show="isBegin">
+        <p class="title-center-box">Bắt đầu!</p>
       </div>
-    </div>
+    <div v-show="!endProcess && !isShowResult">
+      <transition name="bounce">
+        <div v-if="show_question">
+          <p class="title-s20">
+            CÂU HỎI {{processQuestion +1}}:
+          </p>
+          <p class="drs-s20">
+            {{question}}
+          </p>
+        </div>
+      </transition>
+    </div>    
+    <transition name="fade" v-if="show_answer">
+      <ol class="list_upper_question show_correct"> 
+        <li v-for="(answer, i) in answers"
+          :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
+          v-show="answered === null || answered === i"
+          :key="i">
+          {{answer.answer}}
+        </li>
+      </ol>
+    </transition>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import NextProcess from "../../components/led/NextProcess";
+  import {mapGetters, mapActions} from "vuex";
+  import NextProcess from "../../components/led/NextProcess";
+  import BoxKetQua from "../../components/led/BoxKetQua";
+  import Round from "../../components/led/Round";
+  import { db } from "../../db";
 
-export default {
-  name: "ProcessVuotTroiLed",
-  components: { NextProcess },
-  props: ["items"],
-  data() {
-    return {
-      postion: 0,
-      answered: null,
-      show_question: false,
-      show_answer:false,
-      show_count_down:false,
-    };
-  },
-  computed: {
-    ...mapGetters("game", [
-      "questions",
-      "process",
-      "processQuestion",
-      "isStarted",
-      "endProcess"
-    ]),
-    question() {
-      return this.items.questions[this.processQuestion];
+  let eventsRef = db.ref('events');
+
+  export default {
+    name: "ProcessKhoiDongLed",
+    components: {NextProcess, BoxKetQua, Round}, // eslint-disable-line
+    props: ["items"],
+    data() {
+      return {
+        postion: 0,
+        answered: null,
+        show_question: false,
+        show_answer: false,
+        start_timer: false,
+        isShowResult: false,
+        show_correct:false,
+        events: [],
+        indexLoop :0,
+        eventName : null,
+        keyEvent: null,
+        isBegin: false
+      };
     },
-    answers() {
-      return this.items.questions[this.processQuestion].answerInfos;
-    }
-  },
-  created() {
-    //this.tickQuestion();
-  },
-  mounted() {
-    var self = this;
-    window.addEventListener('keyup', function(event) {
-      if (event.keyCode === 13) {
-        if(!self.show_question){
-          self.showQuestion();
-          self.show_question = !self.show_question;
-        }
-        else{
-          if(!self.show_answer)
-          {
-            self.showAnswer();
-            self.show_answer = !self.show_answer;
-          }
-          else{
-              self.showCountDown();
-              self.show_question = false;
-              self.show_answer = false;
-              self.show_count_down = !self.show_count_down;
-          }
-        }
+    firebase: {
+      events: eventsRef
+    },
+    computed: {
+      ...mapGetters("game", [
+        "questions",
+        "process",
+        "processQuestion",
+        "isStarted",
+        "endProcess",
+        "finishedCounDown"
+      ]),
+      question() {        
+        return this.items.questions[this.processQuestion].question;
+      },
+      answers() {
+        return this.items.questions[this.processQuestion].answerInfos;
       }
-    });
-  },
-  methods: {
-    ...mapActions("game", ["tickQuestion", "answerQuestion"]),
-    async showAnswerCorrect() {
-      this.answered = null;
     },
-    showQuestion(){
-      self.show_question = !self.show_question;
-    },
-    showAnswer(){
-      self.show_answer = !self.show_answer;
-    },
-    showCountDown(){
-      self.show_count_down = !self.show_count_down;
-      self.show_question = false;
-      self.show_answer = false;
+    created() {
       //this.tickQuestion();
+    },
+    mounted() {
+      let self = this;
+      window.addEventListener('keyup', function (event) {
+        if (event.keyCode === 39) { 
+          if (!self.show_question) {
+            self.isBegin = false;                                      
+            self.show_question = !self.show_question;
+            self.show_answer = !self.show_answer;          
+            self.start_timer = false;    
+            self.tickQuestion();
+          }            
+          else{            
+            self.show_question = false;
+            self.show_answer = false;                    
+            self.start_timer = false;      
+          }       
+        }
+
+        //Event Key Enter => Start game, Next Question And Show result
+        else if(event.keyCode === 13){ 
+          //Show Count Down and Start Timer
+          self.isBegin = true;
+          self.updateStatusWelcome(false);
+          self.start_timer = !self.start_timer;
+          self.startTimerLed();
+            self.eventName = "Next Question";
+            self.keyName = "next_question";
+          /*self.$firebaseRefs.events.push({
+            name: self.eventName,
+            key: self.keyName,
+          });*/ 
+        }
+        //Event key "N"=> next question
+        else if(event.keyCode === 78){ 
+          self.show_question = false;
+          self.show_answer = false;
+          self.show_correct = false;  
+          self.isShowResult = false;  
+          self.start_timer = false;             
+          setTimeout(function(){
+            self.tickQuestion();
+            //When Done Round=> Next Round
+            if(self.endProcess){
+              self.startGame();
+            }
+          }, 1000); 
+        }
+      });
+    },
+    methods: {
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
+      async showAnswerCorrect() {
+        this.answered = null;
+      }
     }
-  }
-};
+  };
 </script>
-
-
-<style scoped lang="scss">
-.btn_answer {
-  &.correct {
-    background: blue;
-    color: #ffffff;
-  }
-  &.in-correct {
-    background: red;
-    color: #ffffff;
-  }
-}
-.bounce-enter-active {
-  animation: bounce-in .8s;
-}
-.bounce-leave-active {
-  animation: bounce-in .8s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-</style>

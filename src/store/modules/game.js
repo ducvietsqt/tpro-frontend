@@ -23,6 +23,7 @@ const state = {
   resultsProcess: [],
   totalTimeAnsweredProcess: 0,
   isReady: false,
+  isStartWelcome:false
 
 
 };
@@ -50,7 +51,8 @@ const getters = {
   totalTimeAnsweredProcess: state => state.totalTimeAnsweredProcess,
 
   finishedCounDown: state => state.finishedCounDown,
-  isReady: state => state.isReady
+  isReady: state => state.isReady,
+  isStartWelcome: state => state.isStartWelcome
 
 
 
@@ -128,8 +130,10 @@ stopTimerLed({commit}){
 updateStateCounDown({commit},data){
   commit("UPDATE_COUNT_DOWN",data);
 },
-
-  // result
+updateStatusWelcome({commit},data){
+  commit("UPDATE_STATUS_WELCOME",data);
+},
+// result
 getResultProcess({commit}) {
     commit("RESULT_PROCESS");
 },
@@ -158,8 +162,7 @@ const mutations = {
   END_GAME(state) {
     state.isStarted = false;
     state.isFinishedProcess = true;
-    state.isFinished = true;
-
+    state.isFinished = true;    
   },
   RESET_GAME(state) {
     state.process = null;
@@ -179,7 +182,7 @@ const mutations = {
 
       state.startTimer = false;
       state.endProcess = true; // note *          
-      // alert('DONE QUESTION')
+      // alert('DONE QUESTION')        
     }
   },
   START_TIMER(state) {
@@ -217,6 +220,9 @@ const mutations = {
   STOP_TIMER_LED(state){
     state.isStopTimerLed = true;
     state.startTimerLed = false;
+  },
+  UPDATE_STATUS_WELCOME(state,data){
+    state.isStartWelcome = data;
   },
   UPDATE_COUNT_DOWN(state,data){
     state.finishedCounDown = data;

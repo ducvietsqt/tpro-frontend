@@ -1,12 +1,12 @@
 <template>
   <div>
-      <!--<NextProcess v-show="isShowResult"/>-->
+    <NextProcess v-show="endProcess"/>
     <BoxKetQua v-show="isShowResult"/>
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
         <div v-if="show_question">
           <p class="title-s20">
-            CÂU HỎI:
+            CÂU HỎI {{processQuestion +1}}:
           </p>
           <p class="drs-s20">
             {{question}}
@@ -75,16 +75,16 @@
       }
     },
     created() {
-      this.tickQuestion();
+      //this.tickQuestion();
     },
     mounted() {
       let self = this;
       window.addEventListener('keyup', function (event) {
         //Event Key Next => Show Question And Answer
-        if (event.keyCode === 39) {
-          //SHow Question
+        if (event.keyCode === 39) {          
+          //Show Question
           if (!self.show_question) {
-            self.show_question = !self.show_question;
+            self.show_question = !self.show_question;            
           }
           //Show Answer
           else if (!self.show_answer) {
@@ -106,10 +106,10 @@
               self.eventName = "Next Question";
               self.keyName = "next_question";
             }
-            self.$firebaseRefs.events.push({
+            /*self.$firebaseRefs.events.push({
               name: self.eventName,
               key: self.keyName,
-            });
+            });*/
           }
           //Show Progress Bar
           else if (!self.isShowResult){
@@ -137,45 +137,20 @@
           setTimeout(function(){
             self.tickQuestion();
             self.indexLoop++;
+            //When Done Round=> Next Round            
+            if(self.endProcess){
+              self.startGame();            
+              self.updateStatusWelcome(true);
+            }
           }, 1000); 
         }
       });
     },
     methods: {
-      ...mapActions("game", ["tickQuestion", "answerQuestion", "startTimerLed"]),
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
       async showAnswerCorrect() {
         this.answered = null;
       }
     }
   };
 </script>
-
-
-<style scoped lang="scss">  
-  .bounce-enter-active {
-    animation: bounce-in .8s;
-  }
-
-  .bounce-leave-active {
-    animation: bounce-in .8s reverse;
-  }
-
-  @keyframes bounce-in {
-    0% {
-      transform: scale(0);
-    }
-    50% {
-      transform: scale(1.5);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
-</style>
