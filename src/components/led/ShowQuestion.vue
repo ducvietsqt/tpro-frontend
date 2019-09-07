@@ -2,7 +2,8 @@
   <div>
     <Round/>    
     <div class="contain_led_show">   
-      <div class="left_contain">        
+      <div class="left_contain"> 
+        <TotalNextRound v-show="endProcess && process != 0"/>       
         <Welcome/>      
         <component :is="layoutProcess" :items="questions[process]"></component>
       </div>    
@@ -25,6 +26,7 @@
   import Round from "../../components/led/Round";
   import Group from "../../components/led/Group";
   import Welcome from "../../components/led/Welcome";
+  import TotalNextRound from "../../components/led/BoxTotalNextRound";
   import {db} from "../../db";
 
   let eventsRef = db.ref('events');
@@ -39,7 +41,8 @@
       CountDown,
       Round,
       Group,
-      Welcome
+      Welcome,
+      TotalNextRound
     },
 
     data() {
@@ -129,6 +132,11 @@
             });
         });
       }*/
+    },
+    watch: {
+      endProcess: function (t,n) { // eslint-disable-line         
+        alert(1);
+      }
     }
   };
 </script>

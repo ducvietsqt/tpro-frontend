@@ -43,17 +43,12 @@
     props: ["items"],
     data() {
       return {
-        postion: 0,
-        answered: null,
         show_question: false,
         show_answer: false,
         start_timer: false,
         isShowResult: false,
         show_correct:false,
         events: [],
-        indexLoop :0,
-        eventName : null,
-        keyEvent: null,
         isBegin: false
       };
     },
@@ -82,7 +77,7 @@
     mounted() {
       let self = this;
       window.addEventListener('keyup', function (event) {
-        if (event.keyCode === 39) { 
+        if (event.keyCode === 39) {           
           if (!self.show_question) {
             self.isBegin = false;                                      
             self.show_question = !self.show_question;
@@ -130,9 +125,6 @@
     },
     methods: {
       ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
-      async showAnswerCorrect() {
-        this.answered = null;
-      }
     }
   };
 </script>

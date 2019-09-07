@@ -43,7 +43,6 @@
     props: ["items"],
     data() {
       return {
-        postion: 0,
         answered: null,
         show_question: false,
         show_answer: false,
@@ -51,10 +50,9 @@
         isShowResult: false,
         show_correct:false,
         events: [],
-        indexLoop :0,
-        eventName : null,
-        keyEvent: null,
-        isBegin: false
+        isBegin: false,
+        isStop: false,
+        showTotalChoice: false
       };
     },
     firebase: {
@@ -82,57 +80,62 @@
     mounted() {
       let self = this;
       window.addEventListener('keyup', function (event) {
-        if (event.keyCode === 39) { 
-          if (!self.show_question) {
-            self.isBegin = false;                                      
-            self.show_question = !self.show_question;
-            self.show_answer = !self.show_answer;          
-            self.start_timer = false;    
-            self.tickQuestion();
-          }            
-          else{            
-            self.show_question = false;
-            self.show_answer = false;                    
-            self.start_timer = false;      
-          }       
-        }
+        if (!self.isStop) {       
+          if (event.keyCode === 39) { 
+            console.log("Kiên Định");
+            if (!self.show_question) {
+              self.isBegin = false;                                      
+              self.show_question = !self.show_question;
+              self.show_answer = !self.show_answer;          
+              self.start_timer = false;    
+              self.tickQuestion();
+            }            
+            else{            
+              self.show_question = false;
+              self.show_answer = false;                    
+              self.start_timer = false;      
+            }       
+          }
 
-        //Event Key Enter => Start game, Next Question And Show result
-        else if(event.keyCode === 13){ 
-          //Show Count Down and Start Timer
-          self.isBegin = true;
-          self.updateStatusWelcome(false);
-          self.start_timer = !self.start_timer;
-          self.startTimerLed();
+          //Event Key Enter => Start game, Next Question And Show result
+          else if(event.keyCode === 13){ 
+            //Show Count Down and Start Timer
+            self.isBegin = true;
+            self.updateStatusWelcome(false);
+            self.start_timer = !self.start_timer;
+            self.startTimerLed();
             self.eventName = "Next Question";
             self.keyName = "next_question";
-          /*self.$firebaseRefs.events.push({
-            name: self.eventName,
-            key: self.keyName,
-          });*/ 
-        }
-        //Event key "N"=> next question
-        else if(event.keyCode === 78){ 
-          self.show_question = false;
-          self.show_answer = false;
-          self.show_correct = false;  
-          self.isShowResult = false;  
-          self.start_timer = false;             
-          setTimeout(function(){
-            self.tickQuestion();
-            //When Done Round=> Next Round
-            if(self.endProcess){
-              self.startGame();
-            }
-          }, 1000); 
-        }
-      });
+            /*self.$firebaseRefs.events.push({
+              name: self.eventName,
+              key: self.keyName,
+            });*/ 
+          }
+          //Event key "N"=> next question
+          else if(event.keyCode === 78){ 
+            self.show_question = false;
+            self.show_answer = false;
+            self.show_correct = false;  
+            self.isShowResult = false;  
+            self.start_timer = false;             
+            setTimeout(function(){
+              self.tickQuestion();
+              //When Done Round=> Next Round
+              if(self.endProcess){
+                if(self.showTotalChoice){
+                  self.startGame();
+                  self.updateStatusWelcome(true);
+                  self.isStop = true;
+                }                
+                self.showTotalChoice = true;
+              }
+            }, 1000); 
+          }
+        }        
+      });      
     },
     methods: {
       ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
-      async showAnswerCorrect() {
-        this.answered = null;
-      }
     }
   };
 </script>

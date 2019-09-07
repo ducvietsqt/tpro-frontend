@@ -1,6 +1,7 @@
 import api from '../../api/question';
 import {getSESSION, SESSION, setSESSION} from "../../utils";
 import {COUNT_DOWN_QUESTION} from "../../utils/constant";
+import {COUNT_DOWN_TOTAL_QUESTION} from "../../utils/constant";
 import {sleep} from "../../api/base";
 // initial state
 const state = {
@@ -23,7 +24,7 @@ const state = {
   resultsProcess: [],
   totalTimeAnsweredProcess: 0,
   isReady: false,
-  isStartWelcome:false
+  isStartWelcome:false  
 
 
 };
@@ -182,7 +183,7 @@ const mutations = {
 
       state.startTimer = false;
       state.endProcess = true; // note *          
-      // alert('DONE QUESTION')        
+      // alert('DONE QUESTION')              
     }
   },
   START_TIMER(state) {

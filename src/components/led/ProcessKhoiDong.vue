@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <NextProcess v-show="endProcess"/>
+  <div>    
     <BoxKetQua v-show="isShowResult"/>
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
@@ -52,7 +51,8 @@
         events: [],
         indexLoop :0,
         eventName : null,
-        keyEvent: null
+        keyEvent: null,
+        isStop: false        
       };
     },
     firebase: {
@@ -78,73 +78,77 @@
       //this.tickQuestion();
     },
     mounted() {
-      let self = this;
-      window.addEventListener('keyup', function (event) {
-        //Event Key Next => Show Question And Answer
-        if (event.keyCode === 39) {          
-          //Show Question
-          if (!self.show_question) {
-            self.show_question = !self.show_question;            
-          }
-          //Show Answer
-          else if (!self.show_answer) {
-            self.show_answer = !self.show_answer;
-          }          
-        }
-        //Event Key Enter => Start game, Next Question And Show result
-        else if(event.keyCode === 13){ 
-          //Show Count Down and Start Timer
-          if (!self.start_timer) {
-            //self.$eventHub.$emit("startCountdown");
-            self.start_timer = !self.start_timer;
-            self.startTimerLed();
-            if(self.indexLoop == 0){
-              self.eventName = "Start Game";
-              self.keyName = "start_game";
+      let self = this;            
+      window.addEventListener('keyup', function (event) {  
+        if (!self.isStop) {       
+          //Event Key Next => Show Question And Answer
+          if (event.keyCode === 39) {          
+            console.log("Khởi Động");
+            //Show Question
+            if (!self.show_question) {
+              self.show_question = !self.show_question;            
             }
-            else{
-              self.eventName = "Next Question";
-              self.keyName = "next_question";
-            }
-            /*self.$firebaseRefs.events.push({
-              name: self.eventName,
-              key: self.keyName,
-            });*/
+            //Show Answer
+            else if (!self.show_answer) {
+              self.show_answer = !self.show_answer;
+            }          
           }
-          //Show Progress Bar
-          else if (!self.isShowResult){
-            if(self.finishedCounDown){  
-              self.show_question = false;
-              self.show_answer = false;
-              setTimeout(function(){
-                  self.isShowResult = true;  
-              }, 1000); 
-            }              
-          }         
-          //Show Correct Answer
-          else if (!self.show_correct){
-            self.show_answer = true;
-            self.show_correct = true;            
-          }
-        }
-        //Event key "N"=> next question
-        else if(event.keyCode === 78){ 
-          self.show_question = false;
-          self.show_answer = false;
-          self.show_correct = false;  
-          self.isShowResult = false;  
-          self.start_timer = false;             
-          setTimeout(function(){
-            self.tickQuestion();
-            self.indexLoop++;
-            //When Done Round=> Next Round            
-            if(self.endProcess){
-              self.startGame();            
-              self.updateStatusWelcome(true);
+          //Event Key Enter => Start game, Next Question And Show result
+          else if(event.keyCode === 13){ 
+            //Show Count Down and Start Timer
+            if (!self.start_timer) {
+              //self.$eventHub.$emit("startCountdown");
+              self.start_timer = !self.start_timer;
+              self.startTimerLed();
+              if(self.indexLoop == 0){
+                self.eventName = "Start Game";
+                self.keyName = "start_game";
+              }
+              else{
+                self.eventName = "Next Question";
+                self.keyName = "next_question";
+              }
+              /*self.$firebaseRefs.events.push({
+                name: self.eventName,
+                key: self.keyName,
+              });*/
             }
-          }, 1000); 
-        }
-      });
+            //Show Progress Bar
+            else if (!self.isShowResult){
+              if(self.finishedCounDown){  
+                self.show_question = false;
+                self.show_answer = false;
+                setTimeout(function(){
+                    self.isShowResult = true;  
+                }, 1000); 
+              }              
+            }         
+            //Show Correct Answer
+            else if (!self.show_correct){
+              self.show_answer = true;
+              self.show_correct = true;            
+            }
+          }
+          //Event key "N"=> next question
+          else if(event.keyCode === 78){ 
+            self.show_question = false;
+            self.show_answer = false;
+            self.show_correct = false;  
+            self.isShowResult = false;  
+            self.start_timer = false;             
+            setTimeout(function(){
+              self.tickQuestion();
+              self.indexLoop++;
+              //When Done Round=> Next Round            
+              if(self.endProcess){                
+                self.startGame();            
+                self.updateStatusWelcome(true);
+                self.isStop = true;
+              }
+            }, 1000); 
+          }
+        }                
+      });    
     },
     methods: {
       ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
