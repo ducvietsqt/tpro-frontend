@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import {SECONDS, COUNT_DOWN_ALL_QUESTION} from "../../utils/constant";
+  import {SECONDS, COUNT_DOWN_ALL_QUESTION, COUNT_DOWN_QUESTION} from "../../utils/constant";
   import {mapGetters, mapActions} from 'vuex';
   import {getQuestionsCount} from "../../store/modules/game";
 
@@ -38,7 +38,8 @@
       timerTotal() {
         try {
           console.log('startTimerLed', getQuestionsCount(this.process));
-          return COUNT_DOWN_ALL_QUESTION * SECONDS;
+          if(0 < this.process < 3) return COUNT_DOWN_ALL_QUESTION * SECONDS;
+          return COUNT_DOWN_QUESTION * SECONDS;
           // return getQuestionsCount(this.process) * COUNT_DOWN_ALL_QUESTION * SECONDS;
         }catch (e) {
           return false
