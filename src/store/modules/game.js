@@ -63,7 +63,8 @@ const getters = {
 const actions = {
   async fetchQuestion({commit}) {
     let rs = await api.getQuestions();
-    commit("SET_QUESTION", rs)
+    commit("SET_QUESTION", rs);
+
   },
   startGame({commit}) {
     commit("START_GAME");
@@ -147,6 +148,7 @@ const mutations = {
     //console.log('SET_QUESTION', payload.data);
     state.questions = payload.data;
     setSESSION(SESSION.QUESTIONS, payload.data);
+    setSESSION(SESSION.QUESTIONS_API, payload.data);
   },
   START_GAME(state) {
     state.isStarted = true;
@@ -208,10 +210,14 @@ const mutations = {
   },
 
   RESULT_PROCESS(state) { // eslint-disable-line
-    state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
-    for(let i = 0; i < state.questions[state.process]['questions'].length; i++) {
-      state.totalTimeAnsweredProcess +=  state.questions[state.process]['questions'][i]['answered']['time'];
+    let _state = {...state};
+    console.log(_state.questions[_state.process]['questions']);
+    console.log(_state.questions[_state.process]['questions'].filter(i => i.answered.is_correct));
+    _state.resultsProcess = _state.questions[_state.process]['questions'].filter(i => i.answered.is_correct);
+    for(let i = 0; i < _state.questions[_state.process]['questions'].length; i++) {
+      _state.totalTimeAnsweredProcess +=  _state.questions[_state.process]['questions'][i]['answered']['time'];
     }
+    state = {..._state};
   },
   UPDATE_STATE_READY(state,data){
       state.isReady = data;

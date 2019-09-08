@@ -42,8 +42,12 @@ const actions = {
       commit("logout");
       await api.logout(user);
       removeSESSION(SESSION.TOKEN);
+      removeSESSION(SESSION.QUESTIONS);
+      removeSESSION(SESSION.USER);
       delete axios.defaults.headers.common["Authorization"];
       resolve();
+    }, reject => {
+      reject("Authorization")
     });
   }
 };

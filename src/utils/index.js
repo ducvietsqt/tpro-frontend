@@ -24,6 +24,7 @@ export const SESSION = {
   TOKEN: 'token',
   SUBDOMAINS: 'subdomains',
   QUESTIONS: 'QUESTIONS',
+  QUESTIONS_API: 'QUESTIONS_API',
   USER: 'USER'
 }
 
