@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import api from '../../api/user';
+import api from '../../api/led';
 import { db } from "../../db";
 let usersRef = db.ref('users');
 
@@ -60,8 +60,8 @@ export default {
   },
   methods: {
     async getList(){// eslint-disable-line
-      let obj = await api.getListUser();
-      this.gradeList = obj.data;
+      let obj = await api.getListGroupGrade();
+      this.gradeList = obj.data.list;
     },
     activeUser(id, name) {// eslint-disable-line
       // do something

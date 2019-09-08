@@ -85,6 +85,7 @@
           if (event.keyCode === 39) {
             //Show Question
             if (!self.show_question) {
+              self.updateStatusWelcome(false);
               self.show_question = !self.show_question;
             }
             //Show Answer
@@ -168,7 +169,7 @@
       });
     },
     methods: {
-      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome","updateStatusWelcome"]),
       async showAnswerCorrect() {
         this.answered = null;
       }

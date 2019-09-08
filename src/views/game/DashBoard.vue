@@ -92,6 +92,7 @@
           snapshot.forEach(function(childSnapshot) {
                 let childData = childSnapshot.val();
                 if(childData){
+                  self.showResult = false;        
                   //Start Game
                     if(childData.key == "start_game"){
                         self.startGame();
