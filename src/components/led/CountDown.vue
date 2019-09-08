@@ -1,30 +1,30 @@
 <template>
   <div>
     <div v-show="!isStopTimerLed">
-      <span>{{processTimer}}</span>S    
-    </div>    
-    <!--<button type="button" @click="handleStartTimer">Start</button>-->
-    <!--<button type="button" @click="handleStopTimer">Stop</button>-->
-    <!--<button type="button" @click="handleFinishTimer">Finish</button>-->
-    <vac :left-time="timer * SECONDS"
-         :auto-start="false"
-         @start="onStart"
-         @stop="onStop"
-         @finish="onFinnish"
-         @process="onProcess"
-         ref="vac">
-      <!--<span slot="process"
-            slot-scope="{ timeObj }">
-        {{ timeObj.ceil.s }}
-      </span>-->
-      <span slot="finish" v-show="isStopTimerLed">Hết giờ!</span>
-    </vac>
+      <span>{{processTimer}}</span>S
+    </div>
+    <div v-if="timerTotal">
+      <vac :left-time="timerTotal"
+           :auto-start="false"
+           @start="onStart"
+           @stop="onStop"
+           @finish="onFinnish"
+           @process="onProcess"
+           ref="vacLed">
+        <!--<span slot="process"
+              slot-scope="{ timeObj }">
+          {{ timeObj.ceil.s }}
+        </span>-->
+        <span slot="finish" v-show="isStopTimerLed">Hết giờ!</span>
+      </vac>
+    </div>
   </div>
 </template>
 
 <script>
-  import {SECONDS} from "../../utils/constant";
+  import {SECONDS, COUNT_DOWN_ALL_QUESTION} from "../../utils/constant";
   import {mapGetters, mapActions} from 'vuex';
+  import {getQuestionsCount} from "../../store/modules/game";
 
   export default {
     name: "CountDown",
@@ -32,9 +32,18 @@
       return {
         SECONDS
       }
-    },    
-    computed: {      
-      ...mapGetters("game", ["processTimer", "timer", "startTimerLed","isStopTimerLed"]),      
+    },
+    computed: {
+      ...mapGetters("game", ["processTimer", "timer","process", "startTimerLed", "isStopTimerLed"]),
+      timerTotal() {
+        try {
+          console.log('startTimerLed', getQuestionsCount(this.process));
+          return COUNT_DOWN_ALL_QUESTION * SECONDS;
+          // return getQuestionsCount(this.process) * COUNT_DOWN_ALL_QUESTION * SECONDS;
+        }catch (e) {
+          return false
+        }
+      }
     },
     /*mounted(){
       let self = this;
@@ -43,15 +52,15 @@
         } );
     },*/
     methods: {
-      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer", "updateStateCounDown","stopTimerLed"]),
+      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer", "updateStateCounDown", "stopTimerLed"]),
       handleStartTimer() {
-        this.$refs.vac.startCountdown(true);
+        this.$refs.vacLed.startCountdown();
       },
-      handleStopTimer() {        
-        this.$refs.vac.stopCountdown();
+      handleStopTimer() {
+        this.$refs.vacLed.stopCountdown(true);
       },
       handleFinishTimer() {
-        this.$refs.vac.finishCountdown();
+        this.$refs.vacLed.finishCountdown();
       },
 
       // callback
@@ -67,14 +76,14 @@
 
       },
       onProcess(vm) { // eslint-disable-linne
-        if (!this.startTimerLed) return this.$refs.vac.stopCountdown();
+        if (!this.startTimerLed) return this.$refs.vacLed.stopCountdown();
         let processTimer = vm.$data.timeObj.ceil.s;
         this.tickTimer(processTimer);
       },
     },
     // watch
     watch: {
-      startTimerLed: function (next, prev) { // eslint-disable-line         
+      startTimerLed: function (next, prev) { // eslint-disable-line
         if (next === true && next !== prev) {
           this.handleStartTimer();
         }

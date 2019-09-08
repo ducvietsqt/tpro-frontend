@@ -44,7 +44,6 @@
   export default {
     name: "DashBoard",
     components: {// eslint-disable-line
-      NextProcess,
       ProcessButPha, ProcessVuotTroi, ProcessKienDinh, 
       ProcessKhoiDong, ProcessCauHoiPhu, CountDown,
       MessageGameOver,MessageNextRound
