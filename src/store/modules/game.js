@@ -1,7 +1,6 @@
 import api from '../../api/question';
 import {getSESSION, SESSION, setSESSION} from "../../utils";
-import {COUNT_DOWN_QUESTION} from "../../utils/constant";
-import {COUNT_DOWN_TOTAL_QUESTION} from "../../utils/constant";
+import {COUNT_DOWN_QUESTION} from "../../utils/constant"; // eslint-disable-line
 import {sleep} from "../../api/base";
 // initial state
 const state = {
@@ -24,7 +23,7 @@ const state = {
   resultsProcess: [],
   totalTimeAnsweredProcess: 0,
   isReady: false,
-  isStartWelcome:false  
+  isStartWelcome:false
 
 
 };
@@ -123,10 +122,10 @@ setStateReady({commit}, data){
   commit("UPDATE_STATE_READY", data);
 },
 startTimerLed({commit}){
-  commit("START_TIMER_LED"); 
+  commit("START_TIMER_LED");
 },
 stopTimerLed({commit}){
-  commit("STOP_TIMER_LED"); 
+  commit("STOP_TIMER_LED");
 },
 updateStateCounDown({commit},data){
   commit("UPDATE_COUNT_DOWN",data);
@@ -154,16 +153,19 @@ const mutations = {
     state.processQuestion = null;
     state.startTimer = true;
     state.isStopTimerLed = false;
+
     if (state.process === null) {
       state.process = 0;
     } else if (state.process <= state.questions.length - 1) {
       state.process += 1;
-    }    
+    }
+    // todo: set timer
+    state.timer = state.startTimerLed ? getQuestionsCount(state.process) * COUNT_DOWN_QUESTION : COUNT_DOWN_QUESTION;
   },
   END_GAME(state) {
     state.isStarted = false;
     state.isFinishedProcess = true;
-    state.isFinished = true;    
+    state.isFinished = true;
   },
   RESET_GAME(state) {
     state.process = null;
@@ -174,16 +176,16 @@ const mutations = {
     state.questions = getSESSION(SESSION.QUESTIONS);
   },
 
-  TICK_QUESTION(state) {    
+  TICK_QUESTION(state) {
     if (state.processQuestion === null) {
-      state.processQuestion = 0;      
-    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {      
+      state.processQuestion = 0;
+    } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {
       state.processQuestion += 1;
     } else if (state.processQuestion === state.questions[state.process]['questions'].length - 1) {
 
       state.startTimer = false;
-      state.endProcess = true; // note *          
-      // alert('DONE QUESTION')              
+      state.endProcess = true; // note *
+      // alert('DONE QUESTION')
     }
   },
   START_TIMER(state) {
@@ -198,7 +200,7 @@ const mutations = {
     state.questions[state.process]['questions'][state.processQuestion]['answered'] = {
       is_correct: data ? data['is_correct'] : false,
       time: data ? _state.processTimer : COUNT_DOWN_QUESTION
-    };        
+    };
     // state.timer = COUNT_DOWN_QUESTION;
     // state.processTimer = COUNT_DOWN_QUESTION;
   },
@@ -216,7 +218,7 @@ const mutations = {
       state.isReady = data;
   },
   START_TIMER_LED(state)  {
-    state.startTimerLed = true;    
+    state.startTimerLed = true;
   },
   STOP_TIMER_LED(state){
     state.isStopTimerLed = true;
@@ -237,3 +239,8 @@ export default {
   actions,
   mutations
 };
+
+
+export const getQuestionsCount = (process) => {
+  return getSESSION(SESSION.QUESTIONS)[process]['questions'].length
+}
