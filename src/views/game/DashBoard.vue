@@ -45,7 +45,7 @@
     name: "DashBoard",
     components: {
       NextProcess,
-      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown // eslint-disable-line
+      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu // eslint-disable-line
     },
     data() {
       return {
