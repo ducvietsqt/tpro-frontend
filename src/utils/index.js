@@ -25,7 +25,8 @@ export const SESSION = {
   SUBDOMAINS: 'subdomains',
   QUESTIONS: 'QUESTIONS',
   QUESTIONS_API: 'QUESTIONS_API',
-  USER: 'USER'
+  USER: 'USER',
+  NEXT_ROUND: 'NEXT_ROUND',
 }
 
 export let setSESSION = (session_name, data) => {

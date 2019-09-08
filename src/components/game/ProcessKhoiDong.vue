@@ -23,7 +23,6 @@
             {{answer.answer}}
           </li>
         </ol>
-
       </div>
     </div>
   </div>

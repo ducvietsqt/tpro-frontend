@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapActions, mapMutations} from 'vuex';
 
   export default {
     name: "NextProcess",
@@ -18,9 +18,12 @@
 
     },
     methods: {
-      ...mapActions("game", ["startGame"]),
-      startProcess() {             
-        this.startGame();
+      ...mapActions("game", ["startGame", "startTimerLed"]),
+      ...mapMutations("game", ["START_TIMER_LED"]),
+      async startProcess() {
+        await this.START_TIMER_LED();
+        await this.startGame();
+        console.log('startTimerLed', this.startTimerLed)
       }
     }
   }

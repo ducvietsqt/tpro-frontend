@@ -1,11 +1,10 @@
 <template>
   <div class="title_led">
-    <!--Cuộc thi <strong>T-Pro Confetti</strong>-->
     <strong>{{processTitle}}</strong>
     <p class="timer_title" v-show="isStarted && !endProcess">
-      <CountDown ref="count_down"/>      
+      <CountDown ref="count_down"/>
     </p>
-  </div>  
+  </div>
 </template>
 
 
@@ -23,12 +22,13 @@ export default {
   },
   computed: {
     ...mapGetters("game", [
-        "isStarted",
-        "questions",
-        "process",
-        "endProcess"
+      "isStarted",
+      "questions",
+      "process",
+      "endProcess",
+      "startTimerLed"
       ]),
-    processTitle(){ 
+    processTitle(){
       if(this.process == null)
         return "Khởi Động";
       else

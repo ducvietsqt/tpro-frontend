@@ -37,25 +37,26 @@
   import {steps} from "../../components/utils/steps";
   import MessageGameOver from "../../components/game/MessageGameOver";
   import MessageNextRound from "../../components/game/MessageNextRound";
-  import {db} from "../../db";  
-
+  import {db} from "../../db";
+  import NextProcess from "../../components/game/NextProcess";
   let eventsRef = db.ref('events');
 
   export default {
     name: "DashBoard",
     components: {
+      NextProcess,
       ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown // eslint-disable-line
     },
     data() {
       return {
         events: [],
         steps: steps,
-        isShowWelcome: true,            
+        isShowWelcome: true,
         nextRound : false
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess","processQuestion"]),      
+      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess","processQuestion"]),
       ...mapGetters("auth", ["user"]),
       layoutProcess() {
         try {
@@ -76,21 +77,21 @@
       startProcessGame() {
         // do something
         //this.startGame();
-        //this.isShowWelcome = false;              
+        //this.isShowWelcome = false;
         let self = this;
         eventsRef.on('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {            
-                let childData = childSnapshot.val();                
-                if(childData){              
-                  //Start Game    
-                    if(childData.key == "start_game"){                      
+          snapshot.forEach(function(childSnapshot) {
+                let childData = childSnapshot.val();
+                if(childData){
+                  //Start Game
+                    if(childData.key == "start_game"){
                         self.startGame();
-                        self.isShowWelcome = false;                                             
+                        self.isShowWelcome = false;
                     }
                     //Next Question
                     else if(childData.key == "next_question")
-                    {                                             
-                      self.tickQuestion();                    
+                    {
+                      self.tickQuestion();
                     }
                     //Get List User Next Round
                     else if(childData.key == "result_round"){
