@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="title_timer">
+    <p class="title_timer" v-show="!isStopTime">
       <strong> {{processTimer}}</strong>S
     </p>
     <vac :left-time="timer * SECONDS"
@@ -15,7 +15,7 @@
         {{ timeObj.ceil.s }}
       </span>-->
       <!--<span slot="finish">Done!</span>-->
-      <span slot="finish">Hết giờ!</span>
+      <span slot="finish" v-show="isStopTime">Hết giờ!</span>
     </vac>
   </div>
 </template>
@@ -37,7 +37,7 @@
 
     },
     methods: {
-      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer"]),
+      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer","stopTimerGame"]),
       handleStartTimer() {
         this.$refs.vac.startCountdown(true);
         this.isStopTime = false;
@@ -61,6 +61,7 @@
           this.stopTimer();
         }        
         else{
+          this.stopTimerGame();
           this.isStopTime = true;
         }
         return this.handleStopTimer();

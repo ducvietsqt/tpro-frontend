@@ -2,13 +2,10 @@
   <div class="process_box">
     <BoxKetQua/>
     <!--<NextProcess/>-->
-    <p>
-      processQuestion {{processQuestion}}
-    </p>
     <div v-if="!endProcess" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
-          Câu hỏi:
+          Câu hỏi {{processQuestion +1}}:
           <!--{{titleQuestion}}-->
         </p>
         <p class="drs-qs">
@@ -49,10 +46,9 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess"]),
+      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer"]),
       ...mapGetters("auth", ["user"]),
-      question() {
-        console.log('processQuestion', this.processQuestion);
+      question() {        
         return this.items.questions[this.processQuestion].question
       },
       answers() {
@@ -71,21 +67,23 @@
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
       async handleAnswer(index) {
-        // return false
-        let is_correct = (this.answers[index]['is_correct'] == 1);
-        this.answered = index;
-        await this.answerQuestion({index, is_correct});
-        await sleep(1000);
-        //todo: nex question
-        this.answered = null;
-        var user_id = this.user.id;
-        var round_id = this.process + 1;
-        var total_time = this.userAnswer.answered.time;
-        var total_correct = 0;
-        if (is_correct) {
-            total_correct = 1;
-        }
-        await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
+        if(this.startTimer){          
+            // return false
+            let is_correct = (this.answers[index]['is_correct'] == 1);
+            this.answered = index;
+            await this.answerQuestion({index, is_correct});
+            await sleep(1000);
+            //todo: nex question
+            this.answered = null;
+            var user_id = this.user.id;
+            var round_id = this.process + 1;
+            var total_time = this.userAnswer.answered.time;
+            var total_correct = 0;
+            if (is_correct) {
+                total_correct = 1;
+            }
+        }        
+        //await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
         //this.tickQuestion();
       }
     }

@@ -78,7 +78,7 @@
       //this.tickQuestion();
     },
     mounted() {
-      let self = this;            
+      let self = this;                      
       window.addEventListener('keyup', function (event) {  
         if (!self.isStop) {       
           //Event Key Next => Show Question And Answer
@@ -107,9 +107,11 @@
                 self.eventName = "Next Question";
                 self.keyName = "next_question";
               }
+              eventsRef.remove();
               self.$firebaseRefs.events.push({
                 name: self.eventName,
                 key: self.keyName,
+                postion: self.indexLoop
               });
             }
             //Show Progress Bar
@@ -139,18 +141,25 @@
               self.tickQuestion();
               self.indexLoop++;
               //When Done Round=> Next Round            
-              if(self.endProcess){                
+              if(self.endProcess){             
                 self.startGame();            
                 self.updateStatusWelcome(true);
                 self.isStop = true;
               }
             }, 1000); 
           }
+
+          //Event key "S"=> Stop User Game
+          else if(event.keyCode === 83){            
+            self.endProcessGame();
+          }
+
+
         }                
       });    
     },
     methods: {
-      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome","endProcessGame"]),
       async showAnswerCorrect() {
         this.answered = null;
       }

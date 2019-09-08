@@ -49,6 +49,7 @@
     },
     watch: {
       endProcess(n, p) { // eslint-disable-line
+        alert(1);
         if (n && n !== p) {
           this.getResultProcess();
         }

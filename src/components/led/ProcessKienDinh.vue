@@ -103,12 +103,13 @@
             self.updateStatusWelcome(false);
             self.start_timer = !self.start_timer;
             self.startTimerLed();
-            self.eventName = "Next Question";
-            self.keyName = "next_question";
-            /*self.$firebaseRefs.events.push({
+            eventsRef.remove();
+            self.eventName = "Start Game";
+            self.keyName = "start_game";
+            self.$firebaseRefs.events.push({
               name: self.eventName,
               key: self.keyName,
-            });*/ 
+            });
           }
           //Event key "N"=> next question
           else if(event.keyCode === 78){ 

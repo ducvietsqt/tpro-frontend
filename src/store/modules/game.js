@@ -111,6 +111,10 @@ async stopTimerRound({commit}){ // eslint-disable-line
   await sleep(1000);
   await commit("STOP_TIMER");
 },
+
+stopTimerGame({commit}){ // eslint-disable-line
+  commit("STOP_TIMER_GAME");
+},
 async startTimerRound({commit}){
   await sleep(1000);
   await commit("START_TIMER");
@@ -234,6 +238,9 @@ const mutations = {
   },
   UPDATE_COUNT_DOWN(state,data){
     state.finishedCounDown = data;
+  },
+  STOP_TIMER_GAME(state){
+    state.startTimer = false;
   }
 };
 

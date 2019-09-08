@@ -33,7 +33,7 @@
   import ProcessButPha from "../../components/game/ProcessButPha";
   import ProcessCauHoiPhu from "../../components/game/ProcessCauHoiPhu";
   import {steps} from "../../components/utils/steps";
-  import {db} from "../../db";
+  import {db} from "../../db";  
 
   let eventsRef = db.ref('events');
 
@@ -46,11 +46,11 @@
       return {
         events: [],
         steps: steps,
-        isShowWelcome: true
+        isShowWelcome: true     
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess"]),      
+      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess","processQuestion"]),      
       layoutProcess() {
         try {
           return this.steps[this.process]['component'];
@@ -70,19 +70,19 @@
       startProcessGame() {
         // do something
         //this.startGame();
-        //this.isShowWelcome = false;
+        //this.isShowWelcome = false;              
         let self = this;
         eventsRef.on('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {
-                let childData = childSnapshot.val();
-                if(childData){
+          snapshot.forEach(function(childSnapshot) {            
+                let childData = childSnapshot.val();                
+                if(childData){                  
                     if(childData.key == "start_game"){
-                      self.startGame();
-                      self.isShowWelcome = false;
+                        self.startGame();
+                        self.isShowWelcome = false;                     
                     }
                     else if(childData.key == "next_question")
-                    {
-                      self.tickQuestion();
+                    {                          
+                      self.tickQuestion();                    
                     }
                 }
             });
