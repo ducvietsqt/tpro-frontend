@@ -2,8 +2,7 @@
   <div>
     <Round/>
     <div class="contain_led_show">
-      <div class="left_contain">
-        <TotalNextRound :items="choiceList"/>
+      <div class="left_contain">        
         <TotalNextRound :items="choiceList"
                         v-show="endProcess && process != 0 && choiceList.length > 0"/>
         <Welcome/>

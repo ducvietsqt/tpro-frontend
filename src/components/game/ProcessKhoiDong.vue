@@ -5,8 +5,7 @@
     <div v-if="!endProcess" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
-          Câu hỏi:
-          {{processQuestion +1}}
+          Câu hỏi:          
           <!--{{titleQuestion}}-->
         </p>
         <p class="drs-qs">
@@ -35,6 +34,7 @@
   import {sleep} from "../../api/base";
   import BoxKetQua from "./BoxKetQua";
   import NextProcess from "./NextProcess";
+  import api from '../../api/user';
 
   export default {
     name: "ProcessKhoiDong",
@@ -47,6 +47,7 @@
     },
     computed: {
       ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess"]),
+      ...mapGetters("auth", ["user"]),
       question() {        
         return this.items.questions[this.processQuestion].question
       },
@@ -55,6 +56,9 @@
       },
       titleQuestion() {
         return this.items.questions[this.processQuestion].id
+      },
+      userAnswer(){
+        return this.items.questions[this.processQuestion];
       }
     },
     created() {
@@ -64,13 +68,21 @@
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
       async handleAnswer(index) {
         // return false
-        let is_correct = (this.answers[index]['is_correct'] == 1);
+        let is_correct = (this.answers[index]['is_correct'] == 1);        
         this.answered = index;
         await this.answerQuestion({index, is_correct});
-        await sleep(1000);
+        await sleep(1000);        
         //todo: nex question
-        this.answered = null;
-        this.tickQuestion();
+        this.answered = null;        
+        var user_id = this.user.id;
+        var round_id = this.process + 1;
+        var total_time = this.userAnswer.answered.time;    
+        var total_correct = 0;
+        if (is_correct) {
+            total_correct = 1;
+        }                     
+        await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
+        //this.tickQuestion();
       }
     }
   }

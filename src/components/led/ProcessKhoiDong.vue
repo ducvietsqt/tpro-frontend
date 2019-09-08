@@ -107,10 +107,10 @@
                 self.eventName = "Next Question";
                 self.keyName = "next_question";
               }
-              /*self.$firebaseRefs.events.push({
+              self.$firebaseRefs.events.push({
                 name: self.eventName,
                 key: self.keyName,
-              });*/
+              });
             }
             //Show Progress Bar
             else if (!self.isShowResult){

@@ -199,6 +199,7 @@ const mutations = {
       is_correct: data ? data['is_correct'] : false,
       time: data ? _state.processTimer : COUNT_DOWN_QUESTION
     };        
+    
     // state.timer = COUNT_DOWN_QUESTION;
     // state.processTimer = COUNT_DOWN_QUESTION;
   },

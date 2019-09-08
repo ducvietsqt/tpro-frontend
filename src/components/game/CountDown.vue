@@ -15,6 +15,7 @@
         {{ timeObj.ceil.s }}
       </span>-->
       <!--<span slot="finish">Done!</span>-->
+      <span slot="finish">Hết giờ!</span>
     </vac>
   </div>
 </template>
@@ -27,7 +28,8 @@
     name: "CountDown",
     data() {
       return {
-        SECONDS
+        SECONDS,
+        isStopTime:false
       }
     },
     computed: {
@@ -38,6 +40,7 @@
       ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer"]),
       handleStartTimer() {
         this.$refs.vac.startCountdown(true);
+        this.isStopTime = false;
       },
       handleStopTimer() {
         this.$refs.vac.stopCountdown();
@@ -57,6 +60,9 @@
         if(this.process > 0 && this.process < 3){
           this.stopTimer();
         }        
+        else{
+          this.isStopTime = true;
+        }
         return this.handleStopTimer();
       },
       onProcess(vm) { // eslint-disable-linne
@@ -67,8 +73,8 @@
     },
     // watch
     watch: {
-      startTimer(next, prev) { // eslint-disable-line
-        if (next === true && next !== prev) {
+      startTimer(next, prev) { // eslint-disable-line      
+        if (next === true && next !== prev) {          
           this.handleStartTimer();
         }
       },
