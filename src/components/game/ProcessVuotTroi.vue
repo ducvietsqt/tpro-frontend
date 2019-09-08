@@ -1,5 +1,5 @@
 <template>
-  <div class="process_box">
+  <div class="process_box" v-show="!showResult">
     <BoxKetQua v-show="endProcess"/>
     <!--<NextProcess/>-->
     <div v-if="!endProcess" class="question-detail">
@@ -32,25 +32,21 @@
 <script>
   import {mapGetters, mapActions} from 'vuex';
   import {sleep} from "../../api/base";
-  import BoxKetQua from "./BoxKetQua";
-  import NextProcess from "./NextProcess";
+  import BoxKetQua from "./BoxKetQua";  
   import api from '../../api/user';
-  import {db} from "../../db";
-
-  let eventsRef = db.ref('events');
 
   export default {
-    name: "ProcessKhoiDong",
-    components: {NextProcess, BoxKetQua},
+    name: "ProcessVuotTroi",
+    components: {BoxKetQua},
     props: ["items"],
     data() {
       return {
         answered: null,
-        stopGame: false
+        showResult: false
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer"]),
+      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer","nextRound"]),
       ...mapGetters("auth", ["user"]),
       question() {        
         return this.items.questions[this.processQuestion].question
@@ -62,32 +58,26 @@
         return this.items.questions[this.processQuestion].id
       }
     },
-    created() {
-      this.tickQuestion();
-      this.endProcessGame();
-    },
-    firebase: {
-      events: eventsRef
+    created() {      
+      this.tickQuestion();      
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
-      async handleAnswer(index) {
-        if(this.startTimer){          
-            // return false
-            let is_correct = (this.answers[index]['is_correct'] == 1);
-            this.answered = index;
-            await this.answerQuestion({index, is_correct});
-            await sleep(1000);
-            //todo: nex question
-            this.answered = null;
-        }                
+      async handleAnswer(index) {     
+        // return false
+        let is_correct = (this.answers[index]['is_correct'] == 1);
+        this.answered = index;
+        await this.answerQuestion({index, is_correct});
+        await sleep(1000);
+        //todo: nex question
+        this.answered = null;             
         this.tickQuestion();
       }  
 
     },
-     watch: {
-      endProcess: function (t, n) { // eslint-disable-line
-        alert(1);
+    watch: {
+      nextRound: function (t, n) { // eslint-disable-line        
+        this.showResult = true;       
       }
     }
   }

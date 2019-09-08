@@ -54,10 +54,10 @@
     methods: {
       ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer", "updateStateCounDown", "stopTimerLed"]),
       handleStartTimer() {
-        this.$refs.vacLed.startCountdown();
+        this.$refs.vacLed.startCountdown(true);
       },
       handleStopTimer() {
-        this.$refs.vacLed.stopCountdown(true);
+        this.$refs.vacLed.stopCountdown();
       },
       handleFinishTimer() {
         this.$refs.vacLed.finishCountdown();
@@ -83,7 +83,7 @@
     },
     // watch
     watch: {
-      startTimerLed: function (next, prev) { // eslint-disable-line
+      startTimerLed: function (next, prev) { // eslint-disable-line        
         if (next === true && next !== prev) {
           this.handleStartTimer();
         }

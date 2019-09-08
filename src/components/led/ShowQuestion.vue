@@ -3,8 +3,7 @@
     <Round/>
     <div class="contain_led_show">
       <div class="left_contain">        
-        <TotalNextRound :items="choiceList"
-                        v-show="endProcess && process != 0 && choiceList.length > 0"/>
+        <TotalNextRound/>
         <Welcome/>
         <component :is="layoutProcess" :items="questions[process]"></component>
       </div>
@@ -29,8 +28,6 @@
   import Welcome from "../../components/led/Welcome";
   import TotalNextRound from "../../components/led/BoxTotalNextRound";
   import {db} from "../../db";
-  import api from '../../api/led';
-  import _ from 'lodash';
 
   let eventsRef = db.ref('events');
   export default {
@@ -52,9 +49,7 @@
       return {
         events: [],
         show_question: false,
-        isStop: false,
-        choiceList: [],
-        userChoice: [],
+        isStop: false,        
         steps: [
           {
             title: "Vòng Khởi Động",
@@ -113,8 +108,7 @@
             self.show_question = true;
           }
         }
-      });
-      this.getListGroupGrade();
+      });      
     },
     firebase: {
       events: eventsRef
@@ -137,29 +131,7 @@
                 }
             });
         });
-      }*/
-      async getListGroupGrade() {
-        let obj = await api.getListGroupGrade();
-        let list = obj.data.list;
-
-        let temp = _.groupBy(list, 'group_id');
-        console.log('list', temp)
-        for (let i in temp) {
-          this.choiceList.push({
-            name: temp[i][0].group[0].name,
-            id: temp[i][0].group_id,
-            total: temp[i].length
-          });
-        }
-        // id: list[i].group_id,
-        //   name: list[i].group[0].name,
-        //   total:  1
-      }
-    },
-    watch: {
-      endProcess: function (t, n) { // eslint-disable-line
-        this.getListGroupGrade();
-      }
+      }*/      
     }
   };
 </script>

@@ -39,8 +39,7 @@ export default {
         status: true
       });
     },
-    async getResultRound(){
-      alert(2);
+    async getResultRound(){      
       let obj = await api.getListGroupGrade();
       let list = obj.data.arrUserChoices;
       eventsRef.remove();

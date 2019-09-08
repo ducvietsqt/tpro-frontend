@@ -1,7 +1,6 @@
 <template>
   <div>
-    <NextProcess v-show="endProcess"/>
-    <BoxKetQua v-show="isShowResult"/>
+    <BoxKetQua v-show="isShowResult"/>    
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
         <div v-if="show_question">
@@ -13,9 +12,9 @@
           </p>
         </div>
       </transition>
-    </div>    
+    </div>
     <transition name="fade" v-if="show_answer">
-      <ol class="list_upper_question" :class="(show_correct) ? 'show_correct' : ''"> 
+      <ol class="list_upper_question" :class="(show_correct) ? 'show_correct' : ''">
         <li v-for="(answer, i) in answers"
           :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
           v-show="answered === null || answered === i"
@@ -37,7 +36,7 @@
   let eventsRef = db.ref('events');
 
   export default {
-    name: "ProcessKhoiDongLed",
+    name: "ProcessButPhaLed",
     components: {NextProcess, BoxKetQua, Round}, // eslint-disable-line
     props: ["items"],
     data() {
@@ -68,7 +67,7 @@
         "endProcess",
         "finishedCounDown"
       ]),
-      question() {        
+      question() {
         return this.items.questions[this.processQuestion].question;
       },
       answers() {
@@ -79,23 +78,22 @@
       //this.tickQuestion();
     },
     mounted() {
-      let self = this;            
-      window.addEventListener('keyup', function (event) {  
-        if (!self.isStop) {       
+      let self = this;
+      window.addEventListener('keyup', function (event) {
+        if (!self.isStop) {
           //Event Key Next => Show Question And Answer
-          if (event.keyCode === 39) {          
-            console.log("Khởi Động");
+          if (event.keyCode === 39) {
             //Show Question
             if (!self.show_question) {
-              self.show_question = !self.show_question;            
+              self.show_question = !self.show_question;
             }
             //Show Answer
             else if (!self.show_answer) {
               self.show_answer = !self.show_answer;
-            }          
+            }
           }
           //Event Key Enter => Start game, Next Question And Show result
-          else if(event.keyCode === 13){ 
+          else if(event.keyCode === 13){
             //Show Count Down and Start Timer
             if (!self.start_timer) {
               //self.$eventHub.$emit("startCountdown");
@@ -109,47 +107,65 @@
                 self.eventName = "Next Question";
                 self.keyName = "next_question";
               }
-              /*self.$firebaseRefs.events.push({
+              eventsRef.remove();
+              self.$firebaseRefs.events.push({
                 name: self.eventName,
                 key: self.keyName,
-              });*/
+                postion: self.indexLoop
+              });
             }
             //Show Progress Bar
             else if (!self.isShowResult){
-              if(self.finishedCounDown){  
+              if(self.finishedCounDown){
                 self.show_question = false;
                 self.show_answer = false;
                 setTimeout(function(){
-                    self.isShowResult = true;  
-                }, 1000); 
-              }              
-            }         
+                    self.isShowResult = true;
+                }, 1000);
+              }
+            }
             //Show Correct Answer
             else if (!self.show_correct){
               self.show_answer = true;
-              self.show_correct = true;            
+              self.show_correct = true;
             }
           }
           //Event key "N"=> next question
-          else if(event.keyCode === 78){ 
+          else if(event.keyCode === 78){
             self.show_question = false;
             self.show_answer = false;
-            self.show_correct = false;  
-            self.isShowResult = false;  
-            self.start_timer = false;             
+            self.show_correct = false;
+            self.isShowResult = false;
+            self.start_timer = false;
             setTimeout(function(){
               self.tickQuestion();
               self.indexLoop++;
-              //When Done Round=> Next Round            
+              //When Done Round=> Next Round
               if(self.endProcess){
-                self.startGame();            
+                self.startGame();
                 self.updateStatusWelcome(true);
                 self.isStop = true;
               }
-            }, 1000); 
+            }, 1000);
           }
-        }                
-      });    
+
+          //Event key "S"=> Stop User Game
+          else if(event.keyCode === 83){
+            self.show_question = false;
+            self.show_answer = false;
+            self.show_correct = false;
+            self.isShowResult = false;
+            self.start_timer = false;
+            eventsRef.remove();
+            self.$firebaseRefs.events.push({
+              name: "Stop User Game",
+              key: "stop_user_game"
+            });
+          }
+
+
+        }
+      });
     },
     methods: {
       ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),

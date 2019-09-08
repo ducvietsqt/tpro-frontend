@@ -104,6 +104,7 @@
                     }
                     //Get List User Next Round
                     else if(childData.key == "result_round"){
+                      alert("firebase Result Round");
                       var arrayNextRound = childData.arrayNextRound;
                       self.checkNextRound(arrayNextRound);
                     }
@@ -113,9 +114,9 @@
       },
       checkNextRound(arrayNextRound){        
         let user_id = this.user.id;        
-        let self = this;        
-        this.showResult = true;
-        alert(1);
+        let self = this;       
+        alert("checkNextRound"); 
+        this.showResult = true;        
         if(arrayNextRound.includes(user_id)){          
           self.setNextRound(true);
         }

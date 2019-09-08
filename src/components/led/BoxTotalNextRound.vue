@@ -1,48 +1,69 @@
 <template>
   <div>
-    <p class="text-center drs-kq">
-      Số người được chọn <br/>
-      vào vòng {{process+1}} : <strong>{{totalItem()}}</strong>
-    </p>
-    <div>
-      <table class="table_view">
-        <tr v-for="(data, i) in choices" :key="i">
-          <td>{{data.name}}</td>
-          <td>{{data.total}}</td>
-        </tr>
-      </table>
-    </div>
-    <div>
-
+    <div v-show="endProcess && process != 0 && choiceList.length > 0">
+        <p class="text-center drs-kq">
+          Số người được chọn <br/>
+          vào vòng {{process+1}} : <strong>{{totalItem()}}</strong>
+        </p>
+        <div>
+          <table class="table_view">
+            <tr v-for="(data, i) in choiceList" :key="i">
+              <td>{{data.name}}</td>
+              <td>{{data.total}}</td>
+            </tr>
+          </table>
+        </div>
     </div>
   </div>
 </template>
 
 <script>
   import {mapGetters} from "vuex";
+  import api from '../../api/led';
+  import _ from 'lodash';
 
   export default {
     name: "TotalNextRound",
     props: ["items"],
     data() {
-      return {}
+      return {
+        choiceList: []
+      }
     },
     computed: {
       ...mapGetters("game", [
-        "process"
-      ]),
-      choices() {
-        return this.items;
-      }
+        "process","endProcess"
+      ])
     },
     methods: {
-      totalItem() {
-        let sum = 0;
-        for (let i = 0; i < this.choices.length; i++) {
-          sum += parseInt(this.choices[i].total);
+      async getListGroupGrade() {
+        let obj = await api.getListGroupGrade();
+        let list = obj.data.list;
+        console.log(list);
+        let temp = _.groupBy(list, 'group_id');        
+        for (let i in temp) {
+          this.choiceList.push({
+            name: temp[i][0].group[0].name,
+            id: temp[i][0].group_id,
+            total: temp[i].length
+          });
         }
+      },
+      totalItem() {
+        if(this.endProcess){
+          let sum = 0;          
+          for (let i = 0; i < this.choiceList.length; i++) {
+            sum += parseInt(this.choiceList[i].total);
+          }
 
-        return sum;
+          return sum;
+        }        
+      }
+    },    
+    watch: {
+      endProcess: function (t, n) { // eslint-disable-line    
+        this.choiceList = [];
+        this.getListGroupGrade();
       }
     }
   }

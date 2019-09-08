@@ -77,8 +77,7 @@
 
     },
     watch: {
-      nextRound: function (t, n) { // eslint-disable-line
-        alert("Show Result");
+      nextRound: function (t, n) { // eslint-disable-line        
         this.showResult = true;       
       }
     }
