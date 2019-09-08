@@ -144,7 +144,7 @@
           this.choiceList.push({
             id: list[i].group_id,
             name: list[i].group[0].name,
-            total:  sum
+            total:  1
           });         
         }        
       }
