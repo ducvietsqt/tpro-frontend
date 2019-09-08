@@ -37,7 +37,7 @@
       ...mapGetters("game", ["processTimer", "timer","process", "startTimerLed", "isStopTimerLed"]),
       timerTotal() {
         try {
-          console.log('startTimerLed', getQuestionsCount(this.process));
+          console.log('startTimerLed', this.process);
           if(0 < this.process < 3) return COUNT_DOWN_ALL_QUESTION * SECONDS;
           return COUNT_DOWN_QUESTION * SECONDS;
           // return getQuestionsCount(this.process) * COUNT_DOWN_ALL_QUESTION * SECONDS;
