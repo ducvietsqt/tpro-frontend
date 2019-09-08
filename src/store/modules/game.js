@@ -26,7 +26,7 @@ const state = {
   isReady: false,
   isStartWelcome: false,
 
-  nextRound: true
+  nextRound: null
 
 
 };
