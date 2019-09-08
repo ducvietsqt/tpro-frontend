@@ -1,8 +1,8 @@
 <template>
   <div class="content_center" :class="{no_center: isStarted && !endProcess}">
-    <div>
-      <MessageGameOver v-show="!nextRound"/>
-      <MessageNextRound v-show="nextRound"/>
+    <div>      
+      <MessageGameOver v-show="!nextRound && endProcess && showResult"/>
+      <MessageNextRound v-show="nextRound && endProcess && showResult" :title="processTitle"/>
       <div class="led_box" v-show="isStarted && !endProcess">
         <CountDown/>
       </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapActions, mapMutations} from 'vuex';
   import CountDown from "../../components/game/CountDown";
   import ProcessKhoiDong from "../../components/game/ProcessKhoiDong";
   import ProcessKienDinh from "../../components/game/ProcessKienDinh";
@@ -43,20 +43,22 @@
 
   export default {
     name: "DashBoard",
-    components: {
+    components: {// eslint-disable-line
       NextProcess,
-      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, ProcessKhoiDong, ProcessCauHoiPhu, CountDown // eslint-disable-line
+      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, 
+      ProcessKhoiDong, ProcessCauHoiPhu, CountDown,
+      MessageGameOver,MessageNextRound
     },
     data() {
       return {
         events: [],
         steps: steps,
         isShowWelcome: true,
-        nextRound : false
+        showResult: false    
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess","processQuestion"]),
+      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess","processQuestion","nextRound"]),
       ...mapGetters("auth", ["user"]),
       layoutProcess() {
         try {
@@ -64,6 +66,13 @@
         } catch (e) {
           return false
         }
+      },
+      processTitle(){
+        try {
+          return this.questions[this.process]['name'];
+        } catch (e) {
+          return false
+        }        
       }
     },
     firebase: {
@@ -73,7 +82,8 @@
       this.startProcessGame();
     },
     methods: {
-      ...mapActions("game", ["startGame","tickQuestion"]),
+      ...mapActions("game", ["startGame","tickQuestion","setNextRound"]),
+      ...mapMutations("game", ["setNextRound"]),
       startProcessGame() {
         // do something
         //this.startGame();
@@ -102,10 +112,16 @@
             });
         });
       },
-      checkNextRound(arrayNextRound){
-        let user_id = user.id;
-        if(arrayNextRound.includes(user_id)){
-          this.nextRound = true;
+      checkNextRound(arrayNextRound){        
+        let user_id = this.user.id;        
+        let self = this;        
+        this.showResult = true;
+        alert(1);
+        if(arrayNextRound.includes(user_id)){          
+          self.setNextRound(true);
+        }
+        else{
+          self.setNextRound(false); 
         }
       }
     },

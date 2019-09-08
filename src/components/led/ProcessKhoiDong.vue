@@ -1,7 +1,6 @@
 <template>
   <div>
-    <BoxKetQua v-show="isShowResult"/>
-    <NextProcess/>
+    <BoxKetQua v-show="isShowResult"/>    
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
         <div v-if="show_question">
