@@ -1,5 +1,5 @@
 <template>
-  <div class="process_box">
+  <div class="process_box" v-show="!showResult">
     <BoxKetQua v-show="endProcess"/>
     <!--<NextProcess/>-->
     <div v-if="!endProcess" class="question-detail">
@@ -42,11 +42,12 @@
     props: ["items"],
     data() {
       return {
-        answered: null
+        answered: null,
+        showResult: false
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer"]),
+      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer","nextRound"]),
       ...mapGetters("auth", ["user"]),
       question() {        
         return this.items.questions[this.processQuestion].question
@@ -75,11 +76,12 @@
       }  
 
     },
-    /*watch: {
-      endProcess: function (t, n) { // eslint-disable-line
-        alert(1);
+    watch: {
+      nextRound: function (t, n) { // eslint-disable-line
+        alert("Show Result");
+        this.showResult = true;       
       }
-    }*/
+    }
   }
 </script>
 

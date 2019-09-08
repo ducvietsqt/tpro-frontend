@@ -40,6 +40,7 @@ export default {
       });
     },
     async getResultRound(){
+      alert(2);
       let obj = await api.getListGroupGrade();
       let list = obj.data.arrUserChoices;
       eventsRef.remove();
