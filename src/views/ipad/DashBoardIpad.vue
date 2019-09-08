@@ -7,12 +7,18 @@
       <div class="event-item">
         <button type="button" @click="actionToDo('Play Game','play_game')">Play Game</button>
       </div>
+      <div class="event-item">
+        <button type="button" @click="getResultRound">Result Round</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import { db } from "../../db";
+import { db } from "../../db";
+import api from '../../api/led';
+
+
 let eventsRef = db.ref('events');
 let keys = [];
 export default {
@@ -27,21 +33,22 @@ export default {
   },
   methods: {
     actionToDo(name,key) {
-      eventsRef.once('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-              let childData = childSnapshot.val();
-              if(childData){
-                  keys.push(childData.key);
-              }
-          });
+      this.$firebaseRefs.events.push({
+        name: name,
+        key: key,
+        status: true
       });
-      if(!keys.includes(key)){
-          this.$firebaseRefs.events.push({
-            name: name,
-            key: key,
-            status: true
-          });
-      }
+    },
+    async getResultRound(){
+      let obj = await api.getListGroupGrade();
+      let list = obj.data.arrUserChoices;
+      eventsRef.remove();
+      this.$firebaseRefs.events.push({
+        name: "Result Round",
+        key: "result_round",
+        arrayNextRound: list
+      });
+
     }
   }
 };
@@ -54,7 +61,21 @@ export default {
 .event-item{
   margin:10px;
   padding: 20px;
-  width: 100px;
-  cursor: pointer;
+  width: 220px;
+  cursor: pointer;  
 }
+.event-item button{
+    display: block;
+    margin: 0 15px;
+    background: #ffffff;
+    color: #000;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    padding: 0px 20px;
+    height: 60px;
+    line-height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 </style>

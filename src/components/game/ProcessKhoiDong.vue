@@ -1,8 +1,8 @@
 <template>
   <div class="process_box">
-    <BoxKetQua/>
+    <BoxKetQua v-show="stopGame"/>
     <!--<NextProcess/>-->
-    <div v-if="!endProcess" class="question-detail">
+    <div v-if="!stopGame" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
           Câu hỏi {{processQuestion +1}}:
@@ -35,6 +35,9 @@
   import BoxKetQua from "./BoxKetQua";
   import NextProcess from "./NextProcess";
   import api from '../../api/user';
+  import {db} from "../../db";
+
+  let eventsRef = db.ref('events');
 
   export default {
     name: "ProcessKhoiDong",
@@ -42,7 +45,8 @@
     props: ["items"],
     data() {
       return {
-        answered: null
+        answered: null,
+        stopGame: false
       }
     },
     computed: {
@@ -62,7 +66,11 @@
       }
     },
     created() {
-      this.tickQuestion();
+      this.tickQuestion();      
+      this.endProcessGame();
+    },
+    firebase: {
+      events: eventsRef
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
@@ -85,7 +93,21 @@
         }        
         //await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
         //this.tickQuestion();
-      }
+      },
+      endProcessGame(){
+        let self = this;
+        eventsRef.on('value', function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {            
+                let childData = childSnapshot.val();                
+                if(childData){                  
+                    if(childData.key == "stop_user_game"){                        
+                        self.stopGame = true;                     
+                    }
+                }
+            });
+        });
+      }      
+
     }
   }
 </script>

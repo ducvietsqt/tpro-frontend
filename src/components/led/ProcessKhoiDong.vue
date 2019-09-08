@@ -150,8 +150,17 @@
           }
 
           //Event key "S"=> Stop User Game
-          else if(event.keyCode === 83){            
-            self.endProcessGame();
+          else if(event.keyCode === 83){  
+            self.show_question = false;
+            self.show_answer = false;
+            self.show_correct = false;  
+            self.isShowResult = false;  
+            self.start_timer = false;             
+            eventsRef.remove();
+            self.$firebaseRefs.events.push({
+              name: "Stop User Game",
+              key: "stop_user_game"
+            });
           }
 
 
@@ -159,7 +168,7 @@
       });    
     },
     methods: {
-      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome","endProcessGame"]),
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
       async showAnswerCorrect() {
         this.answered = null;
       }

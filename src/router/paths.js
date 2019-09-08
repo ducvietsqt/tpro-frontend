@@ -71,7 +71,7 @@ export default [
     path: "/ipad/dashboard",
     name: "dashboardIpad",
     component: DashBoardIpad,
-    meta: {layout: LAYOUT.NotLoggedIn}
+    meta: {layout: LAYOUT.General}
   }
   ,
   {

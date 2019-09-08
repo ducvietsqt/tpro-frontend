@@ -1,5 +1,5 @@
 <template>
-  <div v-show="endProcess">
+  <div>
     <p class="text-highlight">
       <strong>
         KẾT QUẢ <br/>
@@ -46,14 +46,6 @@
     },
     methods: {
       ...mapActions("game", ["getResultProcess"])
-    },
-    watch: {
-      endProcess(n, p) { // eslint-disable-line
-        alert(1);
-        if (n && n !== p) {
-          this.getResultProcess();
-        }
-      }
     }
   }
 </script>

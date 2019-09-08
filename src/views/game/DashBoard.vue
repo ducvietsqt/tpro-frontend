@@ -1,6 +1,8 @@
 <template>
   <div class="content_center" :class="{no_center: isStarted && !endProcess}">
     <div>
+      <MessageGameOver v-show="!nextRound"/>
+      <MessageNextRound v-show="nextRound"/>
       <div class="led_box" v-show="isStarted && !endProcess">
         <CountDown/>
       </div>
@@ -33,6 +35,8 @@
   import ProcessButPha from "../../components/game/ProcessButPha";
   import ProcessCauHoiPhu from "../../components/game/ProcessCauHoiPhu";
   import {steps} from "../../components/utils/steps";
+  import MessageGameOver from "../../components/game/MessageGameOver";
+  import MessageNextRound from "../../components/game/MessageNextRound";
   import {db} from "../../db";  
 
   let eventsRef = db.ref('events');
@@ -46,11 +50,13 @@
       return {
         events: [],
         steps: steps,
-        isShowWelcome: true     
+        isShowWelcome: true,            
+        nextRound : false
       }
     },
     computed: {
       ...mapGetters("game", ["questions", "process", "isStarted", "endProcess","processQuestion"]),      
+      ...mapGetters("auth", ["user"]),
       layoutProcess() {
         try {
           return this.steps[this.process]['component'];
@@ -75,19 +81,32 @@
         eventsRef.on('value', function(snapshot) {
           snapshot.forEach(function(childSnapshot) {            
                 let childData = childSnapshot.val();                
-                if(childData){                  
-                    if(childData.key == "start_game"){
+                if(childData){              
+                  //Start Game    
+                    if(childData.key == "start_game"){                      
                         self.startGame();
-                        self.isShowWelcome = false;                     
+                        self.isShowWelcome = false;                                             
                     }
+                    //Next Question
                     else if(childData.key == "next_question")
-                    {                          
+                    {                                             
                       self.tickQuestion();                    
+                    }
+                    //Get List User Next Round
+                    else if(childData.key == "result_round"){
+                      var arrayNextRound = childData.arrayNextRound;
+                      self.checkNextRound(arrayNextRound);
                     }
                 }
             });
         });
       },
+      checkNextRound(arrayNextRound){
+        let user_id = user.id;
+        if(arrayNextRound.includes(user_id)){
+          this.nextRound = true;
+        }
+      }
     },
 
   }

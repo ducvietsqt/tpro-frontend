@@ -5,19 +5,19 @@ export const steps = [
   },
   {
     title: 'Kien Dinh',
-    component: 'ProcessKhoiDong'
+    component: 'ProcessKienDinh'
   },
   {
     title: 'Vuot troi',
-    component: 'ProcessKhoiDong'
+    component: 'ProcessVuotTroi'
   },
   {
     title: 'But Pha',
-    component: 'ProcessKhoiDong'
+    component: 'ProcessButPha'
   },
   {
     title: 'Cau hoi Phu',
-    component: 'ProcessKhoiDong'
+    component: 'ProcessCauHoiPhu'
   },
 ];
 
