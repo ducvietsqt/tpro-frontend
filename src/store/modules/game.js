@@ -162,14 +162,14 @@ const mutations = {
     state.endProcess = false;
     state.processQuestion = null;
     state.startTimer = true;
+    state.timer = COUNT_DOWN_QUESTION;
     state.isStopTimerLed = false;
     if (state.process === null) {
       state.process = 0;
     } else if (state.process <= state.questions.length - 1) {
       state.process += 1;
     }
-    // todo: set timer
-    state.timer = state.startTimerLed ? getQuestionsCount(state.process) * COUNT_DOWN_QUESTION : COUNT_DOWN_QUESTION;
+
   },
   END_GAME(state) {
     state.isStarted = false;
