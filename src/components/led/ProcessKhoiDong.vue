@@ -82,8 +82,7 @@
       window.addEventListener('keyup', function (event) {  
         if (!self.isStop) {       
           //Event Key Next => Show Question And Answer
-          if (event.keyCode === 39) {          
-            console.log("Khởi Động");
+          if (event.keyCode === 39) {                      
             //Show Question
             if (!self.show_question) {
               self.show_question = !self.show_question;            

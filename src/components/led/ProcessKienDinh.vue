@@ -81,8 +81,7 @@
       let self = this;
       window.addEventListener('keyup', function (event) {
         if (!self.isStop) {       
-          if (event.keyCode === 39) { 
-            console.log("Kiên Định");
+          if (event.keyCode === 39) {             
             if (!self.show_question) {
               self.isBegin = false;                                      
               self.show_question = !self.show_question;

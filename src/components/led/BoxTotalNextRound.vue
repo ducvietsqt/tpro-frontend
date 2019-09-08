@@ -6,18 +6,10 @@
     </p>
     <div>
       <table class="table_view">
-        <tr>
-          <td>Liên Quân 1</td>
-          <td>5</td>
+        <tr v-for="(data, i) in choices" :key="i">
+          <td>{{data.name}}</td>
+          <td>{{data.total}}</td>
         </tr>
-        <tr>
-          <td>Liên Quân 1</td>
-          <td>5</td>
-        </tr>
-        <tr>
-          <td>Liên Quân 1</td>
-          <td>5</td>
-        </tr> 
       </table>
     </div>
     <div>
@@ -31,6 +23,7 @@ import { mapGetters } from "vuex";
 
   export default {
     name: "TotalNextRound",    
+    props: ["items"],    
     data() {
       return {
 
@@ -39,7 +32,10 @@ import { mapGetters } from "vuex";
     computed: {
       ...mapGetters("game", [
         "process"
-      ])
+      ]),
+      choices() {        
+        return this.items;
+      }
     },
     methods: {    
     }
