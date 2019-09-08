@@ -51,6 +51,7 @@
     },
     computed: {
       ...mapGetters("game", ["questions", "process", "isStarted", "endProcess"]),
+      ...mapGetters("auth", ["user"]),
       layoutProcess() {
         try {
           return this.steps[this.process]['component'];
@@ -84,7 +85,7 @@
                     }
                 }
             });
-        });       
+        });
       },
     },
 

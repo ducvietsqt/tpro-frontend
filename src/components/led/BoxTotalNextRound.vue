@@ -14,30 +14,27 @@
     </div>
     <div>
 
-      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+  import {mapGetters} from "vuex";
 
   export default {
-    name: "TotalNextRound",    
-    props: ["items"],    
+    name: "TotalNextRound",
+    props: ["items"],
     data() {
-      return {
-
-      }
+      return {}
     },
     computed: {
       ...mapGetters("game", [
         "process"
       ]),
-      choices() {        
+      choices() {
         return this.items;
       }
     },
-    methods: {    
-    }
+    methods: {}
   }
 </script>

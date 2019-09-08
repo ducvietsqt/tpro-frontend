@@ -1,17 +1,19 @@
-<template>  
+<template>
   <div>
-    <Round/>    
-    <div class="contain_led_show">   
-      <div class="left_contain"> 
-        <TotalNextRound :items="choiceList" v-show="endProcess && process != 0 && choiceList.length > 0"/>       
-        <Welcome/>      
+    <Round/>
+    <div class="contain_led_show">
+      <div class="left_contain">
+        <TotalNextRound :items="choiceList"/>
+        <TotalNextRound :items="choiceList"
+                        v-show="endProcess && process != 0 && choiceList.length > 0"/>
+        <Welcome/>
         <component :is="layoutProcess" :items="questions[process]"></component>
-      </div>    
+      </div>
       <div class="line_contain">
       </div>
       <Group/>
     </div>
-  </div>  
+  </div>
 </template>
 
 
@@ -29,6 +31,7 @@
   import TotalNextRound from "../../components/led/BoxTotalNextRound";
   import {db} from "../../db";
   import api from '../../api/led';
+  import _ from 'lodash';
 
   let eventsRef = db.ref('events');
   export default {
@@ -51,8 +54,8 @@
         events: [],
         show_question: false,
         isStop: false,
-        choiceList:[],
-        userChoice:[],
+        choiceList: [],
+        userChoice: [],
         steps: [
           {
             title: "Vòng Khởi Động",
@@ -99,12 +102,12 @@
       let self = this;
       window.addEventListener('keyup', function (event) {
         if (!self.isStop) {
-          if (event.keyCode === 39) {            
+          if (event.keyCode === 39) {
             self.setStateReady(true);
             self.updateStatusWelcome(true);
             if (self.isReady && self.show_question) {
               self.startGame();
-              self.stopTimerRound();              
+              self.stopTimerRound();
               self.updateStatusWelcome(false);
               self.isStop = true;
             }
@@ -118,7 +121,7 @@
       events: eventsRef
     },
     methods: {
-      ...mapActions("game", ["startGame", "stopTimerRound", "setStateReady","updateStatusWelcome"]),
+      ...mapActions("game", ["startGame", "stopTimerRound", "setStateReady", "updateStatusWelcome"]),
       /*startProcessGame(){
         let self = this;
         eventsRef.on('value', function(snapshot) {
@@ -136,21 +139,26 @@
             });
         });
       }*/
-      async getListGroupGrade(){
-        let obj = await api.getListGroupGrade();        
-        let list = obj.data.list; 
-        const result = {} 
-        for (let i = 0; i < list.length; i++) {
+      async getListGroupGrade() {
+        let obj = await api.getListGroupGrade();
+        let list = obj.data.list;
+
+        let temp = _.groupBy(list, 'group_id');
+        console.log('list', temp)
+        for (let i in temp) {
           this.choiceList.push({
-            id: list[i].group_id,
-            name: list[i].group[0].name,
-            total:  1
-          });         
-        }        
+            name: temp[i][0].group[0].name,
+            id: temp[i][0].group_id,
+            total: temp[i].length
+          });
+        }
+        // id: list[i].group_id,
+        //   name: list[i].group[0].name,
+        //   total:  1
       }
     },
     watch: {
-      endProcess: function (t,n) { // eslint-disable-line                         
+      endProcess: function (t, n) { // eslint-disable-line
         this.getListGroupGrade();
       }
     }
@@ -174,8 +182,6 @@
       }
     }
   }
-
-
 
   .group-data {
     display: flex;

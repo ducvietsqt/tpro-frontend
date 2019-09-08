@@ -23,7 +23,8 @@ export const getSubdomainURL = subdomain => {
 export const SESSION = {
   TOKEN: 'token',
   SUBDOMAINS: 'subdomains',
-  QUESTIONS: 'QUESTIONS'
+  QUESTIONS: 'QUESTIONS',
+  USER: 'USER'
 }
 
 export let setSESSION = (session_name, data) => {

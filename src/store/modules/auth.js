@@ -5,7 +5,7 @@ import api from '../../api/auth';
 const state = {
   status: "",
   token: getSESSION(SESSION.TOKEN) || "",
-  user: {},
+  user: getSESSION(SESSION.USER) || {},
   dataAuth: {},
   isAuthCode: false
 
@@ -62,6 +62,7 @@ const mutations = {
     state.token = state.dataAuth.code || data.code;
     state.user = state.dataAuth || data;
     setSESSION(SESSION.TOKEN, state.dataAuth.code);
+    setSESSION(SESSION.USER, state.dataAuth || data);
   },
   authError(state) {
     state.status = "error";
