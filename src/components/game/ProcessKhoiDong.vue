@@ -76,7 +76,7 @@
       async handleAnswer(index) {
         if(this.startTimer){          
             // return false
-            let is_correct = (this.answers[index]['is_correct'] == 1);
+            let is_correct = (this.answers[index]['is_correct'] == 1);            
             this.answered = index;
             await this.answerQuestion({index, is_correct});
             await sleep(1000);

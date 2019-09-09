@@ -22,7 +22,7 @@
 
 <script>
   import {SECONDS} from "../../utils/constant";
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';  
 
   export default {
     name: "CountDown",
@@ -33,8 +33,8 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["processTimer", "timer", "startTimer","process"]),
-
+      ...mapGetters("game", ["questions","processTimer", "timer", "startTimer","process","resultsProcess","totalTimeAnsweredProcess"]),
+      ...mapGetters("auth", ["user"]),
     },
     methods: {
       ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer","stopTimerGame"]),
@@ -70,7 +70,7 @@
         if (!this.startTimer) return this.handleStopTimer();
         let processTimer = vm.$data.timeObj.ceil.s;
         this.tickTimer(processTimer);
-      },
+      }      
     },
     // watch
     watch: {
@@ -83,6 +83,8 @@
         console.log(next, prev);
         if (next === true && prev === false) {
           this.handleStopTimer();
+          this.submitAnnswer();
+
         }
       }
     }

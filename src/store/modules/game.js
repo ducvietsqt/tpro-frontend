@@ -219,14 +219,15 @@ const mutations = {
   },
 
   RESULT_PROCESS(state) { // eslint-disable-line
-    let _state = {...state};
-    console.log(_state.questions[_state.process]['questions']);
-    console.log(_state.questions[_state.process]['questions'].filter(i => i.answered.is_correct));
-    _state.resultsProcess = _state.questions[_state.process]['questions'].filter(i => i.answered.is_correct);
-    for (let i = 0; i < _state.questions[_state.process]['questions'].length; i++) {
-      _state.totalTimeAnsweredProcess += _state.questions[_state.process]['questions'][i]['answered']['time'];
-    }
-    state = {..._state};
+    //let _state = {...state};
+    //console.log(_state.questions[_state.process]['questions']);
+    //console.log(_state.questions[_state.process]['questions'].filter(i => i.answered.is_correct));
+    state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
+    //state.totalTimeAnsweredProcess = 0;
+    for (let i = 0; i < state.questions[state.process]['questions'].length; i++) {      
+      state.totalTimeAnsweredProcess += state.questions[state.process]['questions'][i]['answered']['time'];
+    }    
+    //state = {..._state};
   },
   UPDATE_STATE_READY(state, data) {
     state.isReady = data;

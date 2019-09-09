@@ -73,12 +73,11 @@
         //todo: nex question
         this.answered = null;             
         this.tickQuestion();
-      }  
-
+      }      
     },
     watch: {
       nextRound: function (t, n) { // eslint-disable-line        
-        this.showResult = true;       
+        this.showResult = true;   
       }
     }
   }
