@@ -15,11 +15,11 @@
           </p>
         </div>
       </div>
-      <div v-if="!isStarted" class="box_nex_process">
+      <!--<div v-if="!isStarted" class="box_nex_process">
         <p style="text-align: center">
           <button class="start-game" @click.stop="startProcessGame">Bắt đầu</button>
         </p>
-      </div>
+      </div>-->
     </div>
 
     <component :is="layoutProcess"
@@ -81,7 +81,7 @@
       events: eventsRef
     },
     mounted(){
-      // this.startProcessGame();
+      this.startProcessGame();
     },
     methods: {
       ...mapActions("game", ["startGame","tickQuestion","setNextRound"]),

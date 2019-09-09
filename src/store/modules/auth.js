@@ -1,6 +1,6 @@
 import axios from "axios";
 import {getSESSION, removeSESSION, SESSION, setSESSION} from "../../utils";
-import api from '../../api/auth';
+import api, {updateLogin} from '../../api/auth';
 // initial state
 const state = {
   status: "",
@@ -22,14 +22,14 @@ const getters = {
 
 // actions
 const actions = {
-  async login({ commit }, user) { // eslint-disable-line
+  async login({commit}, user) { // eslint-disable-line
     return new Promise(async resolve => {
       commit("authRequest");
       try {
         commit("authCode", await api.login(user));
         // commit("authSuccess", {payload: await api.login(user), token: user.code});
         resolve(true);
-      }catch (e) {
+      } catch (e) {
         commit("authError", e);
         resolve(false);
 
@@ -37,18 +37,24 @@ const actions = {
     })
 
   },
-  async logout({ commit }, user) {
+  async logout({commit}, user) {
     return new Promise(async resolve => {
       commit("logout");
       await api.logout(user);
-      removeSESSION(SESSION.TOKEN);
-      removeSESSION(SESSION.QUESTIONS);
-      removeSESSION(SESSION.USER);
+      removeSESSION([], true);
       delete axios.defaults.headers.common["Authorization"];
       resolve();
     }, reject => {
       reject("Authorization")
     });
+  },
+  updateLogin({commit}, data) {
+    return new Promise(async resolve => {
+      let rs = await api.updateLogin(data);
+      resolve(rs);
+    }, reject => {
+      reject(false);
+    })
   }
 };
 

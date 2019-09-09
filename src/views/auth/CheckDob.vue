@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
   import {sleep} from "../../api/base";
   export default {
     name: "CheckDob",
@@ -50,12 +50,15 @@
     },
     methods: {
       ...mapMutations("auth", ["authSuccess", "logout"]),
+      ...mapActions("auth", ["updateLogin"]),
       rdrSignIn() {
         this.$router.push({name: 'signin'})
       },
       async submit(e) {
         e.preventDefault();
         if(this.dataAuth.dob === this.dob.trim()) {
+          console.log(true);
+          await this.updateLogin({code: this.dataAuth.code});
           await this.authSuccess();
           this.$router.push({path: '/dashboard'})
         }else {
