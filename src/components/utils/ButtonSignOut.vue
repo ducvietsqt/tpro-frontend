@@ -1,5 +1,5 @@
 <template>
-  <div v-show="process == 0">
+  <div v-show="!process || process == 0">
     <button @click.stop="logout(NvId)" class="link_signout s25">Đăng xuất</button>
   </div>  
 </template>
@@ -15,7 +15,7 @@
       NvId() {
         return getSESSION(SESSION.TOKEN)
       }
-    },
+    },    
     methods: {
       ...mapActions("auth", ["logout"])
     }
