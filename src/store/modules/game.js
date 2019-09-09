@@ -27,7 +27,7 @@ const state = {
   isStartWelcome: false,
 
   nextRound: null,
-  submitAnswer: false
+  isSubmitAnswer: false
 
 
 };
@@ -59,7 +59,7 @@ const getters = {
   isStartWelcome: state => state.isStartWelcome,
 
   nextRound: state => state.nextRound || getSESSION(SESSION.NEXT_ROUND),
-  submitAnswer: state => state.submitAnswer
+  isSubmitAnswer: state => state.isSubmitAnswer
 
 
 };
@@ -92,9 +92,10 @@ const actions = {
     commit("TICK_QUESTION");
     commit("START_TIMER");
   },
-  answerQuestion({commit}, {index, is_correct}) { // eslint-disable-line
+  answerQuestion({commit}, data) { // eslint-disable-line
     // todo: answered
-    commit("STOP_TIMER", {index, is_correct})
+   commit("STOP_TIMER", data)
+    
 
   },
 
@@ -148,8 +149,8 @@ const actions = {
   getResultProcess({commit}) {
     commit("RESULT_PROCESS");
   },
-  submitAnswer({commit}){
-    commit("SUBMIT_ANSWER");
+  submitAnswer({commit},data){
+    commit("SUBMIT_ANSWER",data);
   }
 
 };
@@ -211,9 +212,12 @@ const mutations = {
   STOP_TIMER(state, data) { // eslint-disable-line
     state.startTimer = false;
     let _state = {...state};
+    let tem_timer = getSESSION(SESSION.PROCESS_TIMER);
+
     state.questions[state.process]['questions'][state.processQuestion]['answered'] = {
       is_correct: data ? data['is_correct'] : false,
-      time: data ? _state.processTimer : COUNT_DOWN_QUESTION
+     // time: data ? COUNT_DOWN_QUESTION - _state.processTimer : COUNT_DOWN_QUESTION,
+      time: data ? COUNT_DOWN_QUESTION - tem_timer : COUNT_DOWN_QUESTION
     };
 
     // state.timer = COUNT_DOWN_QUESTION;
@@ -224,14 +228,15 @@ const mutations = {
   },
 
   RESULT_PROCESS(state) { // eslint-disable-line
-    //let _state = {...state};
-    //console.log(_state.questions[_state.process]['questions']);
+    //let _state = {...state};    
     //console.log(_state.questions[_state.process]['questions'].filter(i => i.answered.is_correct));
-    state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
+    let correct_results = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
+    state.resultsProcess = correct_results;
     //state.totalTimeAnsweredProcess = 0;
-    for (let i = 0; i < state.questions[state.process]['questions'].length; i++) {  
-    console.log(state.questions[state.process]['questions'][i]['answered']) ;
-      state.totalTimeAnsweredProcess += state.questions[state.process]['questions'][i]['answered']['time'];
+    for (let i = 0; i < correct_results.length; i++) {  
+    //console.log(state.questions[state.process]['questions'][i]['answered']) ;
+    console.log(correct_results[i]);
+      state.totalTimeAnsweredProcess += correct_results[i]['answered']['time'];
     }    
     //state = {..._state};
   },
@@ -260,8 +265,8 @@ const mutations = {
   setNextRound(state, payload) {
     state.nextRound = payload
   },
-  SUBMIT_ANSWER(state){
-    state.submitAnswer = true;
+  SUBMIT_ANSWER(state,data){
+    state.isSubmitAnswer = data;
   }
 };
 

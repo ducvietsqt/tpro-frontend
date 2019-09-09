@@ -88,7 +88,7 @@
             if (is_correct) {
                 total_correct = 1;
             }
-            this.submitAnswer();
+            this.submitAnswer(true);
         }        
         //await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
         //this.tickQuestion();

@@ -6,12 +6,12 @@
         <th>Số lượng</th>
         <th>Điểm</th>
       </tr>
-      <tr v-for="(data, i) in choiceList" :key="i">
+      <tr v-for="(data, i) in groupList" :key="i">
         <td>{{data.name}}</td>
-        <td>{{data.total}}</td>
+        <td>{{checkDataUpdate(data.id).length != 0 ? checkDataUpdate(data.id).total :0}}</td>
         <td>
           <div class="box_point">
-            {{data.total_score}}
+            <td>{{checkDataUpdate(data.id).length != 0 ? checkDataUpdate(data.id).total_score :0}}</td>
           </div>
         </td>
       </tr>      
@@ -36,7 +36,8 @@
     name: "TotalNextRound",    
     data() {
       return {
-        choiceList: []
+        choiceList: [],
+        groupList: []
       }
     },
     computed: {
@@ -45,10 +46,14 @@
       ])
     },
     methods: {
+      async getList() {// eslint-disable-line
+        let obj = await api.getListGroup();
+        this.groupList = obj.data;
+      },
       async getListGroupGrade() {        
         let obj = await api.getListGroupGrade();
         let list = obj.data.list;        
-        let temp = _.groupBy(list, 'group_id');            
+        let temp = _.groupBy(list, 'group_id');              
         for (let i in temp) {
           this.choiceList.push({
             name: temp[i][0].group[0].name,
@@ -58,6 +63,16 @@
           });
         }        
       },
+      checkDataUpdate(gradeId){
+        let result = [];
+        const newArray = this.choiceList.filter((data, index) => {
+          if(data.id == gradeId)
+            {
+              result = data;              
+            }               
+        });
+        return result;        
+      },
       totalItem() {
         if(this.endProcess){
             let sum = 0;          
@@ -66,12 +81,13 @@
             }
 
             return sum; 
-        }            
+        }      
       }
     },    
     watch: {
       endProcess: function (t, n) { // eslint-disable-line    
         this.choiceList = [];
+        this.getList();
         this.getListGroupGrade();
       }
     }

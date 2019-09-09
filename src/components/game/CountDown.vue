@@ -21,6 +21,7 @@
 </template>
 
 <script>
+  import {setSESSION, SESSION} from "../../utils";
   import {SECONDS} from "../../utils/constant";
   import {mapGetters, mapActions} from 'vuex';  
 
@@ -33,11 +34,11 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["questions","submitAnswer","processQuestion","processTimer", "timer", "startTimer","process","resultsProcess","totalTimeAnsweredProcess"]),
+      ...mapGetters("game", ["questions","isSubmitAnswer","processQuestion","processTimer", "timer", "startTimer","process","resultsProcess","totalTimeAnsweredProcess"]),
       ...mapGetters("auth", ["user"]),
     },
     methods: {
-      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer","stopTimerGame","answerQuestion"]),
+      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer","stopTimerGame","answerQuestion","submitAnswer"]),
       handleStartTimer() {
         this.$refs.vac.startCountdown(true);
         this.isStopTime = false;
@@ -51,7 +52,8 @@
 
       // callback
       onStart(vm) { // eslint-disable-line
-
+        console.log("Start");
+        this.submitAnswer(false);
       },
       onStop(vm) { // eslint-disable-line
 
@@ -61,9 +63,9 @@
           this.stopTimer();
         }        
         else{
-          if(!this.submitAnswer){            
+          if(!this.isSubmitAnswer){            
             let is_correct = false;            
-            await this.answerQuestion({index:this.processQuestion, is_correct});          
+            await this.answerQuestion();          
           }          
           this.stopTimerGame();
           this.isStopTime = true;
@@ -73,7 +75,9 @@
       onProcess(vm) { // eslint-disable-linne
         if (!this.startTimer) return this.handleStopTimer();
         let processTimer = vm.$data.timeObj.ceil.s;
+        setSESSION(SESSION.PROCESS_TIMER, processTimer);
         this.tickTimer(processTimer);
+
       }      
     },
     // watch
