@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="title_timer" v-show="!isStopTime">
-      <strong> {{processTimer}}</strong>S
+      <strong> {{Math.ceil(processTimer)}}</strong>S
     </p>
     <vac :left-time="timer * SECONDS"
          :auto-start="false"
@@ -75,8 +75,8 @@
       },
       onProcess(vm) { // eslint-disable-linne
         if (!this.startTimer) return this.handleStopTimer();
-        let processTimer = vm.$data.timeObj.ceil.s;
-        // let processTimer = timeObj.org.s;
+        // let processTimer = vm.$data.timeObj.ceil.s;
+        let processTimer = vm.$data.timeObj.org.s;
         setSESSION(SESSION.PROCESS_TIMER, processTimer);
         this.tickTimer(Math.ceil(processTimer));
 
