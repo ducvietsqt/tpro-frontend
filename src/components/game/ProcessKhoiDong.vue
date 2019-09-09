@@ -72,16 +72,15 @@
       events: eventsRef
     },
     methods: {
-      ...mapActions("game", ["tickQuestion", "answerQuestion"]),
-      async handleAnswer(index) {
+      ...mapActions("game", ["tickQuestion", "answerQuestion","submitAnswer"]),
+      async handleAnswer(index) {        
         if(this.startTimer){          
-            // return false
+            // return false            
             let is_correct = (this.answers[index]['is_correct'] == 1);            
             this.answered = index;
             await this.answerQuestion({index, is_correct});
             await sleep(1000);
-            //todo: nex question
-            this.answered = null;
+            //todo: nex question            
             var user_id = this.user.id;
             var round_id = this.process + 1;
             var total_time = this.userAnswer.answered.time;
@@ -89,6 +88,7 @@
             if (is_correct) {
                 total_correct = 1;
             }
+            this.submitAnswer();
         }        
         //await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
         //this.tickQuestion();
@@ -106,7 +106,13 @@
             });
         });
       }      
-
+    },
+    watch: {
+      startTimer(n, p) { // eslint-disable-line        
+        if (n && n !== p) {                    
+          this.answered = null;
+        }
+      }
     }
   }
 </script>

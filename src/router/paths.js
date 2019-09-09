@@ -32,7 +32,8 @@ const LAYOUT = {
   LoggedIn: "LoggedIn",
   StaticPage: 'StaticPage',
   General :"General",
-  Led: "Led"
+  Led: "Led",
+  LedWhite: "Led-White"
 };
 export default [
   {path: "*", component: NotFound},
@@ -99,7 +100,7 @@ export default [
     path: "/led/show-grade",
     name: "ledShowGrade",
     component: LedShowGrade,
-    meta: {layout: LAYOUT.LoggedIn}
+    meta: {layout: LAYOUT.LedWhite}
   },
 
   {

@@ -1,17 +1,24 @@
 <template>
-    <div>
-      <p>
-        <strong>Chào mừng bạn đến với T-Pro Confetti</strong>
-      </p>
-      <div v-if="gradeList.length> 0">
-          <div v-for="(grade, index) in gradeList" :key="index" :class="['grade ', (choices.indexOf(grade.id) !== -1 ? 'active' : '')]">
-              <span>{{grade.id}}</span>
-              <span>{{ grade.name}}</span>
-          </div>
-      </div>
-      <div v-else>
-          <p>Hiện tại hệ thống đang xử lý kết quả. Vui lòng chờ trong giây lát!</p>
-      </div>
+  <div class="contain_led_result contain_led_result--lienquan" v-if="gradeList.length> 0">
+      <div class="item" v-for="(grade, index) in gradeList" :key="index">
+        <ul class="list_answred">          
+          <li class="list_answred--item" :class="['grade ', (choices.indexOf(grade.id) !== -1 ? 'green' :'')]">
+            <div class="drs">
+              <p class="name">
+                <span>{{grade.name}}</span>
+              </p>
+            </div>
+            <p class="both_text_item">
+              {{grade.code}}
+            </p>
+          </li>
+        </ul>
+
+      </div>        
+
+    </div>
+    <div v-else>
+        <p>Hiện tại hệ thống đang xử lý kết quả. Vui lòng chờ trong giây lát!</p>
     </div>
 </template>
 
@@ -45,8 +52,8 @@ export default {
   },
   methods: {
     async getList(){// eslint-disable-line
-      let obj = await api.getListGroup();
-      this.gradeList = obj.data;
+      let obj = await api.getListGroupGrade();
+      this.gradeList = obj.data.list;
     },
     getUserChoices(){// eslint-disable-line
       userChoices.on('value', function(snapshot) {

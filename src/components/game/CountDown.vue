@@ -33,11 +33,11 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["questions","processTimer", "timer", "startTimer","process","resultsProcess","totalTimeAnsweredProcess"]),
+      ...mapGetters("game", ["questions","submitAnswer","processQuestion","processTimer", "timer", "startTimer","process","resultsProcess","totalTimeAnsweredProcess"]),
       ...mapGetters("auth", ["user"]),
     },
     methods: {
-      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer","stopTimerGame"]),
+      ...mapActions("game", ["tickTimer", "stopTimer", "finishTimer","stopTimerGame","answerQuestion"]),
       handleStartTimer() {
         this.$refs.vac.startCountdown(true);
         this.isStopTime = false;
@@ -56,11 +56,15 @@
       onStop(vm) { // eslint-disable-line
 
       },
-      onFinnish(vm) { // eslint-disable-line
+      async onFinnish(vm) { // eslint-disable-line
         if(this.process > 0 && this.process < 3){
           this.stopTimer();
         }        
         else{
+          if(!this.submitAnswer){            
+            let is_correct = false;            
+            await this.answerQuestion({index:this.processQuestion, is_correct});          
+          }          
           this.stopTimerGame();
           this.isStopTime = true;
         }

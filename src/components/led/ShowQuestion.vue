@@ -9,7 +9,8 @@
       </div>
       <div class="line_contain">
       </div>
-      <Group/>
+      <Group v-show="!showTotalUpdate"/>
+      <TotalNextRoundUpdate v-show="showTotalUpdate"/>
     </div>
   </div>
 </template>
@@ -27,6 +28,7 @@
   import Group from "../../components/led/Group";
   import Welcome from "../../components/led/Welcome";
   import TotalNextRound from "../../components/led/BoxTotalNextRound";
+  import TotalNextRoundUpdate from "../../components/led/BoxTotalNextRoundUpdate";
   import {db} from "../../db";
 
   let eventsRef = db.ref('events');
@@ -42,14 +44,16 @@
       Round,
       Group,
       Welcome,
-      TotalNextRound
+      TotalNextRound,
+      TotalNextRoundUpdate
     },
 
     data() {
       return {
         events: [],
         show_question: false,
-        isStop: false,        
+        isStop: false, 
+        showTotalUpdate:false,       
         steps: [
           {
             title: "Vòng Khởi Động",
@@ -132,6 +136,13 @@
             });
         });
       }*/      
+    },
+    watch: {
+      endProcess(n, p) { // eslint-disable-line        
+        if (n && n !== p) {                    
+          this.showTotalUpdate = true;
+        }
+      }
     }
   };
 </script>

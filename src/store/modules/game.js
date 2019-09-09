@@ -26,7 +26,8 @@ const state = {
   isReady: false,
   isStartWelcome: false,
 
-  nextRound: null
+  nextRound: null,
+  submitAnswer: false
 
 
 };
@@ -57,7 +58,8 @@ const getters = {
   isReady: state => state.isReady,
   isStartWelcome: state => state.isStartWelcome,
 
-  nextRound: state => state.nextRound || getSESSION(SESSION.NEXT_ROUND)
+  nextRound: state => state.nextRound || getSESSION(SESSION.NEXT_ROUND),
+  submitAnswer: state => state.submitAnswer
 
 
 };
@@ -146,6 +148,9 @@ const actions = {
   getResultProcess({commit}) {
     commit("RESULT_PROCESS");
   },
+  submitAnswer({commit}){
+    commit("SUBMIT_ANSWER");
+  }
 
 };
 
@@ -224,7 +229,8 @@ const mutations = {
     //console.log(_state.questions[_state.process]['questions'].filter(i => i.answered.is_correct));
     state.resultsProcess = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
     //state.totalTimeAnsweredProcess = 0;
-    for (let i = 0; i < state.questions[state.process]['questions'].length; i++) {      
+    for (let i = 0; i < state.questions[state.process]['questions'].length; i++) {  
+    console.log(state.questions[state.process]['questions'][i]['answered']) ;
       state.totalTimeAnsweredProcess += state.questions[state.process]['questions'][i]['answered']['time'];
     }    
     //state = {..._state};
@@ -253,6 +259,9 @@ const mutations = {
   },
   setNextRound(state, payload) {
     state.nextRound = payload
+  },
+  SUBMIT_ANSWER(state){
+    state.submitAnswer = true;
   }
 };
 
