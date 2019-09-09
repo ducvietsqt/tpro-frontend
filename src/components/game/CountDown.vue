@@ -9,6 +9,7 @@
          @stop="onStop"
          @finish="onFinnish"
          @process="onProcess"
+         :speed="SPEED_COUNTDOWN"
          ref="vac">
       <!--<span slot="process"
             slot-scope="{ timeObj }">
@@ -22,14 +23,14 @@
 
 <script>
   import {setSESSION, SESSION} from "../../utils";
-  import {SECONDS} from "../../utils/constant";
-  import {mapGetters, mapActions} from 'vuex';  
+  import {SECONDS, SPEED_COUNTDOWN} from "../../utils/constant";
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
     name: "CountDown",
     data() {
       return {
-        SECONDS,
+        SECONDS, SPEED_COUNTDOWN,
         isStopTime:false
       }
     },
@@ -61,12 +62,12 @@
       async onFinnish(vm) { // eslint-disable-line
         if(this.process > 0 && this.process < 3){
           this.stopTimer();
-        }        
+        }
         else{
-          if(!this.isSubmitAnswer){            
-            let is_correct = false;            
-            await this.answerQuestion();          
-          }          
+          if(!this.isSubmitAnswer){
+            let is_correct = false;
+            await this.answerQuestion();
+          }
           this.stopTimerGame();
           this.isStopTime = true;
         }
@@ -75,15 +76,16 @@
       onProcess(vm) { // eslint-disable-linne
         if (!this.startTimer) return this.handleStopTimer();
         let processTimer = vm.$data.timeObj.ceil.s;
+        // let processTimer = timeObj.org.s;
         setSESSION(SESSION.PROCESS_TIMER, processTimer);
-        this.tickTimer(processTimer);
+        this.tickTimer(Math.ceil(processTimer));
 
-      }      
+      }
     },
     // watch
     watch: {
-      startTimer(next, prev) { // eslint-disable-line      
-        if (next === true && next !== prev) {          
+      startTimer(next, prev) { // eslint-disable-line
+        if (next === true && next !== prev) {
           this.handleStartTimer();
         }
       },
