@@ -57,7 +57,7 @@
         // if (this.authStatus === 'loading') return false;
         // if (this.isLoggedIn) return 'LoggedIn';
         // return this.$route.meta.layout || 'NotLoggedIn';
-        return this.layoutName
+        return this.layoutName;
       },
     },
     methods: {
