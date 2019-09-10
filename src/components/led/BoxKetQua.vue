@@ -83,7 +83,7 @@ import {sleep} from "../../api/base";
     ...mapActions("game", ["tickQuestion"]),
       async getListGroupAnswer()
       {                  
-          await sleep(2500);
+          await sleep(1500);
           let obj= await api.getListGroupAnswer();  
           this.listAnswer = obj.data;     
           this.pause = true;    
