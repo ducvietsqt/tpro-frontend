@@ -1,7 +1,6 @@
 <template>
   <div class="content_center" :class="{no_center: isStarted && !endProcess}">
-    <!--<CountDownUi/>-->
-    <div>
+    <div>      
       <MessageGameOver v-show="!nextRound && endProcess && showResult"/>
       <MessageNextRound v-show="nextRound && endProcess && showResult" :title="processTitle"/>
       <div class="led_box" v-show="isStarted && !endProcess">
@@ -15,11 +14,11 @@
           </p>
         </div>
       </div>
-      <div v-if="!isStarted" class="box_nex_process">
+      <!--<div v-if="!isStarted" class="box_nex_process">
         <p style="text-align: center">
           <button class="start-game" @click.stop="startProcessGame">Bắt đầu</button>
         </p>
-      </div>
+      </div>-->
     </div>
 
     <component :is="layoutProcess"
@@ -40,14 +39,12 @@
   import MessageNextRound from "../../components/game/MessageNextRound";
   import {db} from "../../db";
   import NextProcess from "../../components/game/NextProcess";
-  import CountDownUi from "../../components/utils/CountDownUi";
   let eventsRef = db.ref('events');
 
   export default {
     name: "DashBoard",
-    components: {
-      // CountDownUi, // eslint-disable-line
-      ProcessButPha, ProcessVuotTroi, ProcessKienDinh,
+    components: {// eslint-disable-line
+      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, 
       ProcessKhoiDong, ProcessCauHoiPhu, CountDown,
       MessageGameOver,MessageNextRound
     },
@@ -56,7 +53,7 @@
         events: [],
         steps: steps,
         isShowWelcome: true,
-        showResult: false
+        showResult: false    
       }
     },
     computed: {
@@ -74,14 +71,14 @@
           return this.questions[this.process]['name'];
         } catch (e) {
           return false
-        }
+        }        
       }
     },
     firebase: {
       events: eventsRef
     },
     mounted(){
-      // this.startProcessGame();
+      this.startProcessGame();
     },
     methods: {
       ...mapActions("game", ["startGame","tickQuestion","setNextRound"]),
@@ -95,7 +92,7 @@
           snapshot.forEach(function(childSnapshot) {
                 let childData = childSnapshot.val();
                 if(childData){
-                  self.showResult = false;
+                  self.showResult = false;        
                   //Start Game
                     if(childData.key == "start_game"){
                         self.startGame();
@@ -107,7 +104,7 @@
                       self.tickQuestion();
                     }
                     //Get List User Next Round
-                    else if(childData.key == "result_round"){
+                    else if(childData.key == "result_round"){                      
                       var arrayNextRound = childData.arrayNextRound;
                       self.checkNextRound(arrayNextRound);
                     }
@@ -115,15 +112,15 @@
             });
         });
       },
-      checkNextRound(arrayNextRound){
-        let user_id = this.user.id;
-        let self = this;
-        this.showResult = true;
-        if(arrayNextRound.includes(user_id)){
+      checkNextRound(arrayNextRound){        
+        let user_id = this.user.id;        
+        let self = this;               
+        this.showResult = true;        
+        if(arrayNextRound.includes(user_id)){          
           self.setNextRound(true);
         }
         else{
-          self.setNextRound(false);
+          self.setNextRound(false); 
         }
       }
     },

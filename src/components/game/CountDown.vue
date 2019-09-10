@@ -78,7 +78,8 @@
         // let processTimer = vm.$data.timeObj.ceil.s;
         let processTimer = vm.$data.timeObj.org.s;
         setSESSION(SESSION.PROCESS_TIMER, processTimer);
-        this.tickTimer(Math.ceil(processTimer));
+        //this.tickTimer(Math.ceil(processTimer));
+        this.tickTimer(processTimer);
 
       }
     },
