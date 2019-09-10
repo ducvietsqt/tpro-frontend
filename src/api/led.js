@@ -12,8 +12,12 @@ async function getListGroupGrade() {
     return await get('/api/v1/led/grade');
 }
 
+async function resetRound() {
+    return await get('/api/v1/user/reset-result');
+}
 export default {
     getListGroup, 
     getListGroupAnswer,
-    getListGroupGrade
+    getListGroupGrade,
+    resetRound
   };

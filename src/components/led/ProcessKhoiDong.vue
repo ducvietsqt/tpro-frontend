@@ -128,6 +128,9 @@
             else if (!self.show_correct){
               self.show_answer = true;
               self.show_correct = true;
+              //Update Total Score Group List
+              console.log("Khởi động");
+              self.updateGroupList(true);
             }
           }
           //Event key "N"=> next question
@@ -142,7 +145,9 @@
               self.indexLoop++;
               //When Done Round=> Next Round
               if(self.endProcess){
+                //Start Game
                 self.startGame();
+                //Update Status Show Welcome
                 self.updateStatusWelcome(true);
                 self.isStop = true;
               }
@@ -168,7 +173,7 @@
       });
     },
     methods: {
-      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome","updateGroupList"]),
       async showAnswerCorrect() {
         this.answered = null;
       }

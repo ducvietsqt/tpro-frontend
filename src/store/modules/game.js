@@ -27,7 +27,8 @@ const state = {
   isStartWelcome: false,
 
   nextRound: null,
-  isSubmitAnswer: false
+  isSubmitAnswer: false,
+  isUpdateGroupList: false
 
 
 };
@@ -59,7 +60,8 @@ const getters = {
   isStartWelcome: state => state.isStartWelcome,
 
   nextRound: state => state.nextRound || getSESSION(SESSION.NEXT_ROUND),
-  isSubmitAnswer: state => state.isSubmitAnswer
+  isSubmitAnswer: state => state.isSubmitAnswer,
+  isUpdateGroupList: state => state.isUpdateGroupList
 
 
 };
@@ -151,8 +153,10 @@ const actions = {
   },
   submitAnswer({commit},data){
     commit("SUBMIT_ANSWER",data);
+  },
+  updateGroupList({commit},data){
+    commit("UPDATE_GROUP_LIST",data);
   }
-
 };
 
 // mutations
@@ -192,6 +196,7 @@ const mutations = {
   },
 
   TICK_QUESTION(state) {
+    state.isUpdateGroupList = false;
     if (state.processQuestion === null) {
       state.processQuestion = 0;
     } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {
@@ -267,6 +272,9 @@ const mutations = {
   },
   SUBMIT_ANSWER(state,data){
     state.isSubmitAnswer = data;
+  },
+  UPDATE_GROUP_LIST(state,data){
+    state.isUpdateGroupList = data;
   }
 };
 

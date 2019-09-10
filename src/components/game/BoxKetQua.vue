@@ -77,8 +77,7 @@
         let total_time = this.totalTimeAnsweredProcess;
         let total_correct = this.resultsProcess.length + '/' + this.questions[this.process]["questions"].length;      
         var answer = "";
-        console.log("Total Correct:" +total_correct);
-        //await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
+        await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
       }
     },
     watch: {
