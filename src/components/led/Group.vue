@@ -30,6 +30,10 @@
 
 <script>
   import api from '../../api/led';
+  import {mapGetters} from "vuex";
+  import {db} from "../../db";
+
+  let eventsRef = db.ref('events');
 
   export default {
     name: "Group",
@@ -39,9 +43,17 @@
         groupList: []
       };
     },
-    computed: {},
+    computed: {
+      ...mapGetters("game", [
+        "isUpdateGroupList",
+      ]),
+    },
     mounted() {
       this.getList();
+      this.listenEventUpdateGroup();
+    },
+    firebase: {
+      events: eventsRef
     },
     methods: {
       async getList() {// eslint-disable-line
@@ -55,6 +67,27 @@
         }
 
         return sum;
+      },     
+      listenEventUpdateGroup(){
+        let self = this;
+        eventsRef.on('value', function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+              let childData = childSnapshot.val();
+              if(childData){
+                  if(childData.key == "update_round"){
+                    self.getList();
+                  }
+              }
+            });
+        });
+      }  
+    },
+    watch: {
+      isUpdateGroupList(n, p) { // eslint-disable-line        
+        console.log("kết Quả");
+        if (n && n !== p) {                 
+          this.getList();
+        }
       }
     }
   };

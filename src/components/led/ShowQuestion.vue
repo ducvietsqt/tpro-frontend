@@ -104,6 +104,7 @@
             self.setStateReady(true);
             self.updateStatusWelcome(true);
             if (self.isReady && self.show_question) {
+              eventsRef.remove();
               self.startGame();
               self.stopTimerRound();
               self.updateStatusWelcome(false);
@@ -139,7 +140,8 @@
     },
     watch: {
       endProcess(n, p) { // eslint-disable-line        
-        if (n && n !== p) {                    
+        if (n && n !== p) {      
+          alert(1);
           this.showTotalUpdate = true;
         }
       }
