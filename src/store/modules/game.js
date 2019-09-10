@@ -28,14 +28,17 @@ const state = {
 
   nextRound: null,
   isSubmitAnswer: false,
-  isUpdateGroupList: false
+  isUpdateGroupList: false,
 
+  userStopGame: false,
+  updateStateProcessQuestion: false,
 
 };
 
 // getters
 const getters = {
-  questions: state => state.questions,
+  // questions: state => state.questions,
+  questions: state => state.questions || SESSION.QUESTIONS,
 
   process: state => state.process,
   processQuestion: state => state.processQuestion,
@@ -61,7 +64,10 @@ const getters = {
 
   nextRound: state => state.nextRound || getSESSION(SESSION.NEXT_ROUND),
   isSubmitAnswer: state => state.isSubmitAnswer,
-  isUpdateGroupList: state => state.isUpdateGroupList
+  isUpdateGroupList: state => state.isUpdateGroupList,
+
+  userStopGame: state => state.userStopGame,
+  updateStateProcessQuestion: state => state.updateStateProcessQuestion,
 
 
 };
@@ -73,6 +79,15 @@ const actions = {
     commit("SET_QUESTION", rs);
 
   },
+  async fetchCurrentProcess({commit}) {
+    return new Promise(async resolve => {
+      let rs = await api.getProcessCurrent();
+      commit("UPDATE_CURRENT_PROCESS", rs.data[0]);
+      resolve(rs.data[0]);
+    })
+
+  },
+
   startGame({commit}) {
     commit("START_GAME");
 
@@ -97,7 +112,7 @@ const actions = {
   answerQuestion({commit}, data) { // eslint-disable-line
     // todo: answered
    commit("STOP_TIMER", data)
-    
+
 
   },
 
@@ -156,7 +171,11 @@ const actions = {
   },
   updateGroupList({commit},data){
     commit("UPDATE_GROUP_LIST",data);
-  }
+  },
+  handleUserStopGame({commit}) {
+    commit("USER_STOP_GAME");
+  },
+
 };
 
 // mutations
@@ -168,9 +187,12 @@ const mutations = {
     setSESSION(SESSION.QUESTIONS_API, payload.data);
   },
   START_GAME(state) {
+    // alert(state.processQuestion)
     state.isStarted = true;
     state.endProcess = false;
-    state.processQuestion = null;
+    if(state.updateStateProcessQuestion === false) {
+      state.processQuestion =  null;
+    }
     state.startTimer = true;
     state.timer = COUNT_DOWN_QUESTION;
     state.isStopTimerLed = false;
@@ -233,16 +255,16 @@ const mutations = {
   },
 
   RESULT_PROCESS(state) { // eslint-disable-line
-    //let _state = {...state};    
+    //let _state = {...state};
     //console.log(_state.questions[_state.process]['questions'].filter(i => i.answered.is_correct));
     let correct_results = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
     state.resultsProcess = correct_results;
     //state.totalTimeAnsweredProcess = 0;
-    for (let i = 0; i < correct_results.length; i++) {  
+    for (let i = 0; i < correct_results.length; i++) {
     //console.log(state.questions[state.process]['questions'][i]['answered']) ;
     console.log(correct_results[i]);
       state.totalTimeAnsweredProcess += correct_results[i]['answered']['time'];
-    }    
+    }
     //state = {..._state};
   },
   UPDATE_STATE_READY(state, data) {
@@ -268,13 +290,50 @@ const mutations = {
     state.startTimer = false;
   },
   setNextRound(state, payload) {
-    state.nextRound = payload
+    state.nextRound = payload;
+    setSESSION(SESSION.IS_NEXT, payload);
   },
   SUBMIT_ANSWER(state,data){
     state.isSubmitAnswer = data;
   },
   UPDATE_GROUP_LIST(state,data){
     state.isUpdateGroupList = data;
+  },
+  UPDATE_CURRENT_PROCESS(state, data) {
+    console.log('UPDATE_CURRENT_PROCESS',data);
+    try {
+      /*if(data.process === 1 && data.process_question === 1) {
+        state.process = null;
+        state.processQuestion = null;
+      }else if(data.process === 1 ){
+        state.process = 0;
+        state.processQuestion = data.process_question - 2;
+      }else {
+        state.process = data.process - 1;
+        state.processQuestion = data.process_question - 2;
+
+      }*/
+      state.updateStateProcessQuestion = true;
+      if(data.process === 1 && data.process_question === 1) {
+        state.process = null;
+        state.processQuestion = null;
+      }else if(data.process === 1 && data.process_question !== 1) {
+        state.process = data.process  - 1;
+        state.processQuestion = data.process_question - 3;
+      }else if(data.process !== 1 && data.process_question === 1) {
+        state.process = data.process - 1;
+        state.processQuestion = null;
+      } else {
+        state.process = data.process - 1;
+        // state.process = 0;
+        state.processQuestion = data.process_question - 2;
+      }
+    }catch (e) {
+      console.log(e.message)
+    }
+  },
+  USER_STOP_GAME(state) {
+    state.userStopGame = true;
   }
 };
 

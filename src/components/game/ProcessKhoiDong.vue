@@ -6,7 +6,6 @@
       <div class="process_box--question">
         <p class="text-center title-qs">
           Câu hỏi {{processQuestion +1}}:
-          <!--{{titleQuestion}}-->
         </p>
         <p class="drs-qs">
           {{question}}
@@ -52,6 +51,7 @@
       ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer"]),
       ...mapGetters("auth", ["user"]),
       question() {
+        console.log(this.processQuestion)
         return this.items.questions[this.processQuestion].question
       },
       answers() {

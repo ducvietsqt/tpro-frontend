@@ -59,7 +59,7 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess", "processQuestion", "nextRound"]),
+      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess", "processQuestion", "nextRound", "userStopGame"]),
       ...mapGetters("auth", ["user"]),
       layoutProcess() {
         try {
@@ -79,9 +79,9 @@
         try {
           // refresh
           let is_next = getSESSION(SESSION.IS_NEXT);
-          if (is_next === false) return is_next;
+          if (is_next) return is_next;
           // loggedIn
-          return this.user.is_next;
+          return getSESSION(SESSION.USER)['is_next'];
         } catch (e) {
           console.log(e.message);
           return null
@@ -93,20 +93,24 @@
     },
     async mounted() {
       console.log('USER', this.getIsNext);
-      if (this.getIsNext === false) { // null, false, true
-        return await this.logout();
+      if (this.getIsNext) { // null, false, true
+        let dataCurrentProcess = await this.fetchCurrentProcess();
+        // console.log('dataCurrentProcess', dataCurrentProcess);
+        // return await this.logout();
+      }else if(this.getIsNext === false){
+        this.handleUserStopGame();
       }
-
-      this.startProcessGame();
+       this.startProcessGame();
     },
     methods: {
-      ...mapActions("game", ["startGame", "tickQuestion", "setNextRound"]),
+      ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess", "handleUserStopGame"]),
       ...mapMutations("game", ["setNextRound"]),
       ...mapActions("auth", ["logout"]),
       startProcessGame() {
         // do something
         //this.startGame();
         //this.isShowWelcome = false;
+        if(this.userStopGame) return;
         let self = this;
         eventsRef.on('value', function (snapshot) {
           snapshot.forEach(function (childSnapshot) {
@@ -114,7 +118,9 @@
             if (childData) {
               self.showResult = false;
               //Start Game
+
               if (childData.key == "start_game") {
+
                 self.startGame();
                 self.isShowWelcome = false;
               }
