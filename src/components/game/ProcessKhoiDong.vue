@@ -51,7 +51,7 @@
     computed: {
       ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer"]),
       ...mapGetters("auth", ["user"]),
-      question() {        
+      question() {
         return this.items.questions[this.processQuestion].question
       },
       answers() {
@@ -65,7 +65,7 @@
       }
     },
     created() {
-      this.tickQuestion();      
+      this.tickQuestion();
       this.endProcessGame();
     },
     firebase: {
@@ -73,43 +73,44 @@
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion","submitAnswer"]),
-      async handleAnswer(index) {        
-        if(this.startTimer){          
-            // return false            
-            let is_correct = (this.answers[index]['is_correct'] == 1);            
+      async handleAnswer(index) {
+        if(this.startTimer){
+            // return false
+            let is_correct = (this.answers[index]['is_correct'] == 1);
             this.answered = index;
             await this.answerQuestion({index, is_correct});
             await sleep(1000);
-            //todo: nex question            
+            //todo: nex question
             var user_id = this.user.id;
             var round_id = this.process + 1;
+            let question_id = this.processQuestion + 1;
             var total_time = this.userAnswer.answered.time;
             var total_correct = 0;
             if (is_correct) {
                 total_correct = 1;
             }
             this.submitAnswer(true);
-            await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
-        }                
+            await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});
+        }
         //this.tickQuestion();
       },
       endProcessGame(){
         let self = this;
         eventsRef.on('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {            
-                let childData = childSnapshot.val();                
-                if(childData){                  
-                    if(childData.key == "stop_user_game"){                        
-                        self.stopGame = true;                     
+          snapshot.forEach(function(childSnapshot) {
+                let childData = childSnapshot.val();
+                if(childData){
+                    if(childData.key == "stop_user_game"){
+                        self.stopGame = true;
                     }
                 }
             });
         });
-      }      
+      }
     },
     watch: {
-      startTimer(n, p) { // eslint-disable-line        
-        if (n && n !== p) {                    
+      startTimer(n, p) { // eslint-disable-line
+        if (n && n !== p) {
           this.answered = null;
         }
       }

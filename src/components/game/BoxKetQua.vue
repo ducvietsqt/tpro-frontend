@@ -40,7 +40,7 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["endProcess", "resultsProcess", "questions", "process", "totalTimeAnsweredProcess"]),
+      ...mapGetters("game", ["endProcess", "resultsProcess", "questions", "process","processQuestion", "totalTimeAnsweredProcess"]),
       ...mapGetters("auth", ["user"]),
       processTitle() {
         return this.questions[this.process]['name'];
@@ -49,7 +49,7 @@
         return this.resultsProcess.length + '/' + this.questions[this.process]["questions"].length
       },
     },
-    created() {      
+    created() {
       this.endProcessGame();
     },
     firebase: {
@@ -57,32 +57,33 @@
     },
     methods: {
       ...mapActions("game", ["getResultProcess"]),
-      endProcessGame(){        
+      endProcessGame(){
         let self = this;
         eventsRef.on('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {            
-                let childData = childSnapshot.val();                
-                if(childData){                  
-                    if(childData.key == "stop_user_game"){                            
+          snapshot.forEach(function(childSnapshot) {
+                let childData = childSnapshot.val();
+                if(childData){
+                    if(childData.key == "stop_user_game"){
                         self.getResultProcess();
                     }
                 }
             });
-        });            
+        });
       },
       async submitUserAnnswer(){
-        await sleep(1000);            
+        await sleep(1000);
         let user_id = this.user.id;
         let round_id = this.process + 1;
+        let question_id = this.processQuestion + 1;
         let total_time = this.totalTimeAnsweredProcess;
-        let total_correct = this.resultsProcess.length ;  
-        var answer = "";
-        await api.submitAnnswer({user_id,answer: answer, round_id, total_time,total_correct});
+        let total_correct = this.resultsProcess.length ;
+        let answer = "";
+        await api.submitAnnswer({user_id,answer: answer, round_id, question_id, total_time,total_correct});
       }
     },
     watch: {
-      endProcess(n, p) { // eslint-disable-line        
-        if (n && n !== p) {          
+      endProcess(n, p) { // eslint-disable-line
+        if (n && n !== p) {
           this.getResultProcess();
           this.submitUserAnnswer();
         }

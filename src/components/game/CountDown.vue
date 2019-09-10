@@ -96,7 +96,7 @@
         console.log(next, prev);
         if (next === true && prev === false) {
           this.handleStopTimer();
-          this.submitAnnswer();
+          // this.submitAnnswer();
 
         }
       }
