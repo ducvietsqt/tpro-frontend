@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <BoxKetQua v-show="isShowResult"/>    
+  <div>    
+    <BoxKetQua v-if="isShowResult"/>    
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
         <div v-if="show_question">
@@ -75,7 +75,7 @@
       }
     },
     created() {
-      //this.tickQuestion();
+      this.tickQuestion();
     },
     mounted() {
       let self = this;

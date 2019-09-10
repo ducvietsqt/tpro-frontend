@@ -104,7 +104,7 @@
             self.setStateReady(true);
             self.updateStatusWelcome(true);
             if (self.isReady && self.show_question) {
-              eventsRef.remove();
+              //eventsRef.remove();              
               self.startGame();
               self.stopTimerRound();
               self.updateStatusWelcome(false);

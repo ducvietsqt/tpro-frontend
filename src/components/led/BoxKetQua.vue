@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div>    
     <div>
       <div class="progress-bar-container">
         <div class="item">
@@ -76,23 +76,22 @@ import {sleep} from "../../api/base";
       "finishedCounDown"
     ])
   },
-    created() {   
-      this.tickQuestion();  
+    created() {         
       this.getListGroupAnswer();
     },
     methods: {
     ...mapActions("game", ["tickQuestion"]),
       async getListGroupAnswer()
-      {        
-        await sleep(2500);
-        let obj= await api.getListGroupAnswer();  
-        this.listAnswer = obj.data;     
-        this.pause = true;    
-        let total = parseInt(this.listAnswer[0].choice1 + this.listAnswer[0].choice2 + this.listAnswer[0].choice3 + this.listAnswer[0].choice4);
-        this.choice1 = (this.listAnswer[0].choice1 / total)*100;   
-        this.choice2 = (this.listAnswer[0].choice2 / total)*100;   
-        this.choice3 = (this.listAnswer[0].choice3 / total)*100;   
-        this.choice4 = (this.listAnswer[0].choice4 / total)*100;   
+      {                  
+          await sleep(2500);
+          let obj= await api.getListGroupAnswer();  
+          this.listAnswer = obj.data;     
+          this.pause = true;    
+          let total = parseInt(this.listAnswer[0].choice1 + this.listAnswer[0].choice2 + this.listAnswer[0].choice3 + this.listAnswer[0].choice4);
+          this.choice1 = (this.listAnswer[0].choice1 / total)*100;   
+          this.choice2 = (this.listAnswer[0].choice2 / total)*100;   
+          this.choice3 = (this.listAnswer[0].choice3 / total)*100;   
+          this.choice4 = (this.listAnswer[0].choice4 / total)*100;        
       }
     }
   }

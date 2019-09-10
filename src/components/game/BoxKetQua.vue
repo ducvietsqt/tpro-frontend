@@ -75,7 +75,7 @@
         let user_id = this.user.id;
         let round_id = this.process + 1;
         let total_time = this.totalTimeAnsweredProcess;
-        let total_correct = this.resultsProcess.length + '/' + this.questions[this.process]["questions"].length;      
+        let total_correct = this.resultsProcess.length ;  
         var answer = "";
         await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
       }
