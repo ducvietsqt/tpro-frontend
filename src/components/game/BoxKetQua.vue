@@ -17,7 +17,7 @@
           <li class="item active">
             <span class="dot_item"></span>
             <span>Thời gian</span>
-            <span>{{totalTimeAnsweredProcess}}s</span>
+            <span>{{Math.round(totalTimeAnsweredProcess * 1000)/1000}}s</span>
           </li>
         </ol>
       </div>

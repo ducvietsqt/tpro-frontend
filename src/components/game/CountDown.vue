@@ -77,7 +77,7 @@
         if (!this.startTimer) return this.handleStopTimer();
         // let processTimer = vm.$data.timeObj.ceil.s;
         let processTimer = vm.$data.timeObj.org.s;
-        processTimer = Math.round(processTimer * 1000)/1000;
+        //processTimer = Math.round(processTimer * 1000)/1000;
         setSESSION(SESSION.PROCESS_TIMER, processTimer);
         //this.tickTimer(Math.ceil(processTimer));
         //this.tickTimer(processTimer);
