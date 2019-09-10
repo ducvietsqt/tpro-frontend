@@ -41,10 +41,11 @@ const actions = {
     return new Promise(async resolve => {
       commit("logout");
       await api.logout(user);
+      removeSESSION([], true);
       delete axios.defaults.headers.common["Authorization"];
       resolve();
     }, reject => {
-      reject("Authorization");
+      reject("Authorization")
     });
   },
   updateLogin({commit}, data) {
@@ -80,7 +81,6 @@ const mutations = {
     state.status = "";
     state.token = "";
     state.isAuthCode = false;
-    removeSESSION([], true);
   }
 };
 

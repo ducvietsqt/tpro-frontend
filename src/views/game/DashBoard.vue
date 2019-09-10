@@ -1,8 +1,8 @@
 <template>
   <div class="content_center" :class="{no_center: isStarted && !endProcess}">
-    <div>
-      <MessageGameOver v-if="!nextRound && endProcess && showResult"/>
-      <MessageNextRound v-if="nextRound && endProcess && showResult" :title="processTitle"/>
+    <div>      
+      <MessageGameOver v-show="!nextRound && endProcess && showResult"/>
+      <MessageNextRound v-show="nextRound && endProcess && showResult" :title="processTitle"/>
       <div class="led_box" v-show="isStarted && !endProcess">
         <CountDown/>
       </div>
@@ -39,27 +39,25 @@
   import MessageNextRound from "../../components/game/MessageNextRound";
   import {db} from "../../db";
   import NextProcess from "../../components/game/NextProcess";
-  import {getSESSION, SESSION} from "../../utils";
-
   let eventsRef = db.ref('events');
 
   export default {
     name: "DashBoard",
     components: {// eslint-disable-line
-      ProcessButPha, ProcessVuotTroi, ProcessKienDinh,
+      ProcessButPha, ProcessVuotTroi, ProcessKienDinh, 
       ProcessKhoiDong, ProcessCauHoiPhu, CountDown,
-      MessageGameOver, MessageNextRound
+      MessageGameOver,MessageNextRound
     },
     data() {
       return {
         events: [],
         steps: steps,
         isShowWelcome: true,
-        showResult: false,
+        showResult: false    
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess", "processQuestion", "nextRound"]),
+      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess","processQuestion","nextRound"]),
       ...mapGetters("auth", ["user"]),
       layoutProcess() {
         try {
@@ -68,91 +66,64 @@
           return false
         }
       },
-      processTitle() {
+      processTitle(){
         try {
           return this.questions[this.process]['name'];
         } catch (e) {
           return false
-        }
-      },
-      getIsNext() {
-        try {
-          // refresh
-          let is_next = getSESSION(SESSION.IS_NEXT);
-          if (is_next === false) return is_next;
-          // loggedIn
-          return this.user.is_next;
-        } catch (e) {
-          console.log(e.message);
-          return null
-        }
+        }        
       }
     },
     firebase: {
       events: eventsRef
     },
-    async mounted() {
-      console.log('USER', this.getIsNext);
-      if (this.getIsNext === false) { // null, false, true
-        return await this.logout();
-      }
-
+    mounted(){
       this.startProcessGame();
     },
     methods: {
-      ...mapActions("game", ["startGame", "tickQuestion", "setNextRound"]),
+      ...mapActions("game", ["startGame","tickQuestion","setNextRound"]),
       ...mapMutations("game", ["setNextRound"]),
-      ...mapActions("auth", ["logout"]),
       startProcessGame() {
         // do something
         //this.startGame();
         //this.isShowWelcome = false;
         let self = this;
-        eventsRef.on('value', function (snapshot) {
-          snapshot.forEach(function (childSnapshot) {
-            let childData = childSnapshot.val();
-            if (childData) {
-              self.showResult = false;
-              //Start Game
-              if (childData.key == "start_game") {
-                self.startGame();
-                self.isShowWelcome = false;
-              }
-              //Next Question
-              else if (childData.key == "next_question") {
-                self.tickQuestion();
-              }
-              //Get List User Next Round
-              else if (childData.key == "result_round") {
-                var arrayNextRound = childData.arrayNextRound;
-                self.checkNextRound(arrayNextRound);
-              }
-            }
-          });
+        eventsRef.on('value', function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+                let childData = childSnapshot.val();
+                if(childData){
+                  self.showResult = false;        
+                  //Start Game
+                    if(childData.key == "start_game"){
+                        self.startGame();
+                        self.isShowWelcome = false;
+                    }
+                    //Next Question
+                    else if(childData.key == "next_question")
+                    {
+                      self.tickQuestion();
+                    }
+                    //Get List User Next Round
+                    else if(childData.key == "result_round"){                      
+                      var arrayNextRound = childData.arrayNextRound;
+                      self.checkNextRound(arrayNextRound);
+                    }
+                }
+            });
         });
       },
-      checkNextRound(arrayNextRound) {
-        let user_id = this.user.id;
-        let self = this;
-        this.showResult = true;
-        if (arrayNextRound.includes(user_id)) {
+      checkNextRound(arrayNextRound){        
+        let user_id = this.user.id;        
+        let self = this;               
+        this.showResult = true;        
+        if(arrayNextRound.includes(user_id)){          
           self.setNextRound(true);
         }
-        else {
-          self.setNextRound(false);
+        else{
+          self.setNextRound(false); 
         }
       }
     },
-    watch: {
-      user(next, prev) {
-        console.log('USER', next);
-        try {
-          if (next.is_next === false) return this.logout();
-        } catch (e) {
-
-        }
-      }
-    }
 
   }
 </script>
