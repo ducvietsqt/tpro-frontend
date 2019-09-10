@@ -49,7 +49,9 @@ window.SESSION = SESSION;
 export let removeSESSION = (session_name, remove_all = false) => {
   let removeAll = () => {
     for (let k in SESSION) {
-      localStorage.removeItem(SESSION[k]);
+      if(SESSION[k] !== SESSION.QUESTIONS_API) {
+        localStorage.removeItem(SESSION[k]);
+      }
     }
   };
   let removeItems = () => {
