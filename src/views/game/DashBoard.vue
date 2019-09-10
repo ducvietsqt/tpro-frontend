@@ -118,9 +118,7 @@
             if (childData) {
               self.showResult = false;
               //Start Game
-
               if (childData.key == "start_game") {
-
                 self.startGame();
                 self.isShowWelcome = false;
               }
@@ -153,7 +151,9 @@
       user(next, prev) {
         console.log('USER', next);
         try {
-          if (next.is_next === false) return this.logout();
+          if (next.is_next === false) {
+            return alert(9)
+          }
         } catch (e) {
 
         }
