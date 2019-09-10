@@ -141,7 +141,6 @@
     watch: {
       endProcess(n, p) { // eslint-disable-line        
         if (n && n !== p) {      
-          alert(1);
           this.showTotalUpdate = true;
         }
       }

@@ -1,8 +1,16 @@
 <template>
-  <div class="contain_led_result contain_led_result--lienquan" v-if="gradeList.length> 0">
-      <div class="item" v-for="(grade, index) in gradeList" :key="index">
-        <ul class="list_answred">          
-          <li class="list_answred--item" :class="['grade ', (choices.indexOf(grade.id) !== -1 ? 'green' :'')]">
+  <div class="contain_led_result contain_led_result--lienquan">
+      <div class="item" v-if="gradeList.length> 0">
+        <ul class="list_answred">   
+          <li class="list_answred--item">
+              <div class="drs">
+                <p class="mnv pos-relative">
+                  <span class="arrow_box">2</span>
+                  Liên Quân 1
+                </p>
+              </div>              
+            </li>       
+          <li class="list_answred--item" v-for="(grade, index) in gradeList" :key="index" :class="['grade ', (choices.indexOf(grade.code) !== -1 ? 'green' :'red')]">
             <div class="drs">
               <p class="name">
                 <span>{{grade.name}}</span>
@@ -14,12 +22,12 @@
           </li>
         </ul>
 
-      </div>        
-
-    </div>
-    <div v-else>
+      </div>  
+      <div v-else>
         <p>Hiện tại hệ thống đang xử lý kết quả. Vui lòng chờ trong giây lát!</p>
-    </div>
+      </div>      
+
+    </div>    
 </template>
 
 <script>
