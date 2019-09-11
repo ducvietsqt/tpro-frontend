@@ -31,6 +31,9 @@
   import {mapGetters} from "vuex";
   import api from '../../api/led';
   import _ from 'lodash';
+  import {db} from "../../db";
+
+  let eventsRef = db.ref('events');
 
   export default {
     name: "TotalNextRound",    
@@ -44,6 +47,12 @@
       ...mapGetters("game", [
         "process","endProcess"
       ])
+    },
+     mounted() {
+      this.listenEventUpdateGroup();
+    },
+    firebase: {
+      events: eventsRef
     },
     methods: {
       async getList() {// eslint-disable-line
@@ -82,6 +91,21 @@
 
             return sum; 
         }      
+      },
+      listenEventUpdateGroup(){
+        let self = this;
+        eventsRef.on('value', function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+              let childData = childSnapshot.val();
+              if(childData){
+                  if(childData.key == "update_round"){
+                    self.choiceList = [];
+                    self.getList();
+                    self.getListGroupGrade();
+                  }
+              }
+            });
+        });
       }
     },    
     watch: {
@@ -93,3 +117,8 @@
     }
   }
 </script>
+<style scoped lang="scss">
+  .hidden{
+    opacity: 0.5;
+  }
+</style>

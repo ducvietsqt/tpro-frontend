@@ -72,7 +72,7 @@
       events: eventsRef
     },
     methods: {
-      ...mapActions("game", ["tickQuestion", "answerQuestion","submitAnswer"]),
+      ...mapActions("game", ["tickQuestion", "answerQuestion","submitAnswer","setNextRound"]),
       async handleAnswer(index) {
         if(this.startTimer){
             // return false
@@ -129,7 +129,7 @@
         if(!nextQuestion){
           this.setNextRound(false);
           alert("Liên Quân Bạn đã bị loại");
-          eventsRef.off('value');
+          eventsRef.off('value');                    
         }
       }
     },
