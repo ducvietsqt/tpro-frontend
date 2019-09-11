@@ -143,13 +143,22 @@ const actions = {
     await sleep(1000);
     await commit("START_TIMER");
   },
-  tickTimer({commit, state}, {processTimer, is_countdown_all}) { // eslint-disable-line
-    if(processTimer % COUNT_DOWN_QUESTION === 0 && state.startTimerLed) {
-      console.log("XXX", processTimer , COUNT_DOWN_QUESTION);
-      let process_question = is_countdown_all ?  (COUNT_DOWN_QUESTION - (processTimer / COUNT_DOWN_QUESTION) + 1) : state.processQuestion + 1;
-      apiLed.updateProcessCurrent({process: state.process + 1, process_question:  process_question});
+  tickTimer({commit, state}, data) { // eslint-disable-line
+     // {processTimer, is_countdown_all}
+     if(typeof data === "object") {
+      let processTimer = data["processTimer"], is_countdown_all = data["is_countdown_all"];
+      if(processTimer % COUNT_DOWN_QUESTION === 0 && state.startTimerLed) {
+        console.log("XXX", processTimer , COUNT_DOWN_QUESTION);
+        let process_question = is_countdown_all ?  (COUNT_DOWN_QUESTION - (processTimer / COUNT_DOWN_QUESTION) + 1) : state.processQuestion + 1;
+        apiLed.updateProcessCurrent({process: state.process + 1, process_question:  process_question});
+      }
+     }
+    if(typeof data === "object") {
+      commit("TICK_TIMER", data["processTimer"]);
+    }else {
+      commit("TICK_TIMER", data);
     }
-    commit("TICK_TIMER", processTimer);
+    
   },
 
 //Process Question Led

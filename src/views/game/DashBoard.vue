@@ -132,6 +132,7 @@
         //this.startGame();
         //this.isShowWelcome = false;
 
+        alert(this.getIsLoggedInTemp);
         //Nếu như F5 thì kiểm tra userStopgame
         if(this.userStopGame) return;
         let self = this;

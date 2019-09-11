@@ -75,6 +75,7 @@ const mutations = {
     state.status = "success";
     state.token = state.dataAuth.code || data.code;
     state.user = state.dataAuth || data;
+    state.isLoggedInTemp = true;
     setSESSION(SESSION.TOKEN, state.dataAuth.code);
     setSESSION(SESSION.USER, state.dataAuth || data);
 
