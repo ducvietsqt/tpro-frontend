@@ -83,15 +83,15 @@ import {sleep} from "../../api/base";
     ...mapActions("game", ["tickQuestion"]),
       async getListGroupAnswer()
       {                  
-          await sleep(1500);
+          await sleep(700);
           let obj= await api.getListGroupAnswer();  
           this.listAnswer = obj.data;     
           this.pause = true;    
           let total = parseInt(this.listAnswer[0].choice1 + this.listAnswer[0].choice2 + this.listAnswer[0].choice3 + this.listAnswer[0].choice4);
-          this.choice1 = (this.listAnswer[0].choice1 / total)*100;   
-          this.choice2 = (this.listAnswer[0].choice2 / total)*100;   
-          this.choice3 = (this.listAnswer[0].choice3 / total)*100;   
-          this.choice4 = (this.listAnswer[0].choice4 / total)*100;        
+          this.choice1 = Math.ceil((this.listAnswer[0].choice1 / total)*100);   
+          this.choice2 = Math.ceil((this.listAnswer[0].choice2 / total)*100);   
+          this.choice3 = Math.ceil((this.listAnswer[0].choice3 / total)*100);   
+          this.choice4 = Math.ceil((this.listAnswer[0].choice4 / total)*100);        
       }
     }
   }

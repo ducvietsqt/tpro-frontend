@@ -59,7 +59,7 @@
       }
     },
     created() {      
-      this.tickQuestion();      
+    this.tickQuestion();      
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),

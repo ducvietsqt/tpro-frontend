@@ -6,7 +6,6 @@
       <div class="process_box--question">
         <p class="text-center title-qs">
           Câu hỏi {{processQuestion +1}}:
-          <!--{{titleQuestion}}-->
         </p>
         <p class="drs-qs">
           {{question}}
@@ -51,7 +50,8 @@
     computed: {
       ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer"]),
       ...mapGetters("auth", ["user"]),
-      question() {        
+      question() {
+        console.log(this.processQuestion)
         return this.items.questions[this.processQuestion].question
       },
       answers() {
@@ -65,48 +65,61 @@
       }
     },
     created() {
-      this.tickQuestion();      
+      //this.tickQuestion();
       this.endProcessGame();
     },
     firebase: {
       events: eventsRef
     },
     methods: {
-      ...mapActions("game", ["tickQuestion", "answerQuestion"]),
+      ...mapActions("game", ["tickQuestion", "answerQuestion","submitAnswer"]),
       async handleAnswer(index) {
-        if(this.startTimer){          
+        if(this.startTimer){
             // return false
             let is_correct = (this.answers[index]['is_correct'] == 1);
             this.answered = index;
             await this.answerQuestion({index, is_correct});
             await sleep(1000);
-            //todo: nex question
-            this.answered = null;
+            //todo: next question
             var user_id = this.user.id;
             var round_id = this.process + 1;
+            let question_id = this.processQuestion + 1;
             var total_time = this.userAnswer.answered.time;
             var total_correct = 0;
             if (is_correct) {
                 total_correct = 1;
             }
-        }        
-        //await api.submitAnnswer({user_id,answer: index, round_id, total_time,total_correct});
+            if(question_id == 1){
+              //Loại nếu như người chơi đó không trả lời được câu 1
+              if(total_correct == 0){
+                self.setNextRound(false);
+              }
+            }
+            this.submitAnswer(true);
+            await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});           
+        }
         //this.tickQuestion();
       },
       endProcessGame(){
         let self = this;
         eventsRef.on('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {            
-                let childData = childSnapshot.val();                
-                if(childData){                  
-                    if(childData.key == "stop_user_game"){                        
-                        self.stopGame = true;                     
+          snapshot.forEach(function(childSnapshot) {
+                let childData = childSnapshot.val();
+                if(childData){
+                    if(childData.key == "stop_user_game"){
+                        self.stopGame = true;
                     }
                 }
             });
         });
-      }      
-
+      }
+    },
+    watch: {
+      startTimer(n, p) { // eslint-disable-line
+        if (n && n !== p) {
+          this.answered = null;
+        }
+      }
     }
   }
 </script>

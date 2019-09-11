@@ -40,6 +40,7 @@
   import {db} from "../../db";
   import NextProcess from "../../components/game/NextProcess";
   import {getSESSION, SESSION} from "../../utils";
+  import {sleep} from "../../api/base";
 
   let eventsRef = db.ref('events');
 
@@ -70,7 +71,7 @@
       },
       processTitle() {
         try {
-          return this.questions[this.process]['name'];
+          return this.questions[this.process + 1]['name'];
         } catch (e) {
           return false
         }
@@ -91,16 +92,15 @@
     firebase: {
       events: eventsRef
     },
-    async mounted() {
-      console.log('USER', this.getIsNext);
+    async mounted() {      
       if (this.getIsNext) { // null, false, true
-        let dataCurrentProcess = await this.fetchCurrentProcess();
+        //let dataCurrentProcess = await this.fetchCurrentProcess();
         // console.log('dataCurrentProcess', dataCurrentProcess);
         // return await this.logout();
+        this.startProcessGame();
       }else if(this.getIsNext === false){
         this.handleUserStopGame();
-      }
-       this.startProcessGame();
+      }            
     },
     methods: {
       ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess", "handleUserStopGame"]),
@@ -110,41 +110,57 @@
         // do something
         //this.startGame();
         //this.isShowWelcome = false;
-        if(this.userStopGame) return;
+
+        //Nếu như F5 thì kiểm tra userStopgame
+        if(this.userStopGame) 
+        {
+          eventsRef.off('value'); 
+          return;
+        }
         let self = this;
-        eventsRef.on('value', function (snapshot) {
-          snapshot.forEach(function (childSnapshot) {
-            let childData = childSnapshot.val();
-            if (childData) {
-              self.showResult = false;
-              //Start Game
-              if (childData.key == "start_game") {
-                self.startGame();
-                self.isShowWelcome = false;
+          eventsRef.on('value', function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+              let childData = childSnapshot.val();
+              if (childData) {
+                self.showResult = false;
+                //Start Game
+                if (childData.key == "start_game") {
+                  self.startGame();
+                  self.isShowWelcome = false;
+                }
+                //Next Question
+                else if (childData.key == "next_question") {
+                  self.tickQuestion();
+                }
+                //Get List User Next Round
+                else if (childData.key == "result_round") {
+                  var arrayNextRound = childData.arrayNextRound;
+                  self.checkNextRound(arrayNextRound);
+                }
               }
-              //Next Question
-              else if (childData.key == "next_question") {
-                self.tickQuestion();
-              }
-              //Get List User Next Round
-              else if (childData.key == "result_round") {
-                var arrayNextRound = childData.arrayNextRound;
-                self.checkNextRound(arrayNextRound);
-              }
-            }
-          });
-        });
+            });
+          });      
       },
-      checkNextRound(arrayNextRound) {
+      async checkNextRound(arrayNextRound) {
         let user_id = this.user.id;
-        let self = this;
-        this.showResult = true;
-        if (arrayNextRound.includes(user_id)) {
-          self.setNextRound(true);
-        }
-        else {
-          self.setNextRound(false);
-        }
+        this.showResult = true;        
+        if(arrayNextRound  != undefined){
+            if (arrayNextRound.includes(user_id)) {
+              this.setNextRound(true);
+            }
+            else {
+              //Bị Loại, redirect về dashboard
+              this.setNextRound(false);
+              this.handleUserStopGame(); 
+              eventsRef.off('value'); 
+            }
+        } 
+        else{
+            //Bị Loại, redirect về dashboard
+            this.handleUserStopGame();
+            this.setNextRound(false);
+            eventsRef.off('value'); 
+        }       
       }
     },
     watch: {
