@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <BoxKetQua v-show="isShowResult"/>    
+  <div>    
+    <BoxKetQua v-if="isShowResult"/>    
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
         <div v-if="show_question">
@@ -75,17 +75,18 @@
       }
     },
     created() {
-      //this.tickQuestion();
+      this.tickQuestion();
     },
     mounted() {
       let self = this;
       window.addEventListener('keyup', function (event) {
         if (!self.isStop) {
-          //Event Key Next => Show Question And Answer
+          //Event Key Next => Show Question And Answer          
           if (event.keyCode === 39) {
+            self.updateStatusWelcome(false);
             //Show Question
             if (!self.show_question) {
-              self.show_question = !self.show_question;
+              self.show_question = !self.show_question;              
             }
             //Show Answer
             else if (!self.show_answer) {
@@ -128,6 +129,8 @@
             else if (!self.show_correct){
               self.show_answer = true;
               self.show_correct = true;
+              //Update Total Score Group List
+              self.updateGroupList(true);
             }
           }
           //Event key "N"=> next question
@@ -142,7 +145,9 @@
               self.indexLoop++;
               //When Done Round=> Next Round
               if(self.endProcess){
+                //Start Game
                 self.startGame();
+                //Update Status Show Welcome
                 self.updateStatusWelcome(true);
                 self.isStop = true;
               }
@@ -168,7 +173,7 @@
       });
     },
     methods: {
-      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome","updateGroupList"]),
       async showAnswerCorrect() {
         this.answered = null;
       }
