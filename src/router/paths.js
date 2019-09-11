@@ -27,6 +27,8 @@ const StaticLedKetQua = () => import(/* webpackChunkName: "StaticLedKetQua" */ '
 const StaticLedButPha = () => import(/* webpackChunkName: "StaticLedButPha" */ '../components/static/StaticLedButPha');
 const StaticLedButPha1 = () => import(/* webpackChunkName: "StaticLedButPha1" */ '../components/static/StaticLedButPha1');
 const GameOver = () => import(/* webpackChunkName: "GameOver" */ '../components/static/GameOver');
+const GameWinner = () => import(/* webpackChunkName: "GameOver" */ '../components/static/GameWinner');
+
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
   LoggedIn: "LoggedIn",
@@ -158,7 +160,12 @@ export default [
     meta: {layout: LAYOUT.StaticPage},
     component: GameOver,
   },
-  
+  {
+    path: '/game-winner',
+    name: 'game-winner',
+    meta: {layout: LAYOUT.StaticPage},
+    component: GameWinner,
+  },
 
 
 

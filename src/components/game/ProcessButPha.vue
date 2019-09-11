@@ -99,6 +99,27 @@
                 self.checkGroupNextRound();
               }*/
               this.checkGroupNextRound();
+            }
+            else{
+              if(question == 10){
+                if(total_correct == 0){
+                  this.setNextRound(false);                  
+                  eventsRef.off('value');  
+                  this.$router.push({name: 'game-over'})                       
+                }
+                else{
+                  this.setNextRound(false);                  
+                  eventsRef.off('value');  
+                  this.$router.push({name: 'game-winner'})                      
+                }
+              }else{
+                if(total_correct == 0)
+                {
+                  this.setNextRound(false);                  
+                  eventsRef.off('value');  
+                  this.$router.push({name: 'game-over'})                      
+                }
+              }
             }           
         }
         //this.tickQuestion();
