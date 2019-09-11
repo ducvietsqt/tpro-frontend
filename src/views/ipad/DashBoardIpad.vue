@@ -7,18 +7,20 @@
       </p>
       <h2>Màn hình dành cho quản trị viên</h2>
     </div>
-    <div class="events">
+    <div class="events">        
         <div class="event-item">
         <button @click="actionToDo('Start Game','start_game')">Start Game</button>
-      </div>
+      </div> 
       <div class="event-item">
-        <button type="button" @click="actionToDo('Play Game','play_game')">Play Game</button>
-      </div>
+        <button type="button" @click="actionToDo('Play Game','play_game')">Vòng Phụ</button>
+      </div>     
+    </div>
+    <div class="events">      
       <div class="event-item">
         <button type="button" @click="getResultRound">Result Round</button>
       </div>
       <div class="event-item">
-        <button type="button" @click="resetRound">Reset Round</button>
+        <button type="button" @click="resetRound">Reset</button>
       </div>
       <div class="event-item">
         <button type="button" @click="updateRound">Update Round</button>

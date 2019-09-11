@@ -27,7 +27,9 @@ export const SESSION = {
   QUESTIONS_API: 'QUESTIONS_API',
   USER: 'USER',
   NEXT_ROUND: 'NEXT_ROUND',
-  PROCESS_TIMER: 'PROCESS_TIMER'
+  PROCESS_TIMER: 'PROCESS_TIMER',
+
+  // TICK_
 }
 
 export let setSESSION = (session_name, data) => {

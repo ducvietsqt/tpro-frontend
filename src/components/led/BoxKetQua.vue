@@ -7,7 +7,7 @@
             <span :class="{pause: pause, animate: !pause}"
                   :style="{height: pause ? choice1: ''}"
                   class="progress-bar-inner" style="animation-delay: 1.5s;">
-              <strong v-if="pause">{{choice1}}%</strong>
+              <strong v-if="pause">{{choice1}}</strong>
             </span>
           </div>
           <p class="index_qs">A</p>
@@ -17,7 +17,7 @@
             <span :class="{pause: pause, animate: !pause}"
                   :style="{height: pause ? choice2 : ''}"
                   class="progress-bar-inner" style="animation-delay: 1s;">
-              <strong v-if="pause">{{choice2}}%</strong>
+              <strong v-if="pause">{{choice2}}</strong>
             </span>
           </div>
           <p class="index_qs">B</p>
@@ -27,7 +27,7 @@
             <span :class="{pause: pause, animate: !pause}"
                   :style="{height: pause ? choice3 : ''}"
                   class="progress-bar-inner" style="animation-delay: 2s;">
-              <strong v-if="pause">{{choice3}}%</strong>
+              <strong v-if="pause">{{choice3}}</strong>
             </span>
           </div>
           <p class="index_qs">C</p>
@@ -37,7 +37,7 @@
             <span :class="{pause: pause, animate: !pause}"
                   :style="{height: pause ? choice4 : ''}"
                   class="progress-bar-inner" style="animation-delay: 3s;">
-              <strong v-if="pause">{{choice4}}%</strong>
+              <strong v-if="pause">{{choice4}}</strong>
             </span>
           </div>
           <p class="index_qs">D</p>
@@ -88,10 +88,21 @@ import {sleep} from "../../api/base";
           this.listAnswer = obj.data;     
           this.pause = true;    
           let total = parseInt(this.listAnswer[0].choice1 + this.listAnswer[0].choice2 + this.listAnswer[0].choice3 + this.listAnswer[0].choice4);
-          this.choice1 = Math.ceil((this.listAnswer[0].choice1 / total)*100);   
-          this.choice2 = Math.ceil((this.listAnswer[0].choice2 / total)*100);   
-          this.choice3 = Math.ceil((this.listAnswer[0].choice3 / total)*100);   
-          this.choice4 = Math.ceil((this.listAnswer[0].choice4 / total)*100);        
+          if(total === 0) {
+            this.choice1 = '0%';   
+            this.choice2 = '0%';   
+            this.choice3 = '0%';   
+            this.choice4 = '0%';   
+        }else {
+          this.choice1 = this.ceilNum((this.listAnswer[0].choice1 / total)*100) + '%';   
+          this.choice2 = this.ceilNum((this.listAnswer[0].choice2 / total)*100) + '%';   
+          this.choice3 = this.ceilNum((this.listAnswer[0].choice3 / total)*100) + '%';   
+          this.choice4 = this.ceilNum((this.listAnswer[0].choice4 / total)*100) + '%';      
+        }
+                
+      },
+      ceilNum(n) {
+        return Math.round(parseFloat(n).toFixed(2) * 1000)/1000
       }
     }
   }

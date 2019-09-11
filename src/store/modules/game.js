@@ -1,6 +1,7 @@
 import api from '../../api/question';
+import apiLed from '../../api/led';
 import {getSESSION, SESSION, setSESSION} from "../../utils";
-import {COUNT_DOWN_QUESTION} from "../../utils/constant";
+import {COUNT_DOWN_QUESTION, COUNT_DOWN_ALL_QUESTION} from "../../utils/constant";
 import {COUNT_DOWN_TOTAL_QUESTION} from "../../utils/constant";
 import {sleep} from "../../api/base";
 // initial state
@@ -142,7 +143,12 @@ const actions = {
     await sleep(1000);
     await commit("START_TIMER");
   },
-  tickTimer({commit, state}, processTimer) { // eslint-disable-line
+  tickTimer({commit, state}, {processTimer, is_countdown_all}) { // eslint-disable-line
+    if(processTimer % COUNT_DOWN_QUESTION === 0 && state.startTimerLed) {
+      console.log("XXX", processTimer , COUNT_DOWN_QUESTION);
+      let process_question = is_countdown_all ?  (COUNT_DOWN_QUESTION - (processTimer / COUNT_DOWN_QUESTION) + 1) : state.processQuestion + 1;
+      apiLed.updateProcessCurrent({process: state.process + 1, process_question:  process_question});
+    }
     commit("TICK_TIMER", processTimer);
   },
 
@@ -193,6 +199,7 @@ const mutations = {
     /*if(state.updateStateProcessQuestion === false) {
       state.processQuestion =  null;
     }*/
+    // alert(state.process)
     state.processQuestion =  null;
     state.startTimer = true;
     state.timer = COUNT_DOWN_QUESTION;
@@ -315,15 +322,12 @@ const mutations = {
 
       }
 
-
-
+      */
+       try {
       state.updateStateProcessQuestion = true;
       if(data.process === 1 && data.process_question === 1) {
         state.process = null;
         state.processQuestion = null;
-      }else if(data.process === 1 && data.process_question !== 1) {
-        state.process = data.process  - 1;
-        state.processQuestion = data.process_question - 3;
       }else if(data.process !== 1 && data.process_question === 1) {
         state.process = data.process - 1;
         state.processQuestion = null;
@@ -334,7 +338,8 @@ const mutations = {
       }
     }catch (e) {
       console.log(e.message)
-    }*/
+    }
+
   },
   USER_STOP_GAME(state) {
     state.userStopGame = true;

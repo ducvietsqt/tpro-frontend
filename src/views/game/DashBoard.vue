@@ -20,9 +20,20 @@
         </p>
       </div>-->
     </div>
+    <div v-if="isStartDashBoard">
+    <component v-if="process === 0" is="ProcessKhoiDong"
+               :items="questions[0]"></component>
+    <component v-if="process === 1" is="ProcessKienDinh"
+               :items="questions[1]"></component>
+    <component v-if="process === 2" is="ProcessVuotTroi"
+               :items="questions[2]"></component>
 
-    <component :is="layoutProcess"
-               :items="questions[process]"></component>
+   <component v-if="process === 3" is="ProcessButPha"
+   :items="questions[3]"></component>
+
+   <component v-if="process === 4" is="ProcessCauHoiPhu"
+   :items="questions[4]"></component>           
+               </div>
   </div>
 </template>
 
@@ -57,11 +68,12 @@
         steps: steps,
         isShowWelcome: true,
         showResult: false,
+        isStartDashBoard: null
       }
     },
     computed: {
       ...mapGetters("game", ["questions", "process", "isStarted", "endProcess", "processQuestion", "nextRound", "userStopGame"]),
-      ...mapGetters("auth", ["user"]),
+      ...mapGetters("auth", ["user", "isLoggedInTemp"]),
       layoutProcess() {
         try {
           return this.steps[this.process]['component'];
@@ -87,6 +99,9 @@
           console.log(e.message);
           return null
         }
+      },
+      getIsLoggedInTemp() {
+        return this.isLoggedInTemp;
       }
     },
     firebase: {
@@ -94,10 +109,13 @@
     },
     async mounted() {      
       if (this.getIsNext) { // null, false, true
-        //let dataCurrentProcess = await this.fetchCurrentProcess();
-        // console.log('dataCurrentProcess', dataCurrentProcess);
-        // return await this.logout();
-        this.startProcessGame();
+        let dataCurrentProcess = await this.fetchCurrentProcess();
+        console.log('dataCurrentProcess', dataCurrentProcess);
+        if(dataCurrentProcess) {
+          this.isStartDashBoard = true;
+          this.startProcessGame();
+        }
+        
       }else if(this.getIsNext === false || !this.getIsNext){
         this.handleUserStopGame();
         eventsRef.off('value');
@@ -108,6 +126,7 @@
       ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess", "handleUserStopGame"]),
       ...mapMutations("game", ["setNextRound"]),
       ...mapActions("auth", ["logout"]),
+      ...mapMutations("auth", ["setStatusLoggedInTemp"]),
       startProcessGame() {
         // do something
         //this.startGame();
@@ -123,12 +142,21 @@
                 self.showResult = false;
                 //Start Game
                 if (childData.key == "start_game") {
+                  // alert("Start Game");
                   self.startGame();
                   self.isShowWelcome = false;
                 }
                 //Next Question
                 else if (childData.key == "next_question") {
-                  self.tickQuestion();
+                  // alert("Next Question");
+                 if(self.getIsLoggedInTemp) {                  
+                  // alert(2);
+                   self.tickQuestion();
+                 }else {
+                  // alert(3);
+                  self.setStatusLoggedInTemp(true)
+                 }
+
                 }
                 //Get List User Next Round
                 else if (childData.key == "result_round") {
@@ -158,7 +186,7 @@
         console.log('USER', next);
         try {
           if (next.is_next === false) {
-            return alert(9)
+            // return alert(9)
           }
         } catch (e) {
 

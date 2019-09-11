@@ -7,7 +7,8 @@ const state = {
   token: getSESSION(SESSION.TOKEN) || "",
   user: getSESSION(SESSION.USER) || {},
   dataAuth: {},
-  isAuthCode: false
+  isAuthCode: false,
+  isLoggedInTemp: false,
 
 };
 
@@ -17,7 +18,9 @@ const getters = {
   authStatus: state => state.status,
   user: state => state.user,
   dataAuth: state => state.dataAuth,
-  isAuthCode: state => state.isAuthCode
+  isAuthCode: state => state.isAuthCode,
+
+  isLoggedInTemp: state => state.isLoggedInTemp, // luu trang thai khi user dang nhap chinh thong
 };
 
 // actions
@@ -44,6 +47,7 @@ const actions = {
       removeSESSION([], true);
       delete axios.defaults.headers.common["Authorization"];
       resolve();
+      location.reload();
     }, reject => {
       reject("Authorization")
     });
@@ -90,6 +94,9 @@ const mutations = {
     state.status = "";
     state.token = "";
     state.isAuthCode = false;
+  },
+  setStatusLoggedInTemp(state, payload) {
+    state.isLoggedInTemp = payload;
   }
 };
 

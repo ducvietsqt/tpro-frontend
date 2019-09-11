@@ -26,7 +26,7 @@ const StaticLedAnimate = () => import(/* webpackChunkName: "StaticLedAnimate" */
 const StaticLedKetQua = () => import(/* webpackChunkName: "StaticLedKetQua" */ '../components/static/StaticLedKetQua');
 const StaticLedButPha = () => import(/* webpackChunkName: "StaticLedButPha" */ '../components/static/StaticLedButPha');
 const StaticLedButPha1 = () => import(/* webpackChunkName: "StaticLedButPha1" */ '../components/static/StaticLedButPha1');
-
+const GameOver = () => import(/* webpackChunkName: "GameOver" */ '../components/static/GameOver');
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
   LoggedIn: "LoggedIn",
@@ -140,7 +140,7 @@ export default [
     component: StaticLedKetQua,
   },
   {
-    path: '/static-led-butpha',
+    path: '/danh-sach-but-pha',
     name: 'static-led-butpha',
     meta: {layout: LAYOUT.StaticPage},
     component: StaticLedButPha,
@@ -152,6 +152,13 @@ export default [
     component: StaticLedButPha1,
   },
 
+  {
+    path: '/game-over',
+    name: 'game-over',
+    meta: {layout: LAYOUT.StaticPage},
+    component: GameOver,
+  },
+  
 
 
 

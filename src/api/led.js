@@ -1,4 +1,4 @@
-import {get } from './base';
+import {get, post} from './base';
 
 async function getListGroup() {
     return await get('/api/v1/led/group');
@@ -15,9 +15,14 @@ async function getListGroupGrade() {
 async function resetRound() {
     return await get('/api/v1/user/reset-result');
 }
+
+async function updateProcessCurrent(data) {
+    return await post('/api/v1/info/update-process-current',data);
+}
 export default {
     getListGroup, 
     getListGroupAnswer,
     getListGroupGrade,
-    resetRound
+    resetRound,
+    updateProcessCurrent
   };

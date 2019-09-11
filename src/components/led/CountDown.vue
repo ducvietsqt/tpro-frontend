@@ -25,7 +25,7 @@
   import {SECONDS, COUNT_DOWN_ALL_QUESTION, COUNT_DOWN_QUESTION} from "../../utils/constant";
   import {mapGetters, mapActions} from 'vuex';
   import {getQuestionsCount} from "../../store/modules/game";
-
+  import api from "../../api/led";
   export default {
     name: "CountDown",
     data() {
@@ -34,7 +34,7 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["processTimer", "timer","process", "startTimerLed", "isStopTimerLed"]),
+      ...mapGetters("game", ["processTimer", "timer","process", "processQuestion", "startTimerLed", "isStopTimerLed"]),
       timerTotal() {
         try {          
           if(this.process > 0 && this.process <3) return COUNT_DOWN_ALL_QUESTION * SECONDS;
@@ -65,7 +65,9 @@
 
       // callback
       onStart(vm) { // eslint-disable-line
-
+        // alert(1);
+        
+        
       },
       onStop(vm) { // eslint-disable-line
       },
@@ -76,9 +78,11 @@
 
       },
       onProcess(vm) { // eslint-disable-linne
+
         if (!this.startTimerLed) return this.$refs.vacLed.stopCountdown();
         let processTimer = vm.$data.timeObj.ceil.s;
-        this.tickTimer(processTimer);
+        let is_countdown_all = this.process > 0 && this.process <3;
+        this.tickTimer({processTimer, is_countdown_all});
       },
     },
     // watch

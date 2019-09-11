@@ -129,7 +129,8 @@
         if(!nextQuestion){
           this.setNextRound(false);
           alert("Liên Quân Bạn đã bị loại");
-          eventsRef.off('value');                    
+          eventsRef.off('value');  
+          this.$router.push({name: 'game-over'})                  
         }
       }
     },
