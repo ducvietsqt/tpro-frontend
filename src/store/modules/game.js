@@ -190,9 +190,10 @@ const mutations = {
     // alert(state.processQuestion)
     state.isStarted = true;
     state.endProcess = false;
-    if(state.updateStateProcessQuestion === false) {
+    /*if(state.updateStateProcessQuestion === false) {
       state.processQuestion =  null;
-    }
+    }*/
+    state.processQuestion =  null;
     state.startTimer = true;
     state.timer = COUNT_DOWN_QUESTION;
     state.isStopTimerLed = false;
