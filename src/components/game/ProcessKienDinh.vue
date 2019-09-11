@@ -1,6 +1,6 @@
 <template>
   <div class="process_box" v-show="!showResult">
-    <BoxKetQua v-show="endProcess"/>
+    <BoxKetQua v-if="endProcess"/>
     <!--<NextProcess/>-->
     <div v-if="!endProcess" class="question-detail">
       <div class="process_box--question">

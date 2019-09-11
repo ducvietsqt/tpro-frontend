@@ -21,7 +21,7 @@
       </div>-->
     </div>
 
-    <component :is="layoutProcess"
+    <component v-if="layoutProcess" :is="layoutProcess"
                :items="questions[process]"></component>
   </div>
 </template>
@@ -92,7 +92,7 @@
     firebase: {
       events: eventsRef
     },
-    async mounted() {            
+    async mounted() {      
       if (this.getIsNext) { // null, false, true
         //let dataCurrentProcess = await this.fetchCurrentProcess();
         // console.log('dataCurrentProcess', dataCurrentProcess);
@@ -100,7 +100,8 @@
         this.startProcessGame();
       }else if(this.getIsNext === false){
         this.handleUserStopGame();
-      }            
+      }      
+      console.log('USER', this.getIsNext);      
     },
     methods: {
       ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess", "handleUserStopGame"]),
@@ -111,12 +112,12 @@
         //this.startGame();
         //this.isShowWelcome = false;
 
-        //Nếu như F5 thì kiểm tra userStopgame
+        //Nếu như F5 thì kiểm tra userStopgame, còn đang thi bị loại thì kiểm tra biến nextRound
         if(this.userStopGame) 
-        {
-          eventsRef.off('value'); 
-          return;
-        }
+          {
+            eventsRef.off('value'); 
+            return;
+          }
         let self = this;
           eventsRef.on('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {

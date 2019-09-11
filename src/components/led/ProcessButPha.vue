@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <BoxKetQua v-show="isShowResult"/>    
+  <div>    
+    <BoxKetQua v-if="isShowResult"/>    
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
-        <div v-if="show_question">
+        <div v-show="show_question">
           <p class="title-s20">
             CÂU HỎI {{processQuestion +1}}:
           </p>
@@ -13,7 +13,7 @@
         </div>
       </transition>
     </div>
-    <transition name="fade" v-if="show_answer">
+    <transition name="fade" v-show="show_answer">
       <ol class="list_upper_question" :class="(show_correct) ? 'show_correct' : ''">
         <li v-for="(answer, i) in answers"
           :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
@@ -75,17 +75,17 @@
       }
     },
     created() {
-      //this.tickQuestion();
+      this.tickQuestion();
     },
     mounted() {
       let self = this;
       window.addEventListener('keyup', function (event) {
         if (!self.isStop) {
           //Event Key Next => Show Question And Answer
+          self.updateStatusWelcome(false);
           if (event.keyCode === 39) {
             //Show Question
             if (!self.show_question) {
-              self.updateStatusWelcome(false);
               self.show_question = !self.show_question;
             }
             //Show Answer
@@ -129,6 +129,9 @@
             else if (!self.show_correct){
               self.show_answer = true;
               self.show_correct = true;
+              //Update Total Score Group List
+              console.log("Khởi động");
+              self.updateGroupList(true);
             }
           }
           //Event key "N"=> next question
@@ -143,7 +146,9 @@
               self.indexLoop++;
               //When Done Round=> Next Round
               if(self.endProcess){
+                //Start Game
                 self.startGame();
+                //Update Status Show Welcome
                 self.updateStatusWelcome(true);
                 self.isStop = true;
               }
@@ -169,7 +174,7 @@
       });
     },
     methods: {
-      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome","updateStatusWelcome"]),
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome","updateGroupList"]),
       async showAnswerCorrect() {
         this.answered = null;
       }

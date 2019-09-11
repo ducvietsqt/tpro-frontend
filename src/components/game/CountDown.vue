@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="title_timer" v-show="!isStopTime">
+    <p class="title_timer" v-if="!isStopTime">
       <strong> {{Math.ceil(processTimer)}}</strong>S
     </p>
     <vac :left-time="timer * SECONDS"
@@ -16,7 +16,7 @@
         {{ timeObj.ceil.s }}
       </span>-->
       <!--<span slot="finish">Done!</span>-->
-      <span slot="finish" v-show="isStopTime">Hết giờ!</span>
+      <span slot="finish" v-if="isStopTime">Hết giờ!</span>
     </vac>
   </div>
 </template>

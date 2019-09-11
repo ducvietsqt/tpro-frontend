@@ -44,8 +44,7 @@
     data() {
       return {
         answered: null,
-        stopGame: false,
-        groupList:[]
+        stopGame: false
       }
     },
     computed: {
@@ -66,7 +65,7 @@
       }
     },
     created() {
-      //this.tickQuestion();
+      this.tickQuestion();
       this.endProcessGame();
     },
     firebase: {
@@ -81,7 +80,7 @@
             this.answered = index;
             await this.answerQuestion({index, is_correct});
             await sleep(1000);
-            //todo: next question
+            //todo: nex question
             var user_id = this.user.id;
             var round_id = this.process + 1;
             let question_id = this.processQuestion + 1;
@@ -99,7 +98,7 @@
               self.checkGroupNextRound();
             }
             this.submitAnswer(true);
-            await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});           
+            await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});    
         }
         //this.tickQuestion();
       },

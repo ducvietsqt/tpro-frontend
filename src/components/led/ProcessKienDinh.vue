@@ -1,9 +1,9 @@
 <template>
   <div>    
-    <div class="text-waiting" v-show="isBegin">
+    <div class="text-waiting" v-if="isBegin">
         <p class="title-center-box">Bắt đầu!</p>
       </div>
-    <div v-show="!endProcess && !isShowResult">
+    <div v-if="!endProcess && !isShowResult">
       <transition name="bounce">
         <div v-if="show_question">
           <p class="title-s20">
@@ -19,7 +19,7 @@
       <ol class="list_upper_question show_correct"> 
         <li v-for="(answer, i) in answers"
           :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
-          v-show="answered === null || answered === i"
+          v-if="answered === null || answered === i"
           :key="i">
           {{answer.answer}}
         </li>
