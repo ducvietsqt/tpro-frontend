@@ -73,6 +73,15 @@ const mutations = {
     state.user = state.dataAuth || data;
     setSESSION(SESSION.TOKEN, state.dataAuth.code);
     setSESSION(SESSION.USER, state.dataAuth || data);
+
+    let is_next = "";
+    if(state.dataAuth && state.dataAuth.is_next) {
+      is_next = state.dataAuth.is_next;
+      setSESSION(SESSION.NEXT_ROUND, is_next);
+    }else if(data) {
+      is_next = data.is_next;
+      setSESSION(SESSION.NEXT_ROUND, is_next);
+    }
   },
   authError(state) {
     state.status = "error";
