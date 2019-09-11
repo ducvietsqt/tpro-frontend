@@ -3,7 +3,7 @@
     <BoxKetQua v-if="isShowResult"/>    
     <div v-show="!endProcess && !isShowResult">
       <transition name="bounce">
-        <div v-show="show_question">
+        <div v-if="show_question">
           <p class="title-s20">
             CÂU HỎI {{processQuestion +1}}:
           </p>
@@ -13,7 +13,7 @@
         </div>
       </transition>
     </div>
-    <transition name="fade" v-show="show_answer">
+    <transition name="fade" v-if="show_answer">
       <ol class="list_upper_question" :class="(show_correct) ? 'show_correct' : ''">
         <li v-for="(answer, i) in answers"
           :class="['btn_answer', (answer.is_correct) == 1 ? 'active' : '']"
@@ -81,12 +81,12 @@
       let self = this;
       window.addEventListener('keyup', function (event) {
         if (!self.isStop) {
-          //Event Key Next => Show Question And Answer
-          self.updateStatusWelcome(false);
+          //Event Key Next => Show Question And Answer          
           if (event.keyCode === 39) {
+            self.updateStatusWelcome(false);
             //Show Question
             if (!self.show_question) {
-              self.show_question = !self.show_question;
+              self.show_question = !self.show_question;              
             }
             //Show Answer
             else if (!self.show_answer) {
@@ -130,7 +130,6 @@
               self.show_answer = true;
               self.show_correct = true;
               //Update Total Score Group List
-              console.log("Khởi động");
               self.updateGroupList(true);
             }
           }

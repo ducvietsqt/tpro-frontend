@@ -89,16 +89,17 @@
             if (is_correct) {
                 total_correct = 1;
             }
+            this.submitAnswer(true);
+            await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});    
+            await sleep(1000);
             if(question_id == 1){
               //Loại nếu như người chơi đó không trả lời được câu 1
               /*if(total_correct == 0){
                 self.setNextRound(false);
                 self.checkGroupNextRound();
               }*/
-              self.checkGroupNextRound();
-            }
-            this.submitAnswer(true);
-            await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});    
+              this.checkGroupNextRound();
+            }           
         }
         //this.tickQuestion();
       },
@@ -119,14 +120,16 @@
         let obj = await api.getListGroupNext();
         this.groupList = obj.data;
         let userGroup = this.user.group_id;
-        if (this.groupList.includes(userGroup)) {
-          this.setNextRound(true);
-          alert("Liên Quân Bạn được chơi tiếp");
+        let nextQuestion = false;
+        for(let i=0; i < this.groupList.length; i++){
+            if(this.groupList[i].id == userGroup){
+              nextQuestion = true;
+            }
         }
-        else{
+        if(!nextQuestion){
+          this.setNextRound(false);
           alert("Liên Quân Bạn đã bị loại");
-          this.setNextRound(false); 
-          eventsRef.off('value'); 
+          eventsRef.off('value');
         }
       }
     },

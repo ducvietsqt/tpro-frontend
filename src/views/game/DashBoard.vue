@@ -92,16 +92,17 @@
     firebase: {
       events: eventsRef
     },
-    async mounted() {
+    async mounted() {      
       if (this.getIsNext) { // null, false, true
         //let dataCurrentProcess = await this.fetchCurrentProcess();
         // console.log('dataCurrentProcess', dataCurrentProcess);
         // return await this.logout();
         this.startProcessGame();
-      }else if(this.getIsNext === false){
+      }else if(this.getIsNext === false || !this.getIsNext){
         this.handleUserStopGame();
         eventsRef.off('value');
       }
+      
     },
     methods: {
       ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess", "handleUserStopGame"]),
@@ -141,24 +142,16 @@
       async checkNextRound(arrayNextRound) {
         let user_id = this.user.id;
         this.showResult = true;
-        if(arrayNextRound  != undefined){
-            if (arrayNextRound.includes(user_id)) {
-              this.setNextRound(true);
-            }
-            else {
-              //Bị Loại, redirect về dashboard
-              this.setNextRound(false);
-              this.handleUserStopGame();
-              eventsRef.off('value');
-            }
-        }
-        else{
+          if (arrayNextRound.includes(user_id)) {
+            this.setNextRound(true);
+          }
+          else {
             //Bị Loại, redirect về dashboard
-            this.handleUserStopGame();
             this.setNextRound(false);
+            this.handleUserStopGame();
             eventsRef.off('value');
-        }
-      }
+          }
+      }      
     },
     watch: {
       user(next, prev) {

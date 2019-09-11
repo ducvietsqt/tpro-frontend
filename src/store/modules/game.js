@@ -300,9 +300,9 @@ const mutations = {
     state.isUpdateGroupList = data;
   },
   UPDATE_CURRENT_PROCESS(state, data) {
-    console.log('UPDATE_CURRENT_PROCESS',data);
+    /*console.log('UPDATE_CURRENT_PROCESS',data);
     try {
-      /*if(data.process === 1 && data.process_question === 1) {
+      if(data.process === 1 && data.process_question === 1) {
         state.process = null;
         state.processQuestion = null;
       }else if(data.process === 1 ){
@@ -312,7 +312,10 @@ const mutations = {
         state.process = data.process - 1;
         state.processQuestion = data.process_question - 2;
 
-      }*/
+      }
+
+
+
       state.updateStateProcessQuestion = true;
       if(data.process === 1 && data.process_question === 1) {
         state.process = null;
@@ -330,7 +333,7 @@ const mutations = {
       }
     }catch (e) {
       console.log(e.message)
-    }
+    }*/
   },
   USER_STOP_GAME(state) {
     state.userStopGame = true;
