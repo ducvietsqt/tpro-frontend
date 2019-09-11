@@ -9,6 +9,10 @@ async function getListUser() {
   return await get('/api/v1/user/list');
 }
 
+async function getListGroupNext() {
+  return await get('/api/v1/user/list-group-next');
+}
+
 
 async function submitAnnswer(data) {
   // {user_id, answer, round_id, question_id, total_time, total_correct}

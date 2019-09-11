@@ -44,7 +44,8 @@
     data() {
       return {
         answered: null,
-        stopGame: false
+        stopGame: false,
+        groupList:[]
       }
     },
     computed: {
@@ -91,9 +92,11 @@
             }
             if(question_id == 1){
               //Loại nếu như người chơi đó không trả lời được câu 1
-              if(total_correct == 0){
+              /*if(total_correct == 0){
                 self.setNextRound(false);
-              }
+                self.checkGroupNextRound();
+              }*/
+              self.checkGroupNextRound();
             }
             this.submitAnswer(true);
             await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});           
@@ -112,6 +115,20 @@
                 }
             });
         });
+      },
+      async checkGroupNextRound(){
+        let obj = await api.getListGroupNext();
+        this.groupList = obj.data;
+        let userGroup = this.user.group_id;
+        if (this.groupList.includes(userGroup)) {
+          this.setNextRound(true);
+          alert("Liên Quân Bạn được chơi tiếp");
+        }
+        else{
+          alert("Liên Quân Bạn đã bị loại");
+          this.setNextRound(false); 
+          eventsRef.off('value'); 
+        }
       }
     },
     watch: {

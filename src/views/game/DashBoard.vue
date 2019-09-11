@@ -92,7 +92,7 @@
     firebase: {
       events: eventsRef
     },
-    async mounted() {      
+    async mounted() {            
       if (this.getIsNext) { // null, false, true
         //let dataCurrentProcess = await this.fetchCurrentProcess();
         // console.log('dataCurrentProcess', dataCurrentProcess);
