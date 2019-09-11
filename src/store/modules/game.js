@@ -291,7 +291,7 @@ const mutations = {
   },
   setNextRound(state, payload) {
     state.nextRound = payload;
-    setSESSION(SESSION.IS_NEXT, payload);
+    setSESSION(SESSION.NEXT_ROUND, payload);
   },
   SUBMIT_ANSWER(state,data){
     state.isSubmitAnswer = data;

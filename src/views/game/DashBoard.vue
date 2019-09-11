@@ -21,7 +21,7 @@
       </div>-->
     </div>
 
-    <component v-if="layoutProcess" :is="layoutProcess"
+    <component :is="layoutProcess"
                :items="questions[process]"></component>
   </div>
 </template>
@@ -79,7 +79,7 @@
       getIsNext() {
         try {
           // refresh
-          let is_next = getSESSION(SESSION.IS_NEXT);
+          let is_next = getSESSION(SESSION.NEXT_ROUND);
           if (is_next) return is_next;
           // loggedIn
           return getSESSION(SESSION.USER)['is_next'];
@@ -92,7 +92,7 @@
     firebase: {
       events: eventsRef
     },
-    async mounted() {      
+    async mounted() {
       if (this.getIsNext) { // null, false, true
         //let dataCurrentProcess = await this.fetchCurrentProcess();
         // console.log('dataCurrentProcess', dataCurrentProcess);
@@ -100,8 +100,8 @@
         this.startProcessGame();
       }else if(this.getIsNext === false){
         this.handleUserStopGame();
-      }      
-      console.log('USER', this.getIsNext);      
+        eventsRef.off('value');
+      }
     },
     methods: {
       ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess", "handleUserStopGame"]),
@@ -112,12 +112,8 @@
         //this.startGame();
         //this.isShowWelcome = false;
 
-        //Nếu như F5 thì kiểm tra userStopgame, còn đang thi bị loại thì kiểm tra biến nextRound
-        if(this.userStopGame) 
-          {
-            eventsRef.off('value'); 
-            return;
-          }
+        //Nếu như F5 thì kiểm tra userStopgame
+        if(this.userStopGame) return;
         let self = this;
           eventsRef.on('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
@@ -140,11 +136,11 @@
                 }
               }
             });
-          });      
+          });
       },
       async checkNextRound(arrayNextRound) {
         let user_id = this.user.id;
-        this.showResult = true;        
+        this.showResult = true;
         if(arrayNextRound  != undefined){
             if (arrayNextRound.includes(user_id)) {
               this.setNextRound(true);
@@ -152,16 +148,16 @@
             else {
               //Bị Loại, redirect về dashboard
               this.setNextRound(false);
-              this.handleUserStopGame(); 
-              eventsRef.off('value'); 
+              this.handleUserStopGame();
+              eventsRef.off('value');
             }
-        } 
+        }
         else{
             //Bị Loại, redirect về dashboard
             this.handleUserStopGame();
             this.setNextRound(false);
-            eventsRef.off('value'); 
-        }       
+            eventsRef.off('value');
+        }
       }
     },
     watch: {
