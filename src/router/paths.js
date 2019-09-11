@@ -27,6 +27,7 @@ const StaticLedKetQua = () => import(/* webpackChunkName: "StaticLedKetQua" */ '
 const StaticLedButPha = () => import(/* webpackChunkName: "StaticLedButPha" */ '../components/static/StaticLedButPha');
 const StaticLedButPha1 = () => import(/* webpackChunkName: "StaticLedButPha1" */ '../components/static/StaticLedButPha1');
 const GameOver = () => import(/* webpackChunkName: "GameOver" */ '../components/static/GameOver');
+const Pingo = () => import(/* webpackChunkName: "Pingo" */ '../components/static/Pingo');
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
   LoggedIn: "LoggedIn",
@@ -158,7 +159,13 @@ export default [
     meta: {layout: LAYOUT.StaticPage},
     component: GameOver,
   },
-  
+  {
+    path: '/pingo',
+    name: 'pingo',
+    meta: {layout: LAYOUT.StaticPage},
+    component: Pingo,
+  },
+
 
 
 
