@@ -43,7 +43,11 @@
       ...mapGetters("game", ["endProcess", "resultsProcess", "questions", "process","processQuestion", "totalTimeAnsweredProcess"]),
       ...mapGetters("auth", ["user"]),
       processTitle() {
-        return this.questions[this.process]['name'];
+        try {
+          return this.questions[this.process]['name'];
+        }catch {
+          return ''
+        }
       },
       resultCorrect() {
         return this.resultsProcess.length + '/' + this.questions[this.process]["questions"].length

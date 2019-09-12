@@ -1,6 +1,6 @@
 <template>
   <div class="process_box">
-    <BoxKetQua v-show="stopGame"/>
+    <BoxKetQua v-if="stopGame"/>
     <!--<NextProcess/>-->
     <div v-if="!stopGame" class="question-detail">
       <div class="process_box--question">

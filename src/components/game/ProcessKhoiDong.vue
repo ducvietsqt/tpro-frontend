@@ -1,6 +1,6 @@
 <template>
   <div class="process_box">
-    <BoxKetQua v-show="stopGame"/>
+    <BoxKetQua v-if="stopGame"/>
     <!--<NextProcess/>-->
     <div v-if="!stopGame" class="question-detail">
       <div class="process_box--question">
@@ -61,7 +61,8 @@
         return this.items.questions[this.processQuestion].id
       },
       userAnswer(){
-        return this.items.questions[this.processQuestion];
+        // return this.items.questions[this.processQuestion];
+        return this.questions[this.process].questions[this.processQuestion];
       }
     },
     created() {
@@ -81,11 +82,11 @@
             await this.answerQuestion({index, is_correct});
             await sleep(1000);
             //todo: nex question
-            var user_id = this.user.id;
-            var round_id = this.process + 1;
+            let user_id = this.user.id;
+            let round_id = this.process + 1;
             let question_id = this.processQuestion + 1;
-            var total_time = this.userAnswer.answered.time;
-            var total_correct = 0;
+            let total_time = this.userAnswer.answered.time;
+            let total_correct = 0;
             if (is_correct) {
                 total_correct = 1;
             }

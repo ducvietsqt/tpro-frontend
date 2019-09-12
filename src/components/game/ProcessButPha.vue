@@ -1,6 +1,6 @@
 <template>
   <div class="process_box">
-    <BoxKetQua v-show="stopGame"/>
+    <BoxKetQua v-if="stopGame"/>
     <!--<NextProcess/>-->
     <div v-if="!stopGame" class="question-detail">
       <div class="process_box--question">
@@ -51,7 +51,6 @@
       ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer"]),
       ...mapGetters("auth", ["user"]),
       question() {
-        console.log(this.processQuestion)
         return this.items.questions[this.processQuestion].question
       },
       answers() {
@@ -61,7 +60,7 @@
         return this.items.questions[this.processQuestion].id
       },
       userAnswer(){
-        return this.items.questions[this.processQuestion];
+        return this.questions[this.process].questions[this.processQuestion];
       }
     },
     created() {
@@ -134,7 +133,7 @@
         });
       },
       async checkGroupNextRound(){
-        let obj = await api.getListGroupNext();        
+        let obj = await api.getListGroupNext();
         this.groupList = obj.data;
         let userGroup = this.user.group_id;
         let nextQuestion = false;
@@ -143,7 +142,7 @@
               nextQuestion = true;
             }
         }
-        if(!nextQuestion){          
+        if(!nextQuestion){
           this.gameOver();
         }
       },

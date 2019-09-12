@@ -5,4 +5,4 @@ export const COUNT_DOWN_ALL_QUESTION = 30;
 export const TOTAL_QUESTION = 10;
 
 export const SECONDS = 1000;
-export const SPEED_COUNTDOWN = 100;
+export const SPEED_COUNTDOWN = 1000;

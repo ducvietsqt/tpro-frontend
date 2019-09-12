@@ -1,6 +1,6 @@
 <template>
   <div class="process_box" v-if="!showResult">
-    <BoxKetQua v-show="endProcess"/>
+    <BoxKetQua v-if="endProcess"/>
     <!--<NextProcess/>-->
     <div v-if="!endProcess" class="question-detail">
       <div class="process_box--question">
@@ -32,7 +32,7 @@
 <script>
   import {mapGetters, mapActions} from 'vuex';
   import {sleep} from "../../api/base";
-  import BoxKetQua from "./BoxKetQua";  
+  import BoxKetQua from "./BoxKetQua";
   import api from '../../api/user';
 
   export default {
@@ -48,36 +48,36 @@
     computed: {
       ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer","nextRound"]),
       ...mapGetters("auth", ["user"]),
-      question() {        
+      question() {
         return this.items.questions[this.processQuestion].question
       },
       answers() {
-        return this.items.questions[this.processQuestion].answerInfos
+        return this.questions[this.process].questions[this.processQuestion].answerInfos
       },
       titleQuestion() {
         return this.items.questions[this.processQuestion].id
       }
     },
-    created() {      
-    this.tickQuestion();      
+    created() {
+    this.tickQuestion();
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
-      async handleAnswer(index) {     
+      async handleAnswer(index) {
         // return false
         let is_correct = (this.answers[index]['is_correct'] == 1);
         this.answered = index;
         await this.answerQuestion({index, is_correct});
         await sleep(1000);
         //todo: nex question
-        this.answered = null;             
+        this.answered = null;
         this.tickQuestion();
-      }  
+      }
 
     },
     watch: {
-      nextRound: function (t, n) { // eslint-disable-line        
-        this.showResult = true;       
+      nextRound: function (t, n) { // eslint-disable-line
+        this.showResult = true;
       }
     }
   }

@@ -6,7 +6,8 @@
       <div class="led_box" v-show="isStarted && !endProcess">
         <CountDown/>
       </div>
-      <div v-if="isShowWelcome">
+
+      <div v-if="isShowWelcome || process === 'null'">
         <div>
           <p class="text-highlight">
             Chào mừng bạn <br/> đến với <br/>
@@ -14,26 +15,25 @@
           </p>
         </div>
       </div>
-      <!--<div v-if="!isStarted" class="box_nex_process">
-        <p style="text-align: center">
-          <button class="start-game" @click.stop="startProcessGame">Bắt đầu</button>
-        </p>
-      </div>-->
     </div>
     <div v-if="isStartDashBoard">
-    <component v-if="process === 0" is="ProcessKhoiDong"
-               :items="questions[0]"></component>
-    <component v-if="process === 1" is="ProcessKienDinh"
-               :items="questions[1]"></component>
-    <component v-if="process === 2" is="ProcessVuotTroi"
-               :items="questions[2]"></component>
+      <div class="text-highlight" v-if="process && process >= 0">
+        {{getQuestions[process]['name']}}
+      </div>
+      <component v-if="process === 0" is="ProcessKhoiDong"
+                 :items="getQuestions[0]"></component>
+      <component v-if="process === 1" is="ProcessKienDinh"
+                 :items="getQuestions[1]"></component>
+      <component v-if="process === 2" is="ProcessVuotTroi"
+                 :items="getQuestions[2]"></component>
 
-   <component v-if="process === 3" is="ProcessButPha"
-   :items="questions[3]"></component>
+      <component v-if="process === 3" is="ProcessButPha"
+                 :items="getQuestions[3]"></component>
 
-   <component v-if="process === 4" is="ProcessCauHoiPhu"
-   :items="questions[4]"></component>
-               </div>
+      <component v-if="process === 4"
+                 is="ProcessCauHoiPhu"
+                 :items="getQuestions[4]"></component>
+    </div>
   </div>
 </template>
 
@@ -49,9 +49,7 @@
   import MessageGameOver from "../../components/game/MessageGameOver";
   import MessageNextRound from "../../components/game/MessageNextRound";
   import {db} from "../../db";
-  import NextProcess from "../../components/game/NextProcess";
   import {getSESSION, SESSION} from "../../utils";
-  import {sleep} from "../../api/base";
 
   let eventsRef = db.ref('events');
 
@@ -74,12 +72,8 @@
     computed: {
       ...mapGetters("game", ["questions", "process", "isStarted", "endProcess", "processQuestion", "nextRound", "userStopGame"]),
       ...mapGetters("auth", ["user", "isLoggedInTemp"]),
-      layoutProcess() {
-        try {
-          return this.steps[this.process]['component'];
-        } catch (e) {
-          return false
-        }
+      getQuestions() {
+        return this.questions;
       },
       processTitle() {
         try {
@@ -89,16 +83,10 @@
         }
       },
       getIsNext() {
-        try {
-          // refresh
-          let is_next = getSESSION(SESSION.NEXT_ROUND);
-          if (is_next) return is_next;
-          // loggedIn
-          return getSESSION(SESSION.USER)['is_next'];
-        } catch (e) {
-          console.log(e.message);
-          return null
-        }
+        let is_next = getSESSION(SESSION.NEXT_ROUND);
+        if (is_next !== null) return is_next;
+        // loggedIn
+        return getSESSION(SESSION.USER)['is_next'] >= 0; // user['is_next'] : 0, 1, 2...
       },
       getIsLoggedInTemp() {
         return this.isLoggedInTemp;
@@ -110,9 +98,12 @@
     async mounted() {
 
       // todo: game over
-      if(getSESSION(SESSION.GAMEOVER))  {        
+      if(getSESSION(SESSION.GAMEOVER))  {
         return  this.$router.push({name: 'end-game'});
       }
+
+      // if (this.getIsNext) { // null, false, true
+      console.log(this.getIsNext)
       if (this.getIsNext) { // null, false, true
         let dataCurrentProcess = await this.fetchCurrentProcess();
         console.log('dataCurrentProcess', dataCurrentProcess);
@@ -136,7 +127,8 @@
         // do something
         //this.startGame();
         //this.isShowWelcome = false;
-        
+
+        // alert(this.getIsLoggedInTemp);
         //Nếu như F5 thì kiểm tra userStopgame
         if(this.userStopGame) return;
         let self = this;
@@ -147,14 +139,16 @@
                 self.showResult = false;
                 //Start Game
                 if (childData.key == "start_game") {
-                  self.startGame();
-                  self.isShowWelcome = false;
+                  if(self.getIsLoggedInTemp) {
+                    self.startGame();
+                    self.isShowWelcome = false;
+                  }else {
+                    self.setStatusLoggedInTemp(true)
+                  }
                 }
                 //Next Question
                 else if (childData.key == "next_question") {
-                  // alert("Next Question");
                  if(self.getIsLoggedInTemp) {
-                  // alert(2);
                    self.tickQuestion();
                  }else {
                   self.setStatusLoggedInTemp(true)

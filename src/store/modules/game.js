@@ -4,6 +4,7 @@ import {getSESSION, SESSION, setSESSION} from "../../utils";
 import {COUNT_DOWN_QUESTION, COUNT_DOWN_ALL_QUESTION, TOTAL_QUESTION} from "../../utils/constant";
 import {COUNT_DOWN_TOTAL_QUESTION} from "../../utils/constant";
 import {sleep} from "../../api/base";
+import {data_questions} from './data_api';
 // initial state
 const state = {
   questions: [],
@@ -76,8 +77,10 @@ const getters = {
 // actions
 const actions = {
   async fetchQuestion({commit}) {
-    let rs = await api.getQuestions();
-    commit("SET_QUESTION", rs);
+    // let rs = await api.getQuestions();
+    // commit("SET_QUESTION", rs);
+    // console.log("getSESSION(SESSION.QUESTIONS_API)",getSESSION(SESSION.QUESTIONS_API));
+    commit("SET_QUESTION", {data: data_questions});
 
   },
   async fetchCurrentProcess({commit}) {
@@ -146,7 +149,6 @@ const actions = {
   tickTimer({commit, state}, data) { // eslint-disable-line
      // {processTimer, is_countdown_all}
      if(typeof data === "object") {
-
       let processTimer = data["processTimer"], is_countdown_all = data["is_countdown_all"];
       if(processTimer % COUNT_DOWN_QUESTION === 0 && state.startTimerLed) {
         console.log("XXX", processTimer , COUNT_DOWN_QUESTION);
@@ -160,7 +162,7 @@ const actions = {
     }else {
       commit("TICK_TIMER", data);
     }
-    
+
   },
 
 //Process Question Led
@@ -198,7 +200,7 @@ const actions = {
 // mutations
 const mutations = {
   SET_QUESTION(state, payload) {
-    //console.log('SET_QUESTION', payload.data);
+    console.log('SET_QUESTION', payload.data);
     state.questions = payload.data;
     setSESSION(SESSION.QUESTIONS, payload.data);
     setSESSION(SESSION.QUESTIONS_API, payload.data);
@@ -238,8 +240,10 @@ const mutations = {
 
   TICK_QUESTION(state) {
     state.isUpdateGroupList = false;
+    console.log("XXXX", state.processQuestion, state.process);
     if (state.processQuestion === null) {
       state.processQuestion = 0;
+
     } else if (state.processQuestion < state.questions[state.process]['questions'].length - 1) {
       state.processQuestion += 1;
     } else if (state.processQuestion === state.questions[state.process]['questions'].length - 1) {
@@ -257,7 +261,6 @@ const mutations = {
   },
   STOP_TIMER(state, data) { // eslint-disable-line
     state.startTimer = false;
-    let _state = {...state};
     let tem_timer = getSESSION(SESSION.PROCESS_TIMER);
 
     state.questions[state.process]['questions'][state.processQuestion]['answered'] = {
@@ -319,27 +322,12 @@ const mutations = {
     state.isUpdateGroupList = data;
   },
   UPDATE_CURRENT_PROCESS(state, data) {
-    /*console.log('UPDATE_CURRENT_PROCESS',data);
     try {
-      if(data.process === 1 && data.process_question === 1) {
-        state.process = null;
-        state.processQuestion = null;
-      }else if(data.process === 1 ){
-        state.process = 0;
-        state.processQuestion = data.process_question - 2;
-      }else {
-        state.process = data.process - 1;
-        state.processQuestion = data.process_question - 2;
-
-      }
-
-      */
-       try {
       state.updateStateProcessQuestion = true;
-      if(data.process === 1 && data.process_question === 1) {
+      if (data.process === 1 && data.process_question === 1) {
         state.process = null;
         state.processQuestion = null;
-      }else if(data.process !== 1 && data.process_question === 1) {
+      } else if (data.process !== 1 && data.process_question === 1) {
         state.process = data.process - 1;
         state.processQuestion = null;
       } else {
@@ -347,7 +335,7 @@ const mutations = {
         // state.process = 0;
         state.processQuestion = data.process_question - 2;
       }
-    }catch (e) {
+    } catch (e) {
       console.log(e.message)
     }
 
