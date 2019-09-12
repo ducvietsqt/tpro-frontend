@@ -90,7 +90,7 @@
                 total_correct = 1;
             }
             this.submitAnswer(true);
-            await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});    
+            await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});
             await sleep(1000);
             if(question_id == 1){
               //Loại nếu như người chơi đó không trả lời được câu 1
@@ -103,20 +103,20 @@
             else{
               if(question == 10){
                 if(total_correct == 0){
-                  this.gameOver();         
+                  this.gameOver();
                 }
                 else{
-                  this.setNextRound(false);                  
-                  eventsRef.off('value');  
-                  this.$router.push({name: 'game-winner'})                      
+                  this.setNextRound(false);
+                  eventsRef.off('value');
+                  this.$router.push({name: 'game-winner'})
                 }
               }else{
                 if(total_correct == 0)
                 {
-                  this.gameOver();                
+                  this.gameOver();
                 }
               }
-            }           
+            }
         }
         //this.tickQuestion();
       },
@@ -143,15 +143,15 @@
               nextQuestion = true;
             }
         }
-        if(!nextQuestion){          
+        if(!nextQuestion){
           this.gameOver();
         }
       },
       gameOver()
       {
-          this.setNextRound(false);          
-          eventsRef.off('value');  
-          this.$router.push({name: 'game-over'})   
+          this.setNextRound(false);
+          eventsRef.off('value');
+          this.$router.push({name: 'end-game'})
       }
     },
     watch: {

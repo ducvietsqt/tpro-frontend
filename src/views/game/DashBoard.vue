@@ -111,7 +111,7 @@
 
       // todo: game over
       if(getSESSION(SESSION.GAMEOVER))  {
-        return  this.$router.push({name: 'game-over'}) ;
+        return  this.$router.push({name: 'end-game'});
       }
       if (this.getIsNext) { // null, false, true
         let dataCurrentProcess = await this.fetchCurrentProcess();
@@ -192,7 +192,7 @@
         this.setNextRound(false);
         this.handleUserStopGame();
         eventsRef.off('value');
-        this.$router.push({name: 'game-over'})
+        this.$router.push({name: 'end-game'})
       }
     },
     watch: {

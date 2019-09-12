@@ -78,7 +78,7 @@ const mutations = {
     state.isLoggedInTemp = true;
     setSESSION(SESSION.TOKEN, state.dataAuth.code);
     setSESSION(SESSION.USER, state.dataAuth || data);
-
+    setSESSION(SESSION.GAMEOVER, false);
     let is_next = "";
     if(state.dataAuth && state.dataAuth.is_next) {
       is_next = state.dataAuth.is_next;
