@@ -132,7 +132,7 @@ Websocket.prototype = Object.assign(Websocket.prototype, {
     })
 
     this.conn.addEventListener('message', (ev) => {
-      alert(1);
+      // alert(1);
       console.log('Message', ev.data);
       this.$bus.$emit(`$ws.message`, ev.data)
       /*const payload = JSON.parse(ev.data)

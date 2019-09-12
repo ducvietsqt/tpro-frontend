@@ -32,7 +32,7 @@
    :items="questions[3]"></component>
 
    <component v-if="process === 4" is="ProcessCauHoiPhu"
-   :items="questions[4]"></component>           
+   :items="questions[4]"></component>
                </div>
   </div>
 </template>
@@ -107,7 +107,7 @@
     firebase: {
       events: eventsRef
     },
-    async mounted() {      
+    async mounted() {
       if (this.getIsNext) { // null, false, true
         let dataCurrentProcess = await this.fetchCurrentProcess();
         console.log('dataCurrentProcess', dataCurrentProcess);
@@ -115,12 +115,12 @@
           this.isStartDashBoard = true;
           this.startProcessGame();
         }
-        
+
       }else if(this.getIsNext === false || !this.getIsNext){
         this.handleUserStopGame();
         eventsRef.off('value');
       }
-      
+
     },
     methods: {
       ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess", "handleUserStopGame"]),
@@ -132,7 +132,7 @@
         //this.startGame();
         //this.isShowWelcome = false;
 
-        alert(this.getIsLoggedInTemp);
+        // alert(this.getIsLoggedInTemp);
         //Nếu như F5 thì kiểm tra userStopgame
         if(this.userStopGame) return;
         let self = this;
@@ -150,7 +150,7 @@
                 //Next Question
                 else if (childData.key == "next_question") {
                   // alert("Next Question");
-                 if(self.getIsLoggedInTemp) {                  
+                 if(self.getIsLoggedInTemp) {
                   // alert(2);
                    self.tickQuestion();
                  }else {
@@ -180,7 +180,7 @@
             this.handleUserStopGame();
             eventsRef.off('value');
           }
-      }      
+      }
     },
     watch: {
       user(next, prev) {
