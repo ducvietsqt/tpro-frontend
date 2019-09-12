@@ -20,6 +20,7 @@
 
 <script>  
   import {db} from "../../db";
+ import {getSESSION, SESSION} from "../../utils";
 
   let eventsRef = db.ref('events');
   export default {
@@ -40,6 +41,9 @@
     },
     methods: {
       stopEvent() {
+        // let is_next = getSESSION(SESSION.NEXT_ROUND);
+        // alert(is_next)
+        setSESSION(SESSION.GAMEOVER, true);
         eventsRef.off('value');    
       }
     }

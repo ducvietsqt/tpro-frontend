@@ -107,7 +107,13 @@
     firebase: {
       events: eventsRef
     },
-    async mounted() {      
+    async mounted() { 
+
+      // todo: game over  
+      if(getSESSION(SESSION.GAMEOVER))  {
+        alert(1)
+        return  this.$router.push({name: 'game-over'}) ;  
+      }
       if (this.getIsNext) { // null, false, true
         let dataCurrentProcess = await this.fetchCurrentProcess();
         console.log('dataCurrentProcess', dataCurrentProcess);
@@ -131,9 +137,8 @@
         // do something
         //this.startGame();
         //this.isShowWelcome = false;
-
-        alert(this.getIsLoggedInTemp);
-        //Nếu như F5 thì kiểm tra userStopgame
+        
+        //Nếu như F5 thì kiểm tra userStopgame        
         if(this.userStopGame) return;
         let self = this;
           eventsRef.on('value', function (snapshot) {
@@ -142,25 +147,21 @@
               if (childData) {
                 self.showResult = false;
                 //Start Game
-                if (childData.key == "start_game") {
-                  // alert("Start Game");
+                if (childData.key == "start_game") {                  
                   self.startGame();
                   self.isShowWelcome = false;
                 }
                 //Next Question
-                else if (childData.key == "next_question") {
-                  // alert("Next Question");
-                 if(self.getIsLoggedInTemp) {                  
-                  // alert(2);
+                else if (childData.key == "next_question") {                  
+                 if(self.getIsLoggedInTemp) {                                    
                    self.tickQuestion();
-                 }else {
-                  // alert(3);
+                 }else {                  
                   self.setStatusLoggedInTemp(true)
                  }
 
                 }
                 //Get List User Next Round
-                else if (childData.key == "result_round") {
+                else if (childData.key == "result_round") {                  
                   var arrayNextRound = childData.arrayNextRound;
                   self.checkNextRound(arrayNextRound);
                 }
@@ -168,19 +169,29 @@
             });
           });
       },
-      async checkNextRound(arrayNextRound) {
+      async checkNextRound(arrayNextRound) {        
         let user_id = this.user.id;
         this.showResult = true;
+        if(arrayNextRound !== undefined){
           if (arrayNextRound.includes(user_id)) {
-            this.setNextRound(true);
+            this.setNextRound(true);            
           }
-          else {
-            //Bị Loại, redirect về dashboard
-            this.setNextRound(false);
-            this.handleUserStopGame();
-            eventsRef.off('value');
+          else {            
+            //Bị Loại
+            this.gameOver();
           }
-      }      
+        }      
+        else{
+          //Bị Loại          
+           this.gameOver();
+        }    
+      },
+      gameOver(){
+        this.setNextRound(false);
+        this.handleUserStopGame();
+        eventsRef.off('value');
+        this.$router.push({name: 'game-over'})   
+      }     
     },
     watch: {
       user(next, prev) {

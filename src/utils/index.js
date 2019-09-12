@@ -28,6 +28,7 @@ export const SESSION = {
   USER: 'USER',
   NEXT_ROUND: 'NEXT_ROUND',
   PROCESS_TIMER: 'PROCESS_TIMER',
+  GAMEOVER: 'GAMEOVER',
 
   // TICK_
 }
