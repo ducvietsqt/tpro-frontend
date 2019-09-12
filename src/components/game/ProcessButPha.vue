@@ -101,7 +101,7 @@
               this.checkGroupNextRound();
             }
             else{
-              if(question == 10){
+              if(question_id == 10){
                 if(total_correct == 0){
                   this.gameOver();
                 }
@@ -134,7 +134,7 @@
         });
       },
       async checkGroupNextRound(){
-        let obj = await api.getListGroupNext();
+        let obj = await api.getListGroupNext();        
         this.groupList = obj.data;
         let userGroup = this.user.group_id;
         let nextQuestion = false;
@@ -143,7 +143,7 @@
               nextQuestion = true;
             }
         }
-        if(!nextQuestion){
+        if(!nextQuestion){          
           this.gameOver();
         }
       },

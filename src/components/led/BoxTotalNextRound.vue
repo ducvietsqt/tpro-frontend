@@ -1,18 +1,18 @@
 <template>
-  <div>
-    <div v-show="endProcess && process != 0 && choiceList.length > 0">
+  <div>    
+    <div v-show="endProcess && process != 0">
+      <div v-if="choiceList.length > 0">
         <p class="text-center drs-kq">
           Số người được chọn <br/>
           vào vòng {{process+1}} : <strong>{{totalItem()}}</strong>
         </p>
-        <!--<div>
-          <table class="table_view">
-            <tr v-for="(data, i) in choiceList" :key="i">
-              <td>{{data.name}}</td>
-              <td>{{data.total}}</td>
-            </tr>
-          </table>
-        </div>-->
+      </div> 
+      <div v-else>
+        <p class="text-center drs-kq">
+          Hiện tại không có ai <br/>
+          lọt vào vòng {{process+1}}
+        </p>
+      </div>       
     </div>
   </div>
 </template>

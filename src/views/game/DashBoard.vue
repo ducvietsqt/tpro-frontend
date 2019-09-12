@@ -110,7 +110,7 @@
     async mounted() {
 
       // todo: game over
-      if(getSESSION(SESSION.GAMEOVER))  {
+      if(getSESSION(SESSION.GAMEOVER))  {        
         return  this.$router.push({name: 'end-game'});
       }
       if (this.getIsNext) { // null, false, true
@@ -136,8 +136,7 @@
         // do something
         //this.startGame();
         //this.isShowWelcome = false;
-
-        // alert(this.getIsLoggedInTemp);
+        
         //Nếu như F5 thì kiểm tra userStopgame
         if(this.userStopGame) return;
         let self = this;

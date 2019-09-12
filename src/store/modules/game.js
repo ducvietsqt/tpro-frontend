@@ -1,7 +1,7 @@
 import api from '../../api/question';
 import apiLed from '../../api/led';
 import {getSESSION, SESSION, setSESSION} from "../../utils";
-import {COUNT_DOWN_QUESTION, COUNT_DOWN_ALL_QUESTION} from "../../utils/constant";
+import {COUNT_DOWN_QUESTION, COUNT_DOWN_ALL_QUESTION, TOTAL_QUESTION} from "../../utils/constant";
 import {COUNT_DOWN_TOTAL_QUESTION} from "../../utils/constant";
 import {sleep} from "../../api/base";
 // initial state
@@ -146,10 +146,12 @@ const actions = {
   tickTimer({commit, state}, data) { // eslint-disable-line
      // {processTimer, is_countdown_all}
      if(typeof data === "object") {
+
       let processTimer = data["processTimer"], is_countdown_all = data["is_countdown_all"];
       if(processTimer % COUNT_DOWN_QUESTION === 0 && state.startTimerLed) {
         console.log("XXX", processTimer , COUNT_DOWN_QUESTION);
-        let process_question = is_countdown_all ?  (COUNT_DOWN_QUESTION - (processTimer / COUNT_DOWN_QUESTION) + 1) : state.processQuestion + 1;
+        // let process_question = is_countdown_all ?  (COUNT_DOWN_QUESTION - (processTimer / COUNT_DOWN_QUESTION) + 1) : state.processQuestion + 1;
+        let process_question = is_countdown_all ?  (TOTAL_QUESTION - (processTimer / COUNT_DOWN_QUESTION) + 1) : state.processQuestion + 1;
         apiLed.updateProcessCurrent({process: state.process + 1, process_question:  process_question});
       }
      }

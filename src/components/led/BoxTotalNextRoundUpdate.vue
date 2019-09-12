@@ -98,7 +98,7 @@
           snapshot.forEach(function(childSnapshot) {
               let childData = childSnapshot.val();
               if(childData){
-                  if(childData.key == "update_round"){
+                  if(childData.key == "update_round"){                    
                     self.choiceList = [];
                     self.getList();
                     self.getListGroupGrade();

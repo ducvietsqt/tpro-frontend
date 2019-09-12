@@ -20,12 +20,26 @@
         <button type="button" @click="getResultRound">Result Round</button>
       </div>
       <div class="event-item">
-        <button type="button" @click="resetRound">Reset</button>
+        <button type="button" @click="resetRoundLed">Reset Round Led</button>
+      </div>
+      <div class="event-item">
+        <button type="button" @click="resetRound">Reset Round</button>
       </div>
       <div class="event-item">
         <button type="button" @click="updateRound">Update Round</button>
       </div>
     </div>
+
+    <div class="events">      
+      <div class="event-item">
+        <button type="button" @click="resetInfoGame">Reset Info game</button>
+      </div>
+      <div class="event-item">
+        <button type="button" @click="resetTotalLogin">Reset Total Login</button>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -66,8 +80,7 @@ export default {
       });
 
     },
-    async resetRound(){
-      await api.resetRound();
+    async resetRoundLed(){      
       this.$firebaseRefs.events.push({
         name: "Update Round",
         key: "update_round"        
@@ -75,13 +88,23 @@ export default {
       await sleep(1000);
       eventsRef.remove();      
     },
+    async resetRound(){
+      await api.resetRound();
+    },
     updateRound()
     {
       this.$firebaseRefs.events.push({
         name: "Update Round",
         key: "update_round"        
       });
+    },
+    async resetInfoGame(){
+      await api.resetInfoGame();
+    },
+    async resetTotalLogin(){
+      await api.resetTotalLogin();
     }
+
     
   }
 };
