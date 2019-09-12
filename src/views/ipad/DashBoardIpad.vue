@@ -37,6 +37,9 @@
       <div class="event-item">
         <button type="button" @click="resetTotalLogin">Reset Total Login</button>
       </div>
+      <div class="event-item">
+        <button type="button" @click="resetFireBase">Reset FireBase</button>
+      </div>
     </div>
 
 
@@ -103,6 +106,9 @@ export default {
     },
     async resetTotalLogin(){
       await api.resetTotalLogin();
+    },
+    async resetFireBase(){
+      eventsRef.remove();
     }
 
     

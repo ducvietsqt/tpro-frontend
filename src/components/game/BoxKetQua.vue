@@ -55,6 +55,10 @@
     },
     created() {
       this.endProcessGame();
+       
+      // get process on created by v-if
+      this.getResultProcess();
+      this.submitUserAnnswer();
     },
     firebase: {
       events: eventsRef
@@ -83,15 +87,16 @@
         let total_correct = this.resultsProcess.length ;
         let answer = "";
         await api.submitAnnswer({user_id,answer: answer, round_id, question_id, total_time,total_correct});
-      }
+      },
+
     },
     watch: {
-      endProcess(n, p) { // eslint-disable-line
+     /* endProcess(n, p) { // eslint-disable-line
         if (n && n !== p) {
           this.getResultProcess();
           this.submitUserAnnswer();
         }
-      }
+      }*/
     }
   }
 </script>

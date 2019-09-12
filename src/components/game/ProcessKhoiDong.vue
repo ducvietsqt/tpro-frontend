@@ -91,6 +91,7 @@
                 total_correct = 1;
             }
             this.submitAnswer(true);
+            console.log({user_id, answer: index, round_id, question_id, total_time,total_correct})
             await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});
         }
         //this.tickQuestion();

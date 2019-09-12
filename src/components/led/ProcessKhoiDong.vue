@@ -128,8 +128,7 @@
             else if (!self.show_correct){
               self.show_answer = true;
               self.show_correct = true;
-              //Update Total Score Group List
-              console.log("Khởi động");
+              //Update Total Score Group List              
               self.updateGroupList(true);
             }
           }

@@ -112,7 +112,7 @@
           this.startProcessGame();
         }
 
-      }else if(this.getIsNext === false || !this.getIsNext){
+      }else if(this.getIsNext === false){
         this.handleUserStopGame();
         eventsRef.off('value');
       }
@@ -139,12 +139,12 @@
                 self.showResult = false;
                 //Start Game
                 if (childData.key == "start_game") {
-                  if(self.getIsLoggedInTemp) {
+                  if(self.getIsLoggedInTemp || (self.process === null && self.processQuestion === null)) {
                     self.startGame();
                     self.isShowWelcome = false;
-                  }else {
-                    self.setStatusLoggedInTemp(true)
+                    // alert(1)
                   }
+                  self.setStatusLoggedInTemp(true);
                 }
                 //Next Question
                 else if (childData.key == "next_question") {

@@ -279,9 +279,11 @@ const mutations = {
   RESULT_PROCESS(state) { // eslint-disable-line
     //let _state = {...state};
     //console.log(_state.questions[_state.process]['questions'].filter(i => i.answered.is_correct));
-    let correct_results = state.questions[state.process]['questions'].filter(i => i.answered.is_correct);
+    console.log('RESULT_PROCESS', state.questions[state.process]['questions'])
+    let correct_results = state.questions[state.process]['questions'].filter(i => i.answered && i.answered.is_correct);
     state.resultsProcess = correct_results;
     //state.totalTimeAnsweredProcess = 0;
+    state.totalTimeAnsweredProcess = 0;
     for (let i = 0; i < correct_results.length; i++) {
     //console.log(state.questions[state.process]['questions'][i]['answered']) ;
     console.log(correct_results[i]);

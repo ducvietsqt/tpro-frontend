@@ -1,6 +1,6 @@
-export const COUNT_DOWN_QUESTION = 3;
-export const COUNT_DOWN_TOTAL_QUESTION = 30;
-export const COUNT_DOWN_ALL_QUESTION = 30;
+export const COUNT_DOWN_QUESTION = 5;
+export const COUNT_DOWN_TOTAL_QUESTION = 50;
+export const COUNT_DOWN_ALL_QUESTION = 50;
 
 export const TOTAL_QUESTION = 10;
 
