@@ -117,7 +117,7 @@
                 {
                   this.setNextRound(false);                  
                   eventsRef.off('value');  
-                  this.$router.push({name: 'game-over'})                      
+                  this.$router.push({name: 'end-game'})                      
                 }
               }
             }           

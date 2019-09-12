@@ -156,8 +156,8 @@ export default [
   },
 
   {
-    path: '/game-over',
-    name: 'game-over',
+    path: '/end-game',
+    name: 'end-game',
     meta: {layout: LAYOUT.StaticPage},
     component: GameOver,
   },
@@ -174,11 +174,5 @@ export default [
     meta: {layout: LAYOUT.StaticPage},
     component: GameWinner,
   },
-
-
-
-
-
-
 
 ];
