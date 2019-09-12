@@ -103,9 +103,7 @@
             else{
               if(question == 10){
                 if(total_correct == 0){
-                  this.setNextRound(false);                  
-                  eventsRef.off('value');  
-                  this.$router.push({name: 'game-over'})                       
+                  this.gameOver();         
                 }
                 else{
                   this.setNextRound(false);                  
@@ -115,9 +113,7 @@
               }else{
                 if(total_correct == 0)
                 {
-                  this.setNextRound(false);                  
-                  eventsRef.off('value');  
-                  this.$router.push({name: 'end-game'})                      
+                  this.gameOver();                
                 }
               }
             }           
@@ -147,12 +143,15 @@
               nextQuestion = true;
             }
         }
-        if(!nextQuestion){
-          this.setNextRound(false);
-          alert("Liên Quân Bạn đã bị loại");
-          eventsRef.off('value');  
-          this.$router.push({name: 'game-over'})                  
+        if(!nextQuestion){          
+          this.gameOver();
         }
+      },
+      gameOver()
+      {
+          this.setNextRound(false);          
+          eventsRef.off('value');  
+          this.$router.push({name: 'game-over'})   
       }
     },
     watch: {

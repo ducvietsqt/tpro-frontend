@@ -108,6 +108,11 @@
       events: eventsRef
     },
     async mounted() {
+
+      // todo: game over
+      if(getSESSION(SESSION.GAMEOVER))  {
+        return  this.$router.push({name: 'game-over'}) ;
+      }
       if (this.getIsNext) { // null, false, true
         let dataCurrentProcess = await this.fetchCurrentProcess();
         console.log('dataCurrentProcess', dataCurrentProcess);
@@ -143,7 +148,6 @@
                 self.showResult = false;
                 //Start Game
                 if (childData.key == "start_game") {
-                  // alert("Start Game");
                   self.startGame();
                   self.isShowWelcome = false;
                 }
@@ -154,7 +158,6 @@
                   // alert(2);
                    self.tickQuestion();
                  }else {
-                  // alert(3);
                   self.setStatusLoggedInTemp(true)
                  }
 
@@ -171,15 +174,25 @@
       async checkNextRound(arrayNextRound) {
         let user_id = this.user.id;
         this.showResult = true;
+        if(arrayNextRound !== undefined){
           if (arrayNextRound.includes(user_id)) {
             this.setNextRound(true);
           }
           else {
-            //Bị Loại, redirect về dashboard
-            this.setNextRound(false);
-            this.handleUserStopGame();
-            eventsRef.off('value');
+            //Bị Loại
+            this.gameOver();
           }
+        }
+        else{
+          //Bị Loại
+           this.gameOver();
+        }
+      },
+      gameOver(){
+        this.setNextRound(false);
+        this.handleUserStopGame();
+        eventsRef.off('value');
+        this.$router.push({name: 'game-over'})
       }
     },
     watch: {
