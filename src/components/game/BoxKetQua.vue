@@ -53,13 +53,17 @@
       resultCorrect() {
         return this.resultsProcess.length + '/' + this.questions[this.process]["questions"].length
       },
+      submittedRound() {
+        return this.currentSubmitted !== null && this.process + 1 === this.currentSubmitted ['round_id'];
+      }
     },
     created() {
       this.endProcessGame();
-
       // get process on created by v-if
       this.getResultProcess();
-      this.submitUserAnnswer();
+      if(this.submittedRound) {
+        this.submitUserAnnswer();
+      }
     },
     firebase: {
       events: eventsRef
