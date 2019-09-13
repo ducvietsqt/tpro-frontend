@@ -123,6 +123,7 @@
                 if(self.showTotalChoice){
                   self.startGame();
                   self.updateStatusWelcome(true);
+                  self.updateGroupList(false);
                   self.isStop = true;
                 }                
                 self.showTotalChoice = true;
@@ -133,7 +134,7 @@
       });      
     },
     methods: {
-      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome"]),
+      ...mapActions("game", ["startGame","tickQuestion", "answerQuestion", "startTimerLed","updateStatusWelcome","updateGroupList"]),
     }
   };
 </script>

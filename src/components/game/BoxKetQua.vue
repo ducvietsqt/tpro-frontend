@@ -30,6 +30,7 @@
   import {db} from "../../db";
   import api from '../../api/user';
   import {sleep} from "../../api/base";
+  import {getSESSION, SESSION, setSESSION} from "../../utils";
 
   let eventsRef = db.ref('events');
   export default {
@@ -79,14 +80,18 @@
         });
       },
       async submitUserAnnswer(){
-        await sleep(1000);
-        let user_id = this.user.id;
-        let round_id = this.process + 1;
-        let question_id = this.processQuestion + 1;
-        let total_time = this.totalTimeAnsweredProcess;
-        let total_correct = this.resultsProcess.length ;
-        let answer = "";
-        await api.submitAnnswer({user_id,answer: answer, round_id, question_id, total_time,total_correct});
+        let submited = getSESSION(SESSION.SUBMITRESULTANSWER);
+        if(!submited){
+            await sleep(1000);
+            let user_id = this.user.id;
+            let round_id = this.process + 1;
+            let question_id = this.processQuestion + 1;
+            let total_time = this.totalTimeAnsweredProcess;
+            let total_correct = this.resultsProcess.length ;
+            let answer = "";        
+            await api.submitAnnswer({user_id,answer: answer, round_id, question_id, total_time,total_correct});
+            setSESSION(SESSION.SUBMITRESULTANSWER, true);            
+        }                
       },
 
     },

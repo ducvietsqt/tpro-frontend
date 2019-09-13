@@ -28,7 +28,7 @@
   import Group from "../../components/led/Group";
   import Welcome from "../../components/led/Welcome";
   import TotalNextRound from "../../components/led/BoxTotalNextRound";
-  import TotalNextRoundUpdate from "../../components/led/BoxTotalNextRoundUpdate";
+  import TotalNextRoundUpdate from "../../components/led/BoxTotalNextRoundUpdate";  
   import {db} from "../../db";
 
   let eventsRef = db.ref('events');
@@ -108,7 +108,7 @@
               self.startGame();
               self.stopTimerRound();
               self.updateStatusWelcome(false);
-              self.isStop = true;
+              self.isStop = true;              
             }
             self.show_question = true;
           }

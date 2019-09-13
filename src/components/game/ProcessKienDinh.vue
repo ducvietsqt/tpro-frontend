@@ -1,8 +1,8 @@
 <template>
   <div class="process_box" v-show="!showResult">
-    <BoxKetQua v-if="endProcess"/>
+    <BoxKetQua v-if="endProcess || isSubmitted"/>
     <!--<NextProcess/>-->
-    <div v-if="!endProcess" class="question-detail">
+    <div v-if="!endProcess && !isSubmitted" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
           Câu hỏi {{processQuestion +1}}:
@@ -35,6 +35,7 @@
   import BoxKetQua from "./BoxKetQua";
   import NextProcess from "./NextProcess";
   import api from '../../api/user';
+  import {getSESSION, SESSION, setSESSION} from "../../utils";
 
   export default {
     name: "ProcessKienDinh",
@@ -43,7 +44,8 @@
     data() {
       return {
         answered: null,
-        showResult: false
+        showResult: false,
+        isSubmitted:false
       }
     },
     computed: {
@@ -61,6 +63,7 @@
     },
     created() {
       this.tickQuestion();
+      this.checkUserSubmitted();
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
@@ -73,9 +76,12 @@
         //todo: nex question
         this.answered = null;
         this.tickQuestion();
+      }, 
+      checkUserSubmitted(){
+        this.isSubmitted = getSESSION(SESSION.SUBMITRESULTANSWER);            
       }
     },
-    watch: {
+    watch: {      
       nextRound: function (t, n) { // eslint-disable-line
         this.showResult = true;
       }

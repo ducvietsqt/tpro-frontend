@@ -132,6 +132,7 @@
         //Nếu như F5 thì kiểm tra userStopgame
         if(this.userStopGame) return;
         let self = this;
+        let isSubmitted = getSESSION(SESSION.SUBMITRESULTANSWER);         
           eventsRef.on('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
               let childData = childSnapshot.val();
@@ -143,8 +144,11 @@
                     self.startGame();
                     self.isShowWelcome = false;
                     // alert(1)
-                  }
+                  }                  
                   self.setStatusLoggedInTemp(true);
+                  if(isSubmitted){
+                    setSESSION(SESSION.SUBMITRESULTANSWER, false);    
+                  }                  
                 }
                 //Next Question
                 else if (childData.key == "next_question") {

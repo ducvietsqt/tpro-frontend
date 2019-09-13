@@ -84,10 +84,8 @@
     },
     watch: {
       isUpdateGroupList(n, p) { // eslint-disable-line        
-        console.log("kết Quả");
-        if (n && n !== p) {                 
+        console.log("kết Quả");        
           this.getList();
-        }
       }
     }
   };
