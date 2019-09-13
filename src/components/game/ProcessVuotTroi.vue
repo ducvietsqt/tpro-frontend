@@ -1,12 +1,10 @@
 <template>
   <div class="process_box" v-if="!showResult">
     <BoxKetQua v-if="endProcess || submittedVuotTroi"/>
-    <!--<NextProcess/>-->
     <div v-if="!endProcess && !submittedVuotTroi" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
-          Câu hỏi {{processQuestion +1}}:
-          <!--{{titleQuestion}}-->
+          Câu hỏi {{processQuestion + 1}}:
         </p>
         <p class="drs-qs">
           {{question}}
@@ -23,7 +21,6 @@
             {{answer.answer}}
           </li>
         </ol>
-
       </div>
     </div>
   </div>
@@ -55,21 +52,20 @@
       answers() {
         return this.questions[this.process].questions[this.processQuestion].answerInfos
       },
-      titleQuestion() {
-        return this.items.questions[this.processQuestion].id
-      },
+
       submittedVuotTroi() {
-        return this.currentSubmitted !== null && this.process + 1 === this.currentSubmitted ['round_id'];
+        return this.currentSubmitted !== null && this.currentSubmitted ['round_id'] === 3;
       }
     },
     created() {
+      if(this.currentSubmitted && this.currentSubmitted ['round_id']) {
+        return;
+      }
       this.tickQuestion();
-      //this.checkUserSubmitted();
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
       async handleAnswer(index) {
-        // return false
         let is_correct = (this.answers[index]['is_correct'] == 1);
         this.answered = index;
         await this.answerQuestion({index, is_correct});
@@ -78,10 +74,6 @@
         this.answered = null;
         this.tickQuestion();
       },
-      checkUserSubmitted(){
-        this.isSubmitted = getSESSION(SESSION.SUBMITRESULTANSWER);
-      }
-
     },
     watch: {
       nextRound: function (t, n) { // eslint-disable-line

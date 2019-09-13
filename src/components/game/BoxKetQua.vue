@@ -12,12 +12,12 @@
           <li class="item active">
             <span class="dot_item"></span>
             <span>Trả lời đúng</span>
-            <span>{{resultCorrect}}</span>
+            <span> &nbsp;&nbsp;{{resultCorrect}}</span>
           </li>
           <li class="item active">
             <span class="dot_item"></span>
             <span>Thời gian</span>
-            <span>&nbsp;{{Math.round(totalTimeAnsweredProcess * 1000)/1000}}s</span>
+            <span>&nbsp;&nbsp;{{timeCorrect}}s</span>
           </li>
         </ol>
       </div>
@@ -30,7 +30,6 @@
   import {db} from "../../db";
   import api from '../../api/user';
   import {sleep} from "../../api/base";
-  import {getSESSION, SESSION, setSESSION} from "../../utils";
 
   let eventsRef = db.ref('events');
   export default {
@@ -51,17 +50,28 @@
         }
       },
       resultCorrect() {
+        if(this.currentSubmitted) {
+          return  this.currentSubmitted.total_score + '/' + this.questions[this.process]["questions"].length
+        }
         return this.resultsProcess.length + '/' + this.questions[this.process]["questions"].length
       },
+      timeCorrect() {
+        if(this.currentSubmitted) {
+          return this.currentSubmitted.total_time
+        } else {
+          return Math.round(this.totalTimeAnsweredProcess * 1000)/1000
+        }
+
+      },
       submittedRound() {
-        return this.currentSubmitted !== null && this.process + 1 === this.currentSubmitted ['round_id'];
+        return this.process > 0 && this.currentSubmitted !== null && this.process + 1 === this.currentSubmitted ['round_id'];
       }
     },
     created() {
       this.endProcessGame();
       // get process on created by v-if
       this.getResultProcess();
-      if(this.submittedRound) {
+      if(this.process > 0) {
         this.submitUserAnnswer();
       }
     },

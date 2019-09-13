@@ -279,7 +279,8 @@ const mutations = {
      // time: data ? COUNT_DOWN_QUESTION - _state.processTimer : COUNT_DOWN_QUESTION,
       time: data ? COUNT_DOWN_QUESTION - tem_timer : COUNT_DOWN_QUESTION
     };
-
+    console.log('state.questions', state.questions);
+    setSESSION(SESSION.QUESTIONS, state.questions);
     // state.timer = COUNT_DOWN_QUESTION;
     // state.processTimer = COUNT_DOWN_QUESTION;
   },
@@ -355,6 +356,7 @@ const mutations = {
   },
   UPDATE_CURRENT_SUBMITTED(state, data) {
     state.currentSubmitted = data;
+
   },
   USER_STOP_GAME(state) {
     state.userStopGame = true;

@@ -1,7 +1,6 @@
 <template>
   <div class="process_box">
     <BoxKetQua v-if="stopGame"/>
-    <!--<NextProcess/>-->
     <div v-if="!stopGame" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
@@ -31,16 +30,15 @@
   import {mapGetters, mapActions} from 'vuex';
   import {sleep} from "../../api/base";
   import BoxKetQua from "./BoxKetQua";
-  import NextProcess from "./NextProcess";
   import api from '../../api/user';
   import {db} from "../../db";
-  import {getSESSION, SESSION, setSESSION} from "../../utils";
+  import { SESSION, setSESSION} from "../../utils";
 
   let eventsRef = db.ref('events');
 
   export default {
     name: "ProcessKhoiDong",
-    components: {NextProcess, BoxKetQua},
+    components: {BoxKetQua},
     props: ["items"],
     data() {
       return {
@@ -94,7 +92,7 @@
             this.submitAnswer(true);
             console.log({user_id, answer: index, round_id, question_id, total_time,total_correct})
             await api.submitAnnswer({user_id, answer: index, round_id, question_id, total_time,total_correct});
-            setSESSION(SESSION.SUBMITRESULTANSWER, true);            
+            setSESSION(SESSION.SUBMITRESULTANSWER, true);
         }
         //this.tickQuestion();
       },

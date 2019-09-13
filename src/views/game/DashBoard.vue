@@ -1,13 +1,21 @@
 <template>
   <div class="content_center" :class="{no_center: isStarted && !endProcess}">
     <div>
-      <MessageGameOver v-if="!nextRound && endProcess && showResult"/>
-      <MessageNextRound v-if="nextRound && endProcess && showResult" :title="processTitle"/>
-      <div class="led_box" v-show="isStarted && !endProcess">
-        <CountDown/>
+      <div v-if="isRefresh">
+        <MessageGameOver v-if="!nextRound && showResult"/>
+        <MessageNextRound v-if="nextRound && showResult" :title="processTitle"/>
+      </div>
+      <div v-else>
+        <MessageGameOver v-if="!nextRound && endProcess && showResult"/>
+        <MessageNextRound v-if="nextRound && endProcess && showResult" :title="processTitle"/>
       </div>
 
-      <div v-if="isShowWelcome || process === 'null'">
+
+      <!--<div class="led_box" v-show="isStarted && !endProcess">-->
+      <div class="led_box" v-show="isStarted">
+        <CountDown/>
+      </div>
+      <div v-if="(isShowWelcome || process === 'null')">
         <div>
           <p class="text-highlight">
             Chào mừng bạn <br/> đến với <br/>
@@ -17,7 +25,7 @@
       </div>
     </div>
     <div v-if="isStartDashBoard">
-      <div class="text-highlight" v-if="process && process >= 0">
+      <div class="text-highlight" v-if="isShowTitle">
         {{getQuestions[process]['name']}}
       </div>
       <component v-if="process === 0" is="ProcessKhoiDong"
@@ -66,11 +74,15 @@
         steps: steps,
         isShowWelcome: true,
         showResult: false,
-        isStartDashBoard: null
+        isStartDashBoard: null,
+
+        isShowTitle: true,
+
+        isRefresh: false
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "isStarted", "endProcess", "processQuestion", "nextRound", "userStopGame"]),
+      ...mapGetters("game", ["questions", "process", "isStarted", "startTimer", "endProcess", "processQuestion", "nextRound", "userStopGame"]),
       ...mapGetters("auth", ["user", "isLoggedInTemp"]),
       getQuestions() {
         return this.questions;
@@ -108,14 +120,19 @@
         console.log('dataCurrentProcess', dataCurrentProcess);
         let checkSubmitedRound = await this.fetchCheckSubmitAnswer({user_id: this.user.id});
         console.log('checkSubmitedRound', checkSubmitedRound);
+        if(checkSubmitedRound) {
+          this.isShowTitle = false;
+          this.isRefresh = true;
+        }
         if(dataCurrentProcess) {
           this.isStartDashBoard = true;
+          // off welcome
+          this.isShowWelcome = false;
           this.startProcessGame();
         }
 
       }else if(this.getIsNext === false){
-        this.handleUserStopGame();
-        eventsRef.off('value');
+        this.gameOver();
       }
 
     },
@@ -141,28 +158,24 @@
                 self.showResult = false;
                 //Start Game
                 if (childData.key == "start_game") {
+                  self.isShowWelcome = false;
                   if(self.getIsLoggedInTemp || (self.process === null && self.processQuestion === null)) {
                     self.startGame();
-                    self.isShowWelcome = false;
-                    // alert(1)
                   }
                   self.setStatusLoggedInTemp(true);
-                  // if(isSubmitted){
-                  //   setSESSION(SESSION.SUBMITRESULTANSWER, false);
-                  // }
                 }
                 //Next Question
                 else if (childData.key == "next_question") {
+                  self.isShowWelcome = false;
                  if(self.getIsLoggedInTemp) {
                    self.tickQuestion();
                  }else {
                   self.setStatusLoggedInTemp(true)
                  }
-
                 }
                 //Get List User Next Round
                 else if (childData.key == "result_round") {
-                  var arrayNextRound = childData.arrayNextRound;
+                  let arrayNextRound = childData.arrayNextRound;
                   self.checkNextRound(arrayNextRound);
                 }
               }
@@ -172,6 +185,7 @@
       async checkNextRound(arrayNextRound) {
         let user_id = this.user.id;
         this.showResult = true;
+        console.log(arrayNextRound)
         if(arrayNextRound !== undefined){
           if (arrayNextRound.includes(user_id)) {
             this.setNextRound(true);
@@ -183,6 +197,7 @@
         }
         else{
           //Bị Loại
+
            this.gameOver();
         }
       },

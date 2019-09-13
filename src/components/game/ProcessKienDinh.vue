@@ -1,13 +1,10 @@
 <template>
   <div class="process_box" v-show="!showResult">
-    <!--submittedKienDinh===={{submittedKienDinh}}{{currentSubmitted}}{{process}}-->
     <BoxKetQua v-if="endProcess || submittedKienDinh"/>
-    <!--<NextProcess/>-->
     <div v-if="!endProcess && !submittedKienDinh" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
           Câu hỏi {{processQuestion +1}}:
-          <!--{{titleQuestion}}-->
         </p>
         <p class="drs-qs">
           {{question}}
@@ -24,7 +21,6 @@
             {{answer.answer}}
           </li>
         </ol>
-
       </div>
     </div>
   </div>
@@ -34,22 +30,20 @@
   import {mapGetters, mapActions} from 'vuex';
   import {sleep} from "../../api/base";
   import BoxKetQua from "./BoxKetQua";
-  import NextProcess from "./NextProcess";
-  import {getSESSION, SESSION} from "../../utils";
 
   export default {
     name: "ProcessKienDinh",
-    components: {NextProcess, BoxKetQua},
+    components: {BoxKetQua},
     props: ["items"],
     data() {
       return {
         answered: null,
         showResult: false,
-        isSubmitted:false
+        isSubmitted: false
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "currentSubmitted", "process", "processQuestion", "isStarted", "endProcess","startTimer","nextRound"]),
+      ...mapGetters("game", ["questions", "currentSubmitted", "process", "processQuestion", "isStarted", "endProcess", "startTimer", "nextRound"]),
       ...mapGetters("auth", ["user"]),
       question() {
         return this.items.questions[this.processQuestion].question
@@ -61,12 +55,14 @@
         return this.items.questions[this.processQuestion].id
       },
       submittedKienDinh() {
-        return this.currentSubmitted !== null && this.process + 1 === this.currentSubmitted ['round_id'];
+        return this.currentSubmitted !== null && this.currentSubmitted ['round_id'] === 2;
       }
     },
     created() {
+      if(this.currentSubmitted && this.currentSubmitted ['round_id']) {
+        return;
+      }
       this.tickQuestion();
-      //this.checkUserSubmitted();
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),
@@ -80,10 +76,8 @@
         this.answered = null;
         this.tickQuestion();
       },
-      checkUserSubmitted(){
-        this.isSubmitted = getSESSION(SESSION.SUBMITRESULTANSWER);
-      }
     },
+
     watch: {
       nextRound: function (t, n) { // eslint-disable-line
         this.showResult = true;
