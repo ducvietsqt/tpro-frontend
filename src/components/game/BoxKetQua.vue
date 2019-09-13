@@ -41,7 +41,7 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["endProcess", "resultsProcess", "questions", "process","processQuestion", "totalTimeAnsweredProcess"]),
+      ...mapGetters("game", ["endProcess", "currentSubmitted", "resultsProcess", "questions", "process","processQuestion", "totalTimeAnsweredProcess"]),
       ...mapGetters("auth", ["user"]),
       processTitle() {
         try {
