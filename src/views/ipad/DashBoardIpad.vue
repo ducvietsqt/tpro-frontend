@@ -40,6 +40,15 @@
       <div class="event-item">
         <button type="button" @click="resetFireBase">Reset FireBase</button>
       </div>
+      <div class="event-item">
+        <button type="button" @click="resetAll">Reset All</button>
+      </div>
+    </div>
+
+     <div class="events">      
+      <div class="event-item">
+        <button type="button" @click="checkListCorrect">Check List Correct</button>
+      </div>
     </div>
 
 
@@ -53,6 +62,7 @@ import {sleep} from "../../api/base";
 
 
 let eventsRef = db.ref('events');
+let resultRef = db.ref('result');
 let keys = [];
 export default {
   name: "Events",
@@ -62,7 +72,8 @@ export default {
     };
   },
   firebase: {
-    events: eventsRef
+    events: eventsRef,
+    results:resultRef
   },
   methods: {
     actionToDo(name,key) {
@@ -72,16 +83,17 @@ export default {
         status: true
       });
     },
-    async getResultRound(){      
-      let obj = await api.getListGroupGrade();
-      let list = obj.data.arrUserChoices;
-      eventsRef.remove();
-      this.$firebaseRefs.events.push({
-        name: "Result Round",
-        key: "result_round",
-        arrayNextRound: list
-      });
-
+    async getResultRound(){  
+      if(confirm("Bạn có muốn lấy kết quả danh sách người chơi vào vòng sau hay không?")){    
+        let obj = await api.getListGroupGrade();
+        let list = obj.data.arrUserChoices;
+        eventsRef.remove();
+        this.$firebaseRefs.events.push({
+          name: "Result Round",
+          key: "result_round",
+          arrayNextRound: list
+        });
+      }
     },
     async resetRoundLed(){      
       this.$firebaseRefs.events.push({
@@ -102,13 +114,37 @@ export default {
       });
     },
     async resetInfoGame(){
-      await api.resetInfoGame();
+      if(confirm("Bạn có muốn Reset thông tin game hay không?")){
+        await api.resetInfoGame();
+      }
     },
     async resetTotalLogin(){
-      await api.resetTotalLogin();
+      if(confirm("Bạn có muốn Reset Số người đăng nhập hay không?")){
+        await api.resetTotalLogin();
+      }
     },
-    async resetFireBase(){
-      eventsRef.remove();
+    resetFireBase(){
+      if(confirm("Bạn có muốn Reset Data FireBase hay không?")){
+        eventsRef.remove();
+      }      
+    },
+    resetAll(){
+      if(confirm("Bạn có muốn Reset Toàn bộ hay không?")){
+        this.resetFireBase();
+        this.resetTotalLogin();
+        this.resetInfoGame();
+        this.resetFireBase();
+        this.resetFireBase();
+        this.resetRound();
+        this.resetRoundLed();
+        this.resetRound();
+      }      
+    },
+    async checkListCorrect(){
+      this.$firebaseRefs.results.push({
+        name: "Check Result Answer",
+        key: "check_result_answer"        
+      });      
     }
 
     

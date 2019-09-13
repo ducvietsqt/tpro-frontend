@@ -13,6 +13,9 @@ async function getListGroupNext() {
   return await get('/api/v1/user/list-group-next');
 }
 
+async function getLisUserChoice() {
+  return await get('/api/v1/user/list-user-next-round');
+}
 
 async function submitAnnswer(data) {
   // {user_id, answer, round_id, question_id, total_time, total_correct}
@@ -31,6 +34,7 @@ export default {
   getMe,
   getListUser,
   submitAnnswer,
-  getListGroupNext
+  getListGroupNext,
+  getLisUserChoice
 
 };

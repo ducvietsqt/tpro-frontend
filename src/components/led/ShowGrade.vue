@@ -1,13 +1,13 @@
 <template>
-  <div class="contain_led_result contain_led_result--lienquan">
-      <div class="item" v-if="gradeList.length> 0">
+  <div class="contain_led_result contain_led_result--lienquan" v-if="gradeList.length> 0">
+      <div class="item">
         <ul class="list_answred">   
           <li class="list_answred--item">
               <div class="drs">
-                <p class="mnv pos-relative">
+                <!--<p class="mnv pos-relative">
                   <span class="arrow_box">2</span>
                   Liên Quân 1
-                </p>
+                </p>-->
               </div>              
             </li>       
           <li class="list_answred--item" v-for="(grade, index) in gradeList" :key="index" :class="['grade ', (choices.indexOf(grade.code) !== -1 ? 'green' :'red')]">
@@ -22,12 +22,14 @@
           </li>
         </ul>
 
-      </div>  
-      <div v-else>
-        <p>Hiện tại hệ thống đang xử lý kết quả. Vui lòng chờ trong giây lát!</p>
-      </div>      
-
+      </div>        
     </div>    
+    <div v-else>
+      <div class="drs">
+          <p class="grade green" style="text-align:center; font-size:30px;line-height: 45px">Hiện tại hệ thống đang xử lý kết quả.<br/> Vui lòng cập nhật sau!</p>
+      </div>      
+  </div>      
+
 </template>
 
 <script>
