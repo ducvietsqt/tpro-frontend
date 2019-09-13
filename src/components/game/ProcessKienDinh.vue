@@ -1,8 +1,8 @@
 <template>
   <div class="process_box" v-show="!showResult">
-    <BoxKetQua v-if="endProcess || isSubmitted"/>
+    <BoxKetQua v-if="endProcess"/>
     <!--<NextProcess/>-->
-    <div v-if="!endProcess && !isSubmitted" class="question-detail">
+    <div v-if="!endProcess" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
           Câu hỏi {{processQuestion +1}}:
@@ -63,7 +63,7 @@
     },
     created() {
       this.tickQuestion();
-      this.checkUserSubmitted();
+      //this.checkUserSubmitted();
     },
     methods: {
       ...mapActions("game", ["tickQuestion", "answerQuestion"]),

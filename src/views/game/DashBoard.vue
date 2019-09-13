@@ -146,9 +146,9 @@
                     // alert(1)
                   }                  
                   self.setStatusLoggedInTemp(true);
-                  if(isSubmitted){
-                    setSESSION(SESSION.SUBMITRESULTANSWER, false);    
-                  }                  
+                  // if(isSubmitted){
+                  //   setSESSION(SESSION.SUBMITRESULTANSWER, false);    
+                  // }                  
                 }
                 //Next Question
                 else if (childData.key == "next_question") {
