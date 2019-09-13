@@ -4,11 +4,13 @@
       <!--<img src="../../assets/bg.jpg" alt=""/>-->
     </div>
     <div class="box_link_content">
+      <div style="width: 40vw; margin: 0px auto 20px auto;">
+        <img style="display: block; max-width: 100%;" src="../../assets/led_title.png" alt=""/>
+      </div>
       <button @click="btn2 = !btn2" v-if="!btn2" class="animated zoomInUp btn_link link_first">
         <img src="../../assets/btn1.png" alt=""/>
       </button>
       <!--<h1 class="animated infinite bounce delay-2s">Example</h1>-->
-
       <button v-if="btn2" class="animated zoomIn btn_link link_second">
         <img src="../../assets/btn2.png" alt=""/>
       </button>
@@ -49,6 +51,10 @@
     .btn_link {
       display: block;
       width: 250px;
+      border: none;
+      outline: none;
+      background: none;
+      margin: 0 auto;
       img {
         display: block;
         max-width: 100%;

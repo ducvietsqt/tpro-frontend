@@ -30,6 +30,8 @@ const GameOver = () => import(/* webpackChunkName: "GameOver" */ '../components/
 const GameWinner = () => import(/* webpackChunkName: "GameOver" */ '../components/static/GameWinner');
 
 const Pingo = () => import(/* webpackChunkName: "Pingo" */ '../components/static/Pingo');
+const StaticLedScreen = () => import(/* webpackChunkName: "StaticLedScreen" */ '../components/static/StaticLedScreen');
+
 const LAYOUT = {
   NotLoggedIn: "NotLoggedIn",
   LoggedIn: "LoggedIn",
@@ -167,6 +169,13 @@ export default [
     meta: {layout: LAYOUT.StaticPage},
     component: Pingo,
   },
+  {
+    path: '/pingo-led',
+    name: 'pingo-led',
+    meta: {layout: LAYOUT.StaticPage},
+    component: StaticLedScreen,
+  },
+
 
   {
     path: '/game-winner',
