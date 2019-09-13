@@ -1,8 +1,8 @@
 <template>
   <div class="process_box" v-if="!showResult">
-    <BoxKetQua v-if="endProcess"/>
+    <BoxKetQua v-if="endProcess || submittedVuotTroi"/>
     <!--<NextProcess/>-->
-    <div v-if="!endProcess" class="question-detail">
+    <div v-if="!endProcess && !submittedVuotTroi" class="question-detail">
       <div class="process_box--question">
         <p class="text-center title-qs">
           Câu hỏi {{processQuestion +1}}:
@@ -47,7 +47,7 @@
       }
     },
     computed: {
-      ...mapGetters("game", ["questions", "process", "processQuestion", "isStarted", "endProcess","startTimer","nextRound"]),
+      ...mapGetters("game", ["questions", "process","currentSubmitted", "processQuestion", "isStarted", "endProcess","startTimer","nextRound"]),
       ...mapGetters("auth", ["user"]),
       question() {
         return this.items.questions[this.processQuestion].question
@@ -57,6 +57,9 @@
       },
       titleQuestion() {
         return this.items.questions[this.processQuestion].id
+      },
+      submittedVuotTroi() {
+        return this.currentSubmitted !== null && this.process + 1 === this.currentSubmitted ['round_id'];
       }
     },
     created() {
@@ -76,7 +79,7 @@
         this.tickQuestion();
       },
       checkUserSubmitted(){
-        this.isSubmitted = getSESSION(SESSION.SUBMITRESULTANSWER);            
+        this.isSubmitted = getSESSION(SESSION.SUBMITRESULTANSWER);
       }
 
     },

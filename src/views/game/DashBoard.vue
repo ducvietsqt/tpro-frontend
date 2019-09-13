@@ -103,10 +103,11 @@
       }
 
       // if (this.getIsNext) { // null, false, true
-      console.log(this.getIsNext)
       if (this.getIsNext) { // null, false, true
         let dataCurrentProcess = await this.fetchCurrentProcess();
         console.log('dataCurrentProcess', dataCurrentProcess);
+        let checkSubmitedRound = await this.fetchCheckSubmitAnswer({user_id: this.user.id});
+        console.log('checkSubmitedRound', checkSubmitedRound);
         if(dataCurrentProcess) {
           this.isStartDashBoard = true;
           this.startProcessGame();
@@ -119,7 +120,7 @@
 
     },
     methods: {
-      ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess", "handleUserStopGame"]),
+      ...mapActions("game", ["startGame", "tickQuestion", "fetchCurrentProcess","fetchCheckSubmitAnswer", "handleUserStopGame"]),
       ...mapMutations("game", ["setNextRound"]),
       ...mapActions("auth", ["logout"]),
       ...mapMutations("auth", ["setStatusLoggedInTemp"]),
@@ -132,7 +133,7 @@
         //Nếu như F5 thì kiểm tra userStopgame
         if(this.userStopGame) return;
         let self = this;
-        let isSubmitted = getSESSION(SESSION.SUBMITRESULTANSWER);         
+        let isSubmitted = getSESSION(SESSION.SUBMITRESULTANSWER);
           eventsRef.on('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
               let childData = childSnapshot.val();
@@ -144,11 +145,11 @@
                     self.startGame();
                     self.isShowWelcome = false;
                     // alert(1)
-                  }                  
+                  }
                   self.setStatusLoggedInTemp(true);
                   // if(isSubmitted){
-                  //   setSESSION(SESSION.SUBMITRESULTANSWER, false);    
-                  // }                  
+                  //   setSESSION(SESSION.SUBMITRESULTANSWER, false);
+                  // }
                 }
                 //Next Question
                 else if (childData.key == "next_question") {

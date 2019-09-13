@@ -35,6 +35,9 @@ const state = {
   userStopGame: false,
   updateStateProcessQuestion: false,
 
+  currentSubmitted: null,
+  isSubmittedProcess: false
+
 };
 
 // getters
@@ -71,6 +74,8 @@ const getters = {
   userStopGame: state => state.userStopGame,
   updateStateProcessQuestion: state => state.updateStateProcessQuestion,
 
+  currentSubmitted: state => state.currentSubmitted,
+
 
 };
 
@@ -89,9 +94,14 @@ const actions = {
       commit("UPDATE_CURRENT_PROCESS", rs.data[0]);
       resolve(rs.data[0]);
     })
-
   },
-
+  async fetchCheckSubmitAnswer({commit},data) {
+    return new Promise(async resolve => {
+      let rs = await api.checkSubmitAnswer(data);
+      commit("UPDATE_CURRENT_SUBMITTED", rs.data);
+      resolve(rs.data);
+    })
+  },
   startGame({commit}) {
     commit("START_GAME");
 
@@ -194,6 +204,7 @@ const actions = {
   handleUserStopGame({commit}) {
     commit("USER_STOP_GAME");
   },
+
 
 };
 
@@ -341,6 +352,9 @@ const mutations = {
       console.log(e.message)
     }
 
+  },
+  UPDATE_CURRENT_SUBMITTED(state, data) {
+    state.currentSubmitted = data;
   },
   USER_STOP_GAME(state) {
     state.userStopGame = true;
