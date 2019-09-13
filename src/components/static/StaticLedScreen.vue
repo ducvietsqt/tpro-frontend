@@ -145,6 +145,7 @@
     .list_lq {
       width: 100%;
       margin: 20px auto 30px auto;
+      padding: 0px 40px;
       border-collapse: separate;
       border-spacing: 20px;
       tr {
@@ -159,10 +160,11 @@
       }
       .text_lq {
         font-size: 2.03125vw;
+        font-size: 1.8vw;
         white-space: nowrap;
         /*margin-right: 20px;*/
         width: 140px;
-        padding-right: 20px;
+        padding-right: 60px;
       }
       .box_item {
         padding: 10px 20px;
