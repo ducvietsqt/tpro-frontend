@@ -7,14 +7,14 @@
       </p>
       <h2>Màn hình dành cho quản trị viên</h2>
     </div>
-    <div class="events">        
+    <!--<div class="events">        
         <div class="event-item">
         <button @click="actionToDo('Start Game','start_game')">Start Game</button>
       </div> 
       <div class="event-item">
         <button type="button" @click="actionToDo('Play Game','play_game')">Vòng Phụ</button>
       </div>     
-    </div>
+    </div>-->
     <div class="events">      
       <div class="event-item">
         <button type="button" @click="getResultRound">Result Round</button>
@@ -47,7 +47,7 @@
 
      <div class="events">      
       <div class="event-item">
-        <button type="button" @click="checkListCorrect">Check List Correct</button>
+        <button type="button" @click="checkListCorrect">Check Correct</button>
       </div>
     </div>
 
