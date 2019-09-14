@@ -27,6 +27,9 @@ async function resetTotalLogin() {
 async function updateProcessCurrent(data) {
   return await post('/api/v1/info/update-process-current', data);
 }
+async function getUserRandom() {
+  return await post('http://t-pro.dev.vn/api/v1/user/random-user');
+}
 
 export default {
   getListGroup,
@@ -35,5 +38,6 @@ export default {
   resetRound,
   updateProcessCurrent,
   resetInfoGame,
-  resetTotalLogin
+  resetTotalLogin,
+  getUserRandom
 };
